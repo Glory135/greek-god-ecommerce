@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const montserrat = Montserrat({
+  variable: "--font-monstrat",
   subsets: ["latin"],
 });
 
@@ -25,9 +22,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn(
+          'relative h-full antialiased',
+          montserrat.variable
+        )}
       >
-        {children}
+        <main className='relative flex flex-col min-h-screen'>
+          <div className='flex-grow flex-1'>{children}</div>
+        </main>
       </body>
     </html>
   );
