@@ -6,11 +6,12 @@ export default function FrontendLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className='relative flex flex-col min-h-screen'>
-      <div className='flex-grow flex-1'>
-        <Navbar />
-        {children}
-      </div>
-    </div>
+    <>
+      <div className='relative flex flex-col min-h-screen'>
+        <div className='flex-grow flex-1'>
+          <Navbar />
+          {children}
+        </div>
+      </div></>
   )
 }

@@ -27,16 +27,19 @@ export default function NavItem({
 			<div className='flex relative items-center'>
 				{
 					!navItem.children && navItem.href ? (
-						<Link href={navItem.href}>
-							<Button
-								size={"sm"}
-								onClick={handleOpen}
-								variant={isOpen ? 'secondary' : 'ghost'}
-								className='text-sm xl:text-base'
-							>
+
+						<Button
+							asChild
+							size={"sm"}
+							onClick={handleOpen}
+							variant={isOpen ? 'secondary' : 'ghost'}
+							className='text-sm xl:text-base'
+						>
+							<Link href={navItem.href}>
 								{navItem.label}
-							</Button>
-						</Link>
+							</Link>
+						</Button>
+
 					) : (
 						<Button
 							size={"sm"}
@@ -70,7 +73,7 @@ export default function NavItem({
 						}
 					)}>
 					<div
-						className='absolute inset-0 top-1/2 bg-background shadow'
+						className='absolute inset-0 top-1/2 shadow'
 						aria-hidden='true'
 					/>
 					<div className='relative bg-background py-16 h-[600px] shadow-md border-b border-gray-600/50 '>
@@ -85,8 +88,8 @@ export default function NavItem({
 										</h4>
 										<div className="flex flex-col gap-2">
 											{
-												value.map((itm, index) => (
-													<Link key={index} href={itm.href} className='hover:underline'>
+												value.map((itm) => (
+													<Link key={itm.id} href={itm.href} className='hover:underline'>
 														{itm.label}
 													</Link>
 												))
@@ -100,7 +103,7 @@ export default function NavItem({
 								{navItem.children?.featured.slice(0, 3).map((item) => (
 									<div
 										className='flex-1 h-full flex flex-col group relative text-base sm:text-sm'
-										key={item.label}>
+										key={item.id}>
 										<div className='relative h-full overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75'>
 											<Image
 												src={item.imageSrc}
