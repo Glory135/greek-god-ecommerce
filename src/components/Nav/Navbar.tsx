@@ -19,9 +19,7 @@ export default function Navbar() {
 					<div className='w-full flex items-center justify-between gap-5 py-3 shadow-sm border-b border-gray-600/50'>
 						{/* Mobile Nav */}
 						<div className='flex gap-2 lg:hidden items-center'>
-							<Button variant={"ghost"} size={"sm"}>
 								<MobileNav />
-							</Button>
 							<Link
 								href={'/search'}
 								className={buttonVariants({
