@@ -1,4 +1,6 @@
-import React from 'react';
+"use client"
+
+import React, { useState } from 'react';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Link from 'next/link';
 import NavItems from './NavItems';
@@ -8,26 +10,26 @@ import { LogoFull, LogoIcon } from '../Logo';
 import { Heart, Search, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import MobileNav from './MobileNav';
+import SearchComponent from '../Filter/SearchComponent';
 
 export default function Navbar() {
+	const [searchOpen, setSearchOpen] = useState(true)
 	return (
 		<div className='w-full sticky z-50 top-0 inset-x-0'>
 			<header className={cn(
-				'w-full relative bg-background',
+				'w-full relative z-50 bg-background',
 			)}>
-				<MaxWidthWrapper>
-					<div className='w-full flex items-center justify-between gap-5 py-3 shadow-sm border-b border-gray-600/50'>
+				<MaxWidthWrapper className='relative z-50 bg-background shadow-sm'>
+					<div className='w-full flex items-center justify-between gap-5 py-3'>
 						{/* Mobile Nav */}
 						<div className='flex gap-2 lg:hidden items-center'>
-								<MobileNav />
-							<Link
-								href={'/search'}
-								className={buttonVariants({
-									variant: 'ghost',
-									size: "sm"
-								})}>
+							<MobileNav />
+							<Button
+								onClick={() => setSearchOpen(prev => !prev)}
+								variant={"ghost"}
+								size={"sm"}>
 								<Search />
-							</Link>
+							</Button>
 						</div>
 
 						<LogoFull className='hidden md:block' />
@@ -51,14 +53,12 @@ export default function Navbar() {
 							<NavItems />
 						</div>
 						<div className='hidden lg:flex lg:items-center lg:justify-end'>
-							<Link
-								href={'/search'}
-								className={buttonVariants({
-									variant: 'ghost',
-									size: "sm"
-								})}>
+							<Button
+								onClick={() => setSearchOpen(prev => !prev)}
+								variant={"ghost"}
+								size={"sm"}>
 								<Search />
-							</Link>
+							</Button>
 							<span className='h-6 w-px bg-gray-200' />
 							<Link
 								href={'/login'}
@@ -86,6 +86,9 @@ export default function Navbar() {
 
 					</div>
 				</MaxWidthWrapper>
+
+				{/* Search component */}
+				<SearchComponent open={searchOpen} setOpen={setSearchOpen} />
 			</header>
 		</div>
 	);
