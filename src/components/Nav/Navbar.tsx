@@ -1,35 +1,28 @@
-"use client"
-
-import React, { useState } from 'react';
+import React from 'react';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Link from 'next/link';
 import NavItems from './NavItems';
-import { Button, buttonVariants } from '../ui/button';
+import {  buttonVariants } from '../ui/button';
 import Cart from '../Cart';
 import { LogoFull, LogoIcon } from '../Logo';
-import { Heart, Search, User } from 'lucide-react';
+import { Heart, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import MobileNav from './MobileNav';
 import SearchComponent from '../Filter/SearchComponent';
+import SearchBtn from '../mini-client-fixes/SearchBtn';
 
 export default function Navbar() {
-	const [searchOpen, setSearchOpen] = useState(true)
 	return (
 		<div className='w-full sticky z-50 top-0 inset-x-0'>
 			<header className={cn(
 				'w-full relative z-50 bg-background',
 			)}>
-				<MaxWidthWrapper className='relative z-50 bg-background shadow-sm'>
+				<MaxWidthWrapper className='relative z-50 bg-background shadow-primary/10 shadow-sm'>
 					<div className='w-full flex items-center justify-between gap-5 py-3'>
 						{/* Mobile Nav */}
 						<div className='flex gap-2 lg:hidden items-center'>
 							<MobileNav />
-							<Button
-								onClick={() => setSearchOpen(prev => !prev)}
-								variant={"ghost"}
-								size={"sm"}>
-								<Search />
-							</Button>
+							<SearchBtn />
 						</div>
 
 						<LogoFull className='hidden md:block' />
@@ -53,12 +46,7 @@ export default function Navbar() {
 							<NavItems />
 						</div>
 						<div className='hidden lg:flex lg:items-center lg:justify-end'>
-							<Button
-								onClick={() => setSearchOpen(prev => !prev)}
-								variant={"ghost"}
-								size={"sm"}>
-								<Search />
-							</Button>
+							<SearchBtn />
 							<span className='h-6 w-px bg-gray-200' />
 							<Link
 								href={'/login'}
@@ -88,7 +76,7 @@ export default function Navbar() {
 				</MaxWidthWrapper>
 
 				{/* Search component */}
-				<SearchComponent open={searchOpen} setOpen={setSearchOpen} />
+				<SearchComponent />
 			</header>
 		</div>
 	);

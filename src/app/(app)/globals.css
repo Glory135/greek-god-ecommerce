@@ -146,6 +146,6 @@
   }
 
   body {
-    @apply bg-background text-foreground scroll-smooth;
+    @apply bg-background text-foreground scroll-smooth max-w-screen overflow-x-hidden;
   }
 }

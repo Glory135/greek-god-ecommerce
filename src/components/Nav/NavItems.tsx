@@ -4,9 +4,12 @@ import { NAV_ITEMS } from '@/config';
 import { useEffect, useRef, useState } from 'react';
 import NavItem from './NavItem';
 import { useOnClickOtside } from '@/hooks/use-on-click-outside';
+import useDashboardStore from '@/zustand/DashboardStore';
 
 export default function NavItems() {
 	const [activeIndex, setActiveIndex] = useState<null | number>(null);
+	const { setSearchOpen } = useDashboardStore((state => state))
+
 
 	useEffect(() => {
 		const handler = (e: KeyboardEvent) => {
@@ -38,6 +41,7 @@ export default function NavItems() {
 						setActiveIndex(null);
 					} else {
 						setActiveIndex(index);
+						setSearchOpen(false)
 					}
 				};
 				const isOpen = index === activeIndex;

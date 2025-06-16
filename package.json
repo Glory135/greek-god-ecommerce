@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "generate:types": "payload generate:types",
-    "db:fresh": "payload migrate:fresh"
+    "db:fresh": "payload migrate:fresh",
+    "db:seed": "pnpm run src/seed.ts"
   },
   "dependencies": {
     "@payloadcms/db-mongodb": "^3.42.0",
@@ -26,6 +27,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "decimal.js": "^10.5.0",
     "graphql": "^16.11.0",
     "lucide-react": "^0.514.0",
     "next": "15.3.3",
@@ -35,7 +37,8 @@
     "sharp": "^0.34.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "vaul": "^1.1.2"
+    "vaul": "^1.1.2",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
