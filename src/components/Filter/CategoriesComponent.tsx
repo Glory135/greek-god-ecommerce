@@ -16,11 +16,10 @@ const CategoriesComponent = ({ data }: CategoriesProps) => {
 
   const [visibleCount, setVisibleCount] = useState(data.length)
   const [isAnyHovered, setIsAnyHovered] = useState(false)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const activeCategory = "all"
-  const activeCategoryIndex = data.findIndex(cat => cat.slug === activeCategory)
-  const isActiveCategoryHiden = activeCategoryIndex >= visibleCount && activeCategoryIndex != -1
+  // const activeCategoryIndex = data.findIndex(cat => cat.slug === activeCategory)
+  // const isActiveCategoryHidden = activeCategoryIndex >= visibleCount && activeCategoryIndex != -1
 
   useEffect(() => {
     const calcVisibility = () => {
