@@ -8,7 +8,7 @@ export const shortenText = (text: string, by: number) => {
   return text;
 }
 
-export const paramBuilder = (path: string, params: Record<string, any>): string => {
+export const paramBuilder = (path: string, params: Record<string, string>): string => {
   // Ensure this only runs in the browser
   if (typeof window === "undefined") return path;
 

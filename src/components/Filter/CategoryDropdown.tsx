@@ -2,7 +2,7 @@
 
 import { CustomCategory } from '@/app/(app)/types'
 import React, { useRef, useState } from 'react'
-import { Button, buttonVariants } from '../ui/button'
+import { buttonVariants } from '../ui/button'
 import { cn } from '@/lib/utils'
 import { useDropdownPosition } from '@/hooks/use-dropdown-position'
 import SubCategoryMenu from './SubCategoryMenu'

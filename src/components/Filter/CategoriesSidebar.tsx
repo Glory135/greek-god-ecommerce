@@ -1,5 +1,5 @@
 import { CustomCategory } from '@/app/(app)/types'
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '../ui/sheet'
 import { ScrollArea } from '../ui/scroll-area'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'

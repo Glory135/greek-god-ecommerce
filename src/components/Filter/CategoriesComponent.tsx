@@ -3,9 +3,6 @@
 import { CustomCategory } from '@/app/(app)/types'
 import React, { useEffect, useRef, useState } from 'react'
 import CategoryDropdown from './CategoryDropdown'
-import { Button } from '../ui/button'
-import { cn } from '@/lib/utils'
-import { ListFilterIcon } from 'lucide-react'
 import CategoriesSidebar from './CategoriesSidebar'
 
 interface CategoriesProps {
