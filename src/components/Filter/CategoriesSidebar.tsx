@@ -46,7 +46,7 @@ const CategoriesSidebar = ({ data }: CategoriesSidebarProps) => {
                       <Link href={`
                       ${paramBuilder(
                         PAGES_LINKS.products.link,
-                        { category: category.slug === "all" ? null : category.slug }
+                        { category: category.slug === "all" ? "" : category.slug }
                       )}`}
                         className='w-full p-5 flex items-center text-base text-left font-medium hover:bg-primary hover:text-primary-foreground capitalize'
                       >
