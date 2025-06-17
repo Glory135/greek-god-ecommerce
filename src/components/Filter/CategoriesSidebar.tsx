@@ -13,7 +13,6 @@ import { Button } from '../ui/button'
 import { ListFilterIcon } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { useTRPC } from '@/trpc/client'
-import { CategoriesGetManyOutput } from '@/modules/categories/types'
 
 
 const CategoriesSidebar = () => {
@@ -69,7 +68,7 @@ const CategoriesSidebar = () => {
                         <AccordionContent asChild className='pb-3 pt-1'>
                           {category?.subcategories.map((subCat) => (
                             <SheetTrigger key={subCat.id} asChild>
-                              <Link href={handleSubCategoryLink(subCat as CategoriesGetManyOutput[0], category)}
+                              <Link href={handleSubCategoryLink(subCat, category)}
                                 className='w-full py-2 px-5 flex items-center text-base text-left  hover:bg-primary hover:text-primary-foreground capitalize'
                               >
                                 {subCat.name}

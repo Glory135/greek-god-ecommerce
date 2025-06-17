@@ -24,12 +24,17 @@ const SubCategoryMenu = ({ category, position, isOpen }: SubCategoryMenuProps) =
       }}
     >
       <div className="h-3 w-60 opacity-0" />
+
       <div className="w-60 text-primary-foreground bg-primary overflow-hidden border">
         <div className="">
           {category.subcategories?.map((subcategory) => (
-            <Link key={subcategory.slug} href={handleSubCategoryLink(subcategory as CategoriesGetManyOutput[0], category)} className="w-full text-left p-4 hover:bg-greek hover:text-greek-foreground flex justify-between items-center hover:underline font-normal text-sm">
+
+            <Link
+              key={subcategory.slug}
+              href={`${handleSubCategoryLink(subcategory, category)}`} className="w-full text-left p-4 hover:bg-greek hover:text-greek-foreground flex justify-between items-center hover:underline font-normal text-sm">
               {subcategory.name}
             </Link>
+
           ))}
         </div>
       </div>

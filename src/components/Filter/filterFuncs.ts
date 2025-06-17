@@ -1,8 +1,10 @@
-import { CategoriesGetManyOutput } from "@/modules/categories/types";
+"use client"
+
+import { CategoriesGetManyOutput, SubCategoriesGetManyOutput } from "@/modules/categories/types";
 import { paramBuilder } from "@/utils/commonFunctions";
 import { PAGES_LINKS } from "@/utils/linksData";
 
-export const handleSubCategoryLink = (category: CategoriesGetManyOutput[0], parentCat?: CategoriesGetManyOutput[0]) => {
+export const handleSubCategoryLink = (category: SubCategoriesGetManyOutput[0], parentCat?: CategoriesGetManyOutput[0]) => {
   if (category.slug == "all") {
     return (`${PAGES_LINKS.products.link}`)
   }

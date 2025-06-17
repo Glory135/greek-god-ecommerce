@@ -3,3 +3,5 @@ import type { AppRouter } from "@/trpc/routers/_app"
 
 export type CategoriesGetManyOutput = inferRouterOutputs<AppRouter>['categories']["getMany"];
 export type CategoriesGetManyOutputSingle = CategoriesGetManyOutput[0]
+
+export type SubCategoriesGetManyOutput = CategoriesGetManyOutput[0]['subcategories']
