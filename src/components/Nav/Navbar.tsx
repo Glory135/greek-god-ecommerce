@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import MobileNav from './MobileNav';
 import SearchComponent from '../Filter/SearchComponent';
 import SearchBtn from '../mini-client-fixes/SearchBtn';
+import { PAGES_LINKS } from '@/utils/linksData';
 
 
 export default function Navbar() {
@@ -32,7 +33,7 @@ export default function Navbar() {
 						{/* Mobile Nav */}
 						<div className='flex gap-2 lg:hidden items-center'>
 							<Link
-								href={'/login'}
+								href={PAGES_LINKS.login.link}
 								className={buttonVariants({
 									variant: 'ghost',
 									size: "sm"
@@ -50,7 +51,7 @@ export default function Navbar() {
 							<SearchBtn />
 							<span className='h-6 w-px bg-gray-200' />
 							<Link
-								href={'/login'}
+								href={PAGES_LINKS.login.link}
 								className={buttonVariants({
 									variant: 'ghost',
 									size: "sm"

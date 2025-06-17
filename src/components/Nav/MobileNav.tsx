@@ -7,6 +7,7 @@ import { ScrollArea } from '../ui/scroll-area'
 import { NAV_ITEMS } from '@/config';
 import { LogoFull } from '../Logo'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
+import { PAGES_LINKS } from '@/utils/linksData'
 
 
 const MobileNav = () => {
@@ -75,7 +76,7 @@ const MobileNav = () => {
         <SheetFooter className='flex gap-2 flex-row'>
           <SheetTrigger className='flex-1' asChild>
             <Button variant={"ghost"} asChild>
-              <Link className='flex gap-2 items-center' href={"/login"}>
+              <Link className='flex gap-2 items-center' href={PAGES_LINKS.login.link}>
                 <User />
                 Login
               </Link>
@@ -83,7 +84,7 @@ const MobileNav = () => {
           </SheetTrigger>
           <SheetTrigger className='flex-1' asChild>
             <Button asChild>
-              <Link href={"/register"}>
+              <Link href={PAGES_LINKS.register.link}>
                 Create Account
               </Link>
             </Button>

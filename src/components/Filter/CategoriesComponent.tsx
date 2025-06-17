@@ -20,8 +20,6 @@ const CategoriesComponent = () => {
   const [isAnyHovered, setIsAnyHovered] = useState(false)
 
   const activeCategory = "all"
-  // const activeCategoryIndex = data?.findIndex(cat => cat.slug === activeCategory)
-  // const isActiveCategoryHidden = activeCategoryIndex >= visibleCount && activeCategoryIndex != -1
 
   useEffect(() => {
     const calcVisibility = () => {

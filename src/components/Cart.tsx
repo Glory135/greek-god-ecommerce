@@ -10,10 +10,10 @@ import {
 	SheetTrigger,
 } from './ui/sheet';
 import { Separator } from './ui/separator';
-import { formatPrice } from '@/lib/utils';
 import Link from 'next/link';
 import { buttonVariants } from './ui/button';
 import Image from 'next/image';
+import { formatPrice } from '@/utils/commonFunctions';
 
 export default function Cart() {
 	const itemCount = 0;
@@ -51,11 +51,11 @@ export default function Cart() {
 									<span className='flex-1'>
 										Transaction Fee
 									</span>
-									<span>{formatPrice(fee)}</span>
+									<span>{formatPrice({num: fee})}</span>
 								</div>
 								<div className='flex'>
 									<span className='flex-1'>Total</span>
-									<span>{formatPrice(fee)}</span>
+									<span>{formatPrice({num: fee})}</span>
 								</div>
 							</div>
 							<SheetFooter>

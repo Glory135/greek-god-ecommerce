@@ -35,21 +35,12 @@ const CategoryDropdown = ({
   }
   const dropDownPosition = getDropdownPosition()
 
-  // TODO
-  // improve mobile later
-  // const toggleDropDown = () => {
-  //   if (category.subcategories?.docs?.length) {
-  //     setIsOpen(prev => !prev)
-  //   }
-  // }
-
   return (
     <div
       className="relative"
       ref={dropdownRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-    // onClick={toggleDropDown}
     >
       <div className="relative">
         <Link

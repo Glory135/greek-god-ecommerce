@@ -101,7 +101,7 @@ export const parseMoney = (
 };
 
 
-export const formatCurrency = ({ num, currency = "NGN", withSymbol = true, locale = "en-US", currencyDisplay = 'narrowSymbol' }: { num: string | number | Decimal | null | undefined, currency?: string, withSymbol?: boolean, locale?: string, currencyDisplay?: 'narrowSymbol' | 'symbol' | 'code' | 'name' }): string | null => {
+export const formatPrice = ({ num, currency = "NGN", withSymbol = true, locale = "en-US", currencyDisplay = 'narrowSymbol' }: { num: string | number | Decimal | null | undefined, currency?: string, withSymbol?: boolean, locale?: string, currencyDisplay?: 'narrowSymbol' | 'symbol' | 'code' | 'name' }): string | null => {
   let numDecimal: Decimal;
 
   if (num instanceof Decimal) {
