@@ -1,5 +1,3 @@
-"use client"
-
 import { CategoriesGetManyOutput, SubCategoriesGetManyOutput } from "@/modules/categories/types";
 import { paramBuilder } from "@/utils/commonFunctions";
 import { PAGES_LINKS } from "@/utils/linksData";

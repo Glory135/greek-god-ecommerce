@@ -4,23 +4,23 @@ import React, { useEffect, useRef, useState } from 'react'
 import CategoryDropdown from './CategoryDropdown'
 import CategoriesSidebar from './CategoriesSidebar'
 import { useTRPC } from '@/trpc/client'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 
 const CategoriesComponent = () => {
 
   const trpc = useTRPC();
-  const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
+  const { data } = useQuery(trpc.categories.getMany.queryOptions());
 
   const containerRef = useRef<HTMLDivElement>(null)
   const measureRef = useRef<HTMLDivElement>(null)
   const viewAllRef = useRef<HTMLDivElement>(null)
 
-  const [visibleCount, setVisibleCount] = useState(data.length)
+  const [visibleCount, setVisibleCount] = useState(data?.length)
   const [isAnyHovered, setIsAnyHovered] = useState(false)
 
   const activeCategory = "all"
-  // const activeCategoryIndex = data.findIndex(cat => cat.slug === activeCategory)
+  // const activeCategoryIndex = data?.findIndex(cat => cat.slug === activeCategory)
   // const isActiveCategoryHidden = activeCategoryIndex >= visibleCount && activeCategoryIndex != -1
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const CategoriesComponent = () => {
     resizeObserver.observe(containerRef.current!)
 
     return () => resizeObserver.disconnect();
-  }, [data.length])
+  }, [data?.length])
 
   return (
     <div className='relative w-full'>
@@ -62,7 +62,7 @@ const CategoriesComponent = () => {
           left: -9999,
         }}
       >
-        {data.map((category) => (
+        {data?.map((category) => (
           <div key={category.id} className="">
             <CategoryDropdown
               category={category}
@@ -79,7 +79,7 @@ const CategoriesComponent = () => {
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}
         className="flex flex-nowrap items-center gap-3">
-        {data.slice(0, visibleCount).map((category) => (
+        {data?.slice(0, visibleCount).map((category) => (
           <div key={category.id} className="">
             <CategoryDropdown
               category={category}

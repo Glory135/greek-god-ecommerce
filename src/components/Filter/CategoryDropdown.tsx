@@ -53,7 +53,10 @@ const CategoryDropdown = ({
     >
       <div className="relative">
         <Link
-        href={paramBuilder(PAGES_LINKS.products.link, {category: category.slug})}
+          href={`${paramBuilder(
+            PAGES_LINKS.products.link,
+            { category: category.slug === "all" ? "" : category.slug }
+          )}`}
           className={cn("h-11 px-4",
             buttonVariants({
               size: "sm",
@@ -62,7 +65,7 @@ const CategoryDropdown = ({
             isActive && !isNavigationHovered && "bg-primary text-primary-foreground shadow-sm",
             isOpen && "bg-secondary text-secondary-foreground shadow-sm"
           )}
-          >
+        >
           {category.name}
         </Link>
         {
