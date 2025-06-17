@@ -1,4 +1,5 @@
-import { CustomCategory } from '@/app/(app)/types'
+"use client"
+
 import React from 'react'
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '../ui/sheet'
 import { ScrollArea } from '../ui/scroll-area'
@@ -10,12 +11,14 @@ import { handleSubCategoryLink } from './filterFuncs'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { ListFilterIcon } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { useTRPC } from '@/trpc/client'
+import { CategoriesGetManyOutput } from '@/modules/categories/types'
 
-interface CategoriesSidebarProps {
-  data: CustomCategory[],
-}
 
-const CategoriesSidebar = ({ data }: CategoriesSidebarProps) => {
+const CategoriesSidebar = () => {
+  const trpc = useTRPC();
+  const { data } = useQuery(trpc.categories.getMany.queryOptions());
 
   return (
     <Sheet>
@@ -37,7 +40,7 @@ const CategoriesSidebar = ({ data }: CategoriesSidebarProps) => {
         </SheetHeader>
 
         <ScrollArea className='h-full pb-2 px-2 flex flex-col overflow-y-auto'>
-          {data.map((category) => (
+          {data?.map((category) => (
             <React.Fragment key={category.id}>
               {
                 !category.subcategories || category.subcategories.length === 0 ?
@@ -66,7 +69,7 @@ const CategoriesSidebar = ({ data }: CategoriesSidebarProps) => {
                         <AccordionContent asChild className='pb-3 pt-1'>
                           {category?.subcategories.map((subCat) => (
                             <SheetTrigger key={subCat.id} asChild>
-                              <Link href={handleSubCategoryLink(subCat as CustomCategory, category)}
+                              <Link href={handleSubCategoryLink(subCat as CategoriesGetManyOutput[0], category)}
                                 className='w-full py-2 px-5 flex items-center text-base text-left  hover:bg-primary hover:text-primary-foreground capitalize'
                               >
                                 {subCat.name}

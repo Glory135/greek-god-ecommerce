@@ -1,11 +1,11 @@
 "use client"
 
-import { CustomCategory } from "@/app/(app)/types"
 import Link from "next/link"
 import { handleSubCategoryLink } from "./filterFuncs"
+import { CategoriesGetManyOutput } from "@/modules/categories/types"
 
 interface SubCategoryMenuProps {
-  category: CustomCategory
+  category: CategoriesGetManyOutput[0]
   isOpen: boolean
   position: {
     top: number,
@@ -27,7 +27,7 @@ const SubCategoryMenu = ({ category, position, isOpen }: SubCategoryMenuProps) =
       <div className="w-60 text-primary-foreground bg-primary overflow-hidden border">
         <div className="">
           {category.subcategories?.map((subcategory) => (
-            <Link key={subcategory.slug} href={handleSubCategoryLink(subcategory as CustomCategory, category)} className="w-full text-left p-4 hover:bg-greek hover:text-greek-foreground flex justify-between items-center hover:underline font-normal text-sm">
+            <Link key={subcategory.slug} href={handleSubCategoryLink(subcategory as CategoriesGetManyOutput[0], category)} className="w-full text-left p-4 hover:bg-greek hover:text-greek-foreground flex justify-between items-center hover:underline font-normal text-sm">
               {subcategory.name}
             </Link>
           ))}

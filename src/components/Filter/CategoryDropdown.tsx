@@ -1,6 +1,5 @@
 "use client"
 
-import { CustomCategory } from '@/app/(app)/types'
 import React, { useRef, useState } from 'react'
 import { buttonVariants } from '../ui/button'
 import { cn } from '@/lib/utils'
@@ -9,9 +8,10 @@ import SubCategoryMenu from './SubCategoryMenu'
 import Link from 'next/link'
 import { paramBuilder } from '@/utils/commonFunctions'
 import { PAGES_LINKS } from '@/utils/linksData'
+import { CategoriesGetManyOutput } from '@/modules/categories/types'
 
 interface Props {
-  category: CustomCategory,
+  category: CategoriesGetManyOutput[0],
   isActive?: boolean,
   isNavigationHovered?: boolean,
 }

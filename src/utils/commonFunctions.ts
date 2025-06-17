@@ -11,7 +11,6 @@ export const shortenText = (text: string, by: number) => {
 export const paramBuilder = (path: string, params: Record<string, string>): string => {
   // Ensure this only runs in the browser
   if (typeof window === "undefined") return path;
-
   const baseUrl = window.location.origin;
   const urlObj = new URL(path, baseUrl);
 

@@ -1,8 +1,8 @@
-import { CustomCategory } from "@/app/(app)/types";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { paramBuilder } from "@/utils/commonFunctions";
 import { PAGES_LINKS } from "@/utils/linksData";
 
-export const handleSubCategoryLink = (category: CustomCategory, parentCat?: CustomCategory) => {
+export const handleSubCategoryLink = (category: CategoriesGetManyOutput[0], parentCat?: CategoriesGetManyOutput[0]) => {
   if (category.slug == "all") {
     return (`${PAGES_LINKS.products.link}`)
   }

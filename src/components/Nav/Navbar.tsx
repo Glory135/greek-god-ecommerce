@@ -2,7 +2,7 @@ import React from 'react';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Link from 'next/link';
 import NavItems from './NavItems';
-import {  buttonVariants } from '../ui/button';
+import { buttonVariants } from '../ui/button';
 import Cart from '../Cart';
 import { LogoFull, LogoIcon } from '../Logo';
 import { Heart, User } from 'lucide-react';
@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import MobileNav from './MobileNav';
 import SearchComponent from '../Filter/SearchComponent';
 import SearchBtn from '../mini-client-fixes/SearchBtn';
+
 
 export default function Navbar() {
 	return (
@@ -71,10 +72,9 @@ export default function Navbar() {
 							</div>
 						</div>
 						{/* Desktop navs end */}
-
 					</div>
 				</MaxWidthWrapper>
-
+				
 				{/* Search component */}
 				<SearchComponent />
 			</header>

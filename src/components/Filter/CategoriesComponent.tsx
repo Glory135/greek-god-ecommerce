@@ -1,15 +1,17 @@
 "use client"
 
-import { CustomCategory } from '@/app/(app)/types'
 import React, { useEffect, useRef, useState } from 'react'
 import CategoryDropdown from './CategoryDropdown'
 import CategoriesSidebar from './CategoriesSidebar'
+import { useTRPC } from '@/trpc/client'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
-interface CategoriesProps {
-  data: CustomCategory[]
-}
 
-const CategoriesComponent = ({ data }: CategoriesProps) => {
+const CategoriesComponent = () => {
+
+  const trpc = useTRPC();
+  const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
+
   const containerRef = useRef<HTMLDivElement>(null)
   const measureRef = useRef<HTMLDivElement>(null)
   const viewAllRef = useRef<HTMLDivElement>(null)
@@ -38,7 +40,6 @@ const CategoriesComponent = ({ data }: CategoriesProps) => {
         totalWidth += width;
         visible++
       }
-
       setVisibleCount(visible)
     }
 
@@ -88,7 +89,7 @@ const CategoriesComponent = ({ data }: CategoriesProps) => {
           </div>
         ))}
         <div ref={viewAllRef} className="shrink-0">
-          <CategoriesSidebar data={data} />
+          <CategoriesSidebar />
         </div>
       </div>
     </div>
