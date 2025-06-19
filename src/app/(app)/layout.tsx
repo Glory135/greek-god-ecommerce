@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/client";
+import { Toaster } from "sonner";
 
 
 const montserrat = Montserrat({
@@ -32,6 +33,7 @@ export default function RootLayout({
           <main className='relative flex flex-col min-h-screen'>
             <div className='flex-grow flex-1'>{children}</div>
           </main>
+          <Toaster />
         </TRPCReactProvider>
       </body>
     </html>

@@ -1,10 +1,17 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import { caller } from "@/trpc/server";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import React from "react";
 
-export default function AuthGroupLayout({ children }: Readonly<{
+export default async function AuthGroupLayout({ children }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await caller.auth.session();
+
+  if (session.user) {
+    redirect("/")
+  }
   return (
     <MaxWidthWrapper className="md:py-10 mb-10 flex flex-col md:flex-row gap-5">
       <div className="flex-1 flex justify-center items-center">

@@ -1,8 +1,8 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { headers as getHeaders, cookies as getCookies } from "next/headers";
-import z from "zod";
-import { AUTH_COOKIE } from "../constants";
+import { headers as getHeaders } from "next/headers";
+import { loginSchema, registerSchema } from "../schemas";
+import { generateAuthCookies } from "../utils";
 
 export const authRouter = createTRPCRouter({
 
@@ -13,30 +13,44 @@ export const authRouter = createTRPCRouter({
   }),
 
   register: baseProcedure
-    .input(
-      z.object({
-        email: z.string().email(),
-        password: z
-          .string()
-          .min(8, "password must be at least 8 characters long.")
-        ,
-        username: z
-          .string()
-          .min(3, "username must be at least 3 characters.")
-          .max(63, "username must be less than 63 characters.")
-          .regex(
-            /^[a-z0-9][a-z0-9-]*[a-z0-9]$/,
-            "username can only contain lowercase letters, numbers and hyphens, It must start and end with a letter or number."
-          )
-          .refine(
-            (val) => !val.includes("--"),
-            "username cannot contain consecutive hyphens."
-          )
-          .transform((val) => val.toLowerCase())
-      })
-    )
+    .input(registerSchema)
     .mutation(
       async ({ input, ctx }) => {
+        const existingDataUsername = await ctx.payload.find({
+          collection: "users",
+          limit: 1,
+          where: {
+            username: {
+              equals: input.username
+            }
+          }
+        })
+        const existingDataEmail = await ctx.payload.find({
+          collection: "users",
+          limit: 1,
+          where: {
+            email: {
+              equals: input.email
+            }
+          }
+        })
+
+        const existingUser = existingDataUsername.docs[0];
+        const existingEmail = existingDataEmail.docs[0];
+
+        if (existingUser) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Username already taken!"
+          })
+        }
+        if (existingEmail) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "A user is already using this email!"
+          })
+        }
+
         await ctx.payload.create({
           collection: "users",
           data: {
@@ -61,24 +75,14 @@ export const authRouter = createTRPCRouter({
           })
         }
 
-        const cookies = await getCookies();
-        cookies.set({
-          name: AUTH_COOKIE,
-          value: data.token,
-          httpOnly: true,
-          path: "/",
-          // sameSite: "none",
-          // domain: ""
+        await generateAuthCookies({
+          prefix: ctx.payload.config.cookiePrefix,
+          value: data.token
         })
       }),
 
   login: baseProcedure
-    .input(
-      z.object({
-        email: z.string().email(),
-        password: z.string(),
-      })
-    )
+    .input(loginSchema)
     .mutation(
       async ({ input, ctx }) => {
         const data = await ctx.payload.login({
@@ -95,24 +99,12 @@ export const authRouter = createTRPCRouter({
           })
         }
 
-        const cookies = await getCookies();
-        cookies.set({
-          name: AUTH_COOKIE,
-          value: data.token,
-          httpOnly: true,
-          path: "/",
-          // sameSite: "none",
-          // domain: ""
+        await generateAuthCookies({
+          prefix: ctx.payload.config.cookiePrefix,
+          value: data.token
         })
 
         return data
       }
     ),
-
-  logout: baseProcedure.mutation(
-    async () => {
-      const cookies = await getCookies();
-      cookies.delete(AUTH_COOKIE);
-    }
-  )
 })

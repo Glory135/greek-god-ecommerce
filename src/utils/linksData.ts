@@ -11,6 +11,9 @@ export const PAGES_LINKS = {
   "register": {
     link: "/register"
   },
+  "account": {
+    link: "/account"
+  }
 }
 
 export const SECTIONS_LINKS = {
