@@ -107,7 +107,7 @@ export default function RegisterPage() {
               register.isPending ? "Registering" : "Register Account"
             }
           </Button>
-          <p>Already have an account? <Link prefetch className="text-greek" href={PAGES_LINKS.login.link}> Log in</Link></p>
+          <p>Already have an account? <Link className="text-greek" href={PAGES_LINKS.login.link}> Log in</Link></p>
         </form>
       </Form>
 
