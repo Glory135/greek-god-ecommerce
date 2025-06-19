@@ -13,13 +13,11 @@ import MobileNav from './MobileNav';
 import SearchComponent from '../Filter/SearchComponent';
 import SearchBtn from '../mini-client-fixes/SearchBtn';
 import { PAGES_LINKS } from '@/utils/linksData';
-import { useTRPC } from '@/trpc/client';
-import { useQuery } from '@tanstack/react-query';
+import useGetUser from '@/hooks/use-get-user';
 
 
 export default function Navbar() {
-	const trpc = useTRPC()
-	const session = useQuery(trpc.auth.session.queryOptions())
+	const user = useGetUser()
 
 	return (
 		<div className='w-full sticky z-50 top-0 inset-x-0'>
@@ -40,7 +38,7 @@ export default function Navbar() {
 						{/* Mobile Nav */}
 						<div className='flex gap-2 lg:hidden items-center'>
 							<Link
-								href={session?.data?.user ? PAGES_LINKS.account.link : PAGES_LINKS.login.link}
+								href={user ? PAGES_LINKS.account.link : PAGES_LINKS.login.link}
 								className={buttonVariants({
 									variant: 'ghost',
 									size: "sm"
@@ -58,7 +56,7 @@ export default function Navbar() {
 							<SearchBtn />
 							<span className='h-6 w-px bg-gray-200' />
 							<Link
-								href={session?.data?.user ? PAGES_LINKS.account.link : PAGES_LINKS.login.link}
+								href={user ? PAGES_LINKS.account.link : PAGES_LINKS.login.link}
 								className={buttonVariants({
 									variant: 'ghost',
 									size: "sm"
@@ -66,7 +64,7 @@ export default function Navbar() {
 								<User />
 							</Link>
 							{
-								session?.data?.user && (
+								user && (
 									<>
 										<span className='h-6 w-px bg-gray-200' />
 										<Link
