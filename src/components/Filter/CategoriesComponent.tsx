@@ -45,7 +45,7 @@ const CategoriesComponent = () => {
     }
 
     const resizeObserver = new ResizeObserver(calcVisibility);
-    containerRef?.current && resizeObserver.observe(containerRef?.current!)
+    if (containerRef?.current) resizeObserver.observe(containerRef.current!)
 
     return () => resizeObserver.disconnect();
   }, [data?.length])
