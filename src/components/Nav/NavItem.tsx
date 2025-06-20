@@ -1,14 +1,35 @@
 'use client';
 
 import React from 'react';
-import { NAV_ITEMS } from '@/config';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 
-type NavItem = (typeof NAV_ITEMS)[number];
+// Define the NavItem type to match the dynamic data structure
+interface NavItem {
+	id: number;
+	label: string;
+	value: string;
+	href?: string;
+	children?: {
+		links: {
+			[key: string]: Array<{
+				id: number;
+				label: string;
+				value: string;
+				href: string;
+			}>;
+		};
+		featured: Array<{
+			id: number;
+			label: string;
+			href: string;
+			imageSrc: string;
+		}>;
+	};
+}
 
 interface INavItemProps {
 	navItem: NavItem;
@@ -16,6 +37,7 @@ interface INavItemProps {
 	isOpen: boolean;
 	isAnyOpen: boolean;
 }
+
 export default function NavItem({
 	navItem,
 	handleOpen,
@@ -27,7 +49,6 @@ export default function NavItem({
 			<div className='flex relative items-center'>
 				{
 					!navItem.children && navItem.href ? (
-
 						<Button
 							asChild
 							size={"sm"}
@@ -125,7 +146,6 @@ export default function NavItem({
 									</div>
 								))}
 							</div>
-
 						</div>
 					</div>
 				</div>

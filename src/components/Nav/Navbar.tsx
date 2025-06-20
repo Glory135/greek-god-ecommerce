@@ -49,7 +49,7 @@ export default function Navbar() {
 						</div>
 
 						{/* desktop navs start */}
-						<div className='hidden z-50 lg:ml-8 lg:block lg:self-stretch'>
+						<div className='hidden z-50 lg:ml-8 lg:flex lg:self-stretch items-center '>
 							<NavItems />
 						</div>
 						<div className='hidden lg:flex lg:items-center lg:justify-end'>

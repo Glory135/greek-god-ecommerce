@@ -5,6 +5,9 @@ const useDashboardStore = create(
   combine(
     {
       searchOpen: false,
+      navItems: {
+
+      }
     },
     (set) => ({
       toggleSearchOpen: () => set((state) => (
@@ -16,6 +19,5 @@ const useDashboardStore = create(
     })
   )
 )
-
 
 export default useDashboardStore

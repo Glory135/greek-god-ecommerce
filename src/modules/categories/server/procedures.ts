@@ -2,7 +2,7 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { Category } from '@/payload-types';
 
 export const categoriesRouter = createTRPCRouter({
-  getMany: baseProcedure.query(async ({ctx}) => {
+  getMany: baseProcedure.query(async ({ ctx }) => {
 
     const data = await ctx.payload.find({
       collection: "categories",
@@ -26,5 +26,5 @@ export const categoriesRouter = createTRPCRouter({
     }))
 
     return formattedData
-  })
+  }),
 })

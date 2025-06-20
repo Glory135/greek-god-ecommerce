@@ -16,8 +16,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
-
 import React from 'react'
 
 export const RegisterUi = () => {

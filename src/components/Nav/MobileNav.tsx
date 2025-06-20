@@ -1,16 +1,28 @@
+"use client"
+
 import React from 'react'
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from '../ui/sheet'
 import { Menu, User } from 'lucide-react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import { ScrollArea } from '../ui/scroll-area'
-import { NAV_ITEMS } from '@/config';
 import { LogoFull } from '../Logo'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
 import { PAGES_LINKS } from '@/utils/linksData'
+import { useTRPC } from '@/trpc/client'
+import { useQuery } from '@tanstack/react-query'
+import { INavItem } from './types';
+import useGetUser from '@/hooks/use-get-user'
 
 
 const MobileNav = () => {
+  const user = useGetUser()
+
+
+  // Fetch navigation data dynamically
+  const trpc = useTRPC();
+  const { data: navItems } = useQuery(trpc.layout.getNavigationData.queryOptions());
+
   return (
     <Sheet>
       <SheetTrigger className='flex lg:hidden group -m-2 items-center p-2'>
@@ -25,7 +37,7 @@ const MobileNav = () => {
         </SheetHeader>
 
         <ScrollArea className='h-full pb-2 px-2 flex flex-col overflow-y-auto'>
-          {NAV_ITEMS.map((navItem) => (
+          {navItems?.map((navItem: INavItem) => (
             <React.Fragment key={navItem.id}>
               {
                 !navItem.children && navItem.href ?
@@ -74,21 +86,39 @@ const MobileNav = () => {
         </ScrollArea>
 
         <SheetFooter className='flex gap-2 flex-row'>
-          <SheetTrigger className='flex-1' asChild>
-            <Button variant={"ghost"} asChild>
-              <Link className='flex gap-2 items-center' href={PAGES_LINKS.login.link}>
-                <User />
-                Login
-              </Link>
-            </Button>
-          </SheetTrigger>
-          <SheetTrigger className='flex-1' asChild>
-            <Button asChild>
-              <Link href={PAGES_LINKS.register.link}>
-                Create Account
-              </Link>
-            </Button>
-          </SheetTrigger>
+          {
+            user ? (
+              <SheetTrigger className='flex-1' asChild>
+                <Button asChild>
+                  <Link className='flex gap-2 items-center' href={PAGES_LINKS.account.link}>
+                    <User />
+                    Account
+                  </Link>
+                </Button>
+              </SheetTrigger>
+
+            ) :
+              (
+                <>
+                  <SheetTrigger className='flex-1' asChild>
+                    <Button variant={"ghost"} asChild>
+                      <Link className='flex gap-2 items-center' href={PAGES_LINKS.login.link}>
+                        <User />
+                        Login
+                      </Link>
+                    </Button>
+                  </SheetTrigger>
+                  <SheetTrigger className='flex-1' asChild>
+                    <Button asChild>
+                      <Link href={PAGES_LINKS.register.link}>
+                        Create Account
+                      </Link>
+                    </Button>
+                  </SheetTrigger>
+                </>
+              )
+          }
+
         </SheetFooter>
       </SheetContent>
     </Sheet>
