@@ -5,9 +5,11 @@ import CategoryDropdown from './CategoryDropdown'
 import CategoriesSidebar from './CategoriesSidebar'
 import { useTRPC } from '@/trpc/client'
 import { useQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'next/navigation'
 
 
 const CategoriesComponent = () => {
+  const search = useSearchParams()
 
   const trpc = useTRPC();
   const { data } = useQuery(trpc.categories.getMany.queryOptions());
@@ -19,7 +21,8 @@ const CategoriesComponent = () => {
   const [visibleCount, setVisibleCount] = useState(data?.length)
   const [isAnyHovered, setIsAnyHovered] = useState(false)
 
-  const activeCategory = "all"
+  const categorySearch = search.get("category")
+  const activeCategory = categorySearch || "all"
 
   useEffect(() => {
     const calcVisibility = () => {
@@ -49,8 +52,6 @@ const CategoriesComponent = () => {
 
   return (
     <div className='relative w-full'>
-
-
       {/* hidden to measure the width of container */}
       <div ref={measureRef}
         className="absolute opacity-0 pointer-events-none flex "
