@@ -14,14 +14,49 @@ import { useQuery } from '@tanstack/react-query'
 import { INavItem } from './types';
 import useGetUser from '@/hooks/use-get-user'
 
+// Skeleton component for navigation items
+const MobileNavSkeleton = () => (
+  <div className="space-y-0">
+    {/* Simple nav items skeleton (Trending, Lookbook, About) */}
+    {Array.from({ length: 3 }).map((_, index) => (
+      <div key={index} className="px-5 py-5 border-b border-primary/80">
+        <div className="h-6 bg-gray-200 animate-pulse rounded w-2/3" />
+      </div>
+    ))}
+
+    {/* Accordion nav items skeleton (Categories, Collections) */}
+    {Array.from({ length: 2 }).map((_, index) => (
+      <div key={`accordion-${index}`} className="px-5 py-2 border-b border-primary/80">
+        {/* Main accordion trigger skeleton */}
+        <div className="flex items-center justify-between py-3">
+          <div className="h-6 bg-gray-200 animate-pulse rounded w-1/2" />
+          <div className="h-4 w-4 bg-gray-200 animate-pulse rounded" />
+        </div>
+
+        {/* Accordion content skeleton */}
+        <div className="space-y-1 pl-4 pb-2">
+          {/* Section headers */}
+          {Array.from({ length: 2 }).map((_, sectionIndex) => (
+            <div key={`section-${sectionIndex}`} className="space-y-2">
+              <div className="h-4 bg-gray-300 animate-pulse rounded w-1/3 mt-3" />
+              {/* Section items */}
+              {Array.from({ length: 3 }).map((_, itemIndex) => (
+                <div key={`item-${itemIndex}`} className="h-4 bg-gray-200 animate-pulse rounded w-2/3 ml-2" />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+)
 
 const MobileNav = () => {
   const user = useGetUser()
 
-
   // Fetch navigation data dynamically
   const trpc = useTRPC();
-  const { data: navItems } = useQuery(trpc.layout.getNavigationData.queryOptions());
+  const { data: navItems, isLoading } = useQuery(trpc.layout.getNavigationData.queryOptions());
 
   return (
     <Sheet>
@@ -37,52 +72,56 @@ const MobileNav = () => {
         </SheetHeader>
 
         <ScrollArea className='h-full pb-2 px-2 flex flex-col overflow-y-auto'>
-          {navItems?.map((navItem: INavItem) => (
-            <React.Fragment key={navItem.id}>
-              {
-                !navItem.children && navItem.href ?
-                  (
-                    <SheetTrigger asChild>
-                      <Link href={navItem.href}
-                        className='w-full p-5 flex items-center text-base text-left font-medium hover:bg-primary hover:text-primary-foreground border-b border-primary/80 capitalize'
-                      >
-                        {navItem.label}
-                      </Link>
-                    </SheetTrigger>
-                  ) :
-                  (
-                    <Accordion type="multiple"
-                      className='w-full px-5 py-2 border-b border-primary/80'
-                    >
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger className='text-base text-left !font-medium capitalize'>
+          {isLoading ? (
+            <MobileNavSkeleton />
+          ) : (
+            navItems?.map((navItem: INavItem) => (
+              <React.Fragment key={navItem.id}>
+                {
+                  !navItem.children && navItem.href ?
+                    (
+                      <SheetTrigger asChild>
+                        <Link href={navItem.href}
+                          className='w-full p-5 flex items-center text-base text-left font-medium hover:bg-primary hover:text-primary-foreground border-b border-primary/80 capitalize'
+                        >
                           {navItem.label}
-                        </AccordionTrigger>
+                        </Link>
+                      </SheetTrigger>
+                    ) :
+                    (
+                      <Accordion type="multiple"
+                        className='w-full px-5 py-2 border-b border-primary/80'
+                      >
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger className='text-base text-left !font-medium capitalize'>
+                            {navItem.label}
+                          </AccordionTrigger>
 
-                        <AccordionContent asChild>
-                          {/* @ts-expect-error it will just happen */}
-                          {Object.entries(navItem?.children?.links).map(([key, value]) => (
-                            <React.Fragment key={key}>
-                              {
-                                value.map((itm) => (
-                                  <SheetTrigger key={itm.id} asChild>
-                                    <Link href={itm.href}
-                                      className='w-full py-2 px-5 flex items-center text-base text-left  hover:bg-primary hover:text-primary-foreground capitalize'
-                                    >
-                                      {itm.label}
-                                    </Link>
-                                  </SheetTrigger>
-                                ))
-                              }
-                            </React.Fragment>
-                          ))}
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  )
-              }
-            </React.Fragment>
-          ))}
+                          <AccordionContent asChild>
+                            {/* @ts-expect-error it will just happen */}
+                            {Object.entries(navItem?.children?.links).map(([key, value]) => (
+                              <React.Fragment key={key}>
+                                {
+                                  value.map((itm) => (
+                                    <SheetTrigger key={itm.id} asChild>
+                                      <Link href={itm.href}
+                                        className='w-full py-2 px-5 flex items-center text-base text-left  hover:bg-primary hover:text-primary-foreground capitalize'
+                                      >
+                                        {itm.label}
+                                      </Link>
+                                    </SheetTrigger>
+                                  ))
+                                }
+                              </React.Fragment>
+                            ))}
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    )
+                }
+              </React.Fragment>
+            ))
+          )}
         </ScrollArea>
 
         <SheetFooter className='flex gap-2 flex-row'>
@@ -96,7 +135,6 @@ const MobileNav = () => {
                   </Link>
                 </Button>
               </SheetTrigger>
-
             ) :
               (
                 <>
@@ -118,7 +156,6 @@ const MobileNav = () => {
                 </>
               )
           }
-
         </SheetFooter>
       </SheetContent>
     </Sheet>
