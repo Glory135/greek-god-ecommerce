@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import CategoriesComponent from './CategoriesComponent'
 import SearchWrapperClient from './SearchWrapperClient'
@@ -22,7 +22,9 @@ const SearchComponent = () => {
         </MaxWidthWrapper>
 
         <MaxWidthWrapper className='hidden md:block overflow-hidden'>
-          <CategoriesComponent />
+          <Suspense fallback={<CategoriesSkeleton />}>
+            <CategoriesComponent />
+          </Suspense>
         </MaxWidthWrapper>
       </>
     </SearchWrapperClient>
@@ -30,3 +32,20 @@ const SearchComponent = () => {
 }
 
 export default SearchComponent
+
+const CategoriesSkeleton = () => {
+  return (
+    <div className="flex items-center gap-3">
+      {/* Placeholder for category items */}
+      {[...Array(5)].map((_, i) => (
+        <div
+          key={i}
+          className="h-10 w-24 animate-pulse rounded-lg bg-gray-300"
+        />
+      ))}
+
+      {/* Placeholder for "View All" button */}
+      <div className="h-10 w-24 animate-pulse rounded-lg bg-gray-300" />
+    </div>
+  )
+}

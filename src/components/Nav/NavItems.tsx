@@ -20,7 +20,6 @@ export default function NavItems() {
 
 	useEffect(()=>{
 		setActiveIndex(null);
-		setSearchOpen(false)
 	}, [pathname])
 
 	useEffect(() => {

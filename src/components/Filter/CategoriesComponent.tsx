@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Suspense, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CategoryDropdown from './CategoryDropdown'
 import CategoriesSidebar from './CategoriesSidebar'
 import { useTRPC } from '@/trpc/client'
@@ -45,7 +45,7 @@ const CategoriesComponent = () => {
     }
 
     const resizeObserver = new ResizeObserver(calcVisibility);
-    if (containerRef?.current) resizeObserver.observe(containerRef.current!)
+    resizeObserver.observe(containerRef.current!)
 
     return () => resizeObserver.disconnect();
   }, [data?.length])
@@ -73,45 +73,26 @@ const CategoriesComponent = () => {
       </div>
 
       {/* actual visible one */}
-      <Suspense fallback={<CategoriesSkeleton />}>
-        <div
-          ref={containerRef}
-          onMouseEnter={() => setIsAnyHovered(true)}
-          onMouseLeave={() => setIsAnyHovered(false)}
-          className="flex flex-nowrap items-center gap-3">
-          {data?.slice(0, visibleCount).map((category) => (
-            <div key={category.id} className="">
-              <CategoryDropdown
-                category={category}
-                isActive={activeCategory === category.slug}
-                isNavigationHovered={isAnyHovered}
-              />
-            </div>
-          ))}
-          <div ref={viewAllRef} className="shrink-0">
-            <CategoriesSidebar />
+      <div
+        ref={containerRef}
+        onMouseEnter={() => setIsAnyHovered(true)}
+        onMouseLeave={() => setIsAnyHovered(false)}
+        className="flex flex-nowrap items-center gap-3">
+        {data?.slice(0, visibleCount).map((category) => (
+          <div key={category.id} className="">
+            <CategoryDropdown
+              category={category}
+              isActive={activeCategory === category.slug}
+              isNavigationHovered={isAnyHovered}
+            />
           </div>
+        ))}
+        <div ref={viewAllRef} className="shrink-0">
+          <CategoriesSidebar />
         </div>
-      </Suspense>
+      </div>
     </div>
   )
 }
 
 export default CategoriesComponent
-
-const CategoriesSkeleton = () => {
-  return (
-    <div className="flex items-center gap-3">
-      {/* Placeholder for category items */}
-      {[...Array(5)].map((_, i) => (
-        <div
-          key={i}
-          className="h-10 w-24 animate-pulse rounded-lg bg-gray-300"
-        />
-      ))}
-
-      {/* Placeholder for "View All" button */}
-      <div className="h-10 w-24 animate-pulse rounded-lg bg-gray-300" />
-    </div>
-  )
-}
