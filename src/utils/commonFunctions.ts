@@ -1,4 +1,4 @@
-import Decimal from "decimal.js";
+// import Decimal from "decimal.js";
 
 
 export const shortenText = (text: string, by: number) => {
