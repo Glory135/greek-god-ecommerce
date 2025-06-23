@@ -17,7 +17,7 @@ import { formatPrice } from '@/lib/utils';
 
 export default function Cart() {
 	const itemCount = 0;
-	const fee = 10;
+	const fee = "10";
     
 	return (
 		<Sheet>
