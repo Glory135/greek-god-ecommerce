@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "sonner";
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
+
 
 
 const montserrat = Montserrat({
@@ -29,12 +31,14 @@ export default function RootLayout({
           montserrat.variable
         )}
       >
-        <TRPCReactProvider >
-          <main className='relative flex flex-col min-h-screen'>
-            <div className='flex-grow flex-1'>{children}</div>
-          </main>
-          <Toaster />
-        </TRPCReactProvider>
+        <NuqsAdapter>
+          <TRPCReactProvider >
+            <main className='relative flex flex-col min-h-screen'>
+              <div className='flex-grow flex-1'>{children}</div>
+            </main>
+            <Toaster />
+          </TRPCReactProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

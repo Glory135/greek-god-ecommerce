@@ -101,13 +101,13 @@ export const parseMoney = (
 };
 
 
-export const formatPrice = ({ num, currency = "NGN", withSymbol = true, locale = "en-US", currencyDisplay = 'narrowSymbol' }: { num: string | number | Decimal | null | undefined, currency?: string, withSymbol?: boolean, locale?: string, currencyDisplay?: 'narrowSymbol' | 'symbol' | 'code' | 'name' }): string | null => {
+export const formatPrice = ({ num, currency = "NGN", withSymbol = true, locale = "en-US", currencyDisplay = 'narrowSymbol' }: { num: string | number | Decimal | null | undefined, currency?: string, withSymbol?: boolean, locale?: string, currencyDisplay?: 'narrowSymbol' | 'symbol' | 'code' | 'name' }): string => {
   let numDecimal: Decimal;
 
   if (num instanceof Decimal) {
     numDecimal = num;
   } else if (num === null || num === undefined || num === '') {
-    return null;
+    return "";
   } else {
     // parsing non-Decimal inputs using parseMoney for consistency
     numDecimal = parseMoney({ money: num });
@@ -115,7 +115,7 @@ export const formatPrice = ({ num, currency = "NGN", withSymbol = true, locale =
 
   if (numDecimal.isNaN()) {
     console.error("Invalid number resulting in NaN for formatCurrency:", num);
-    return null;
+    return "";
   }
 
   try {
