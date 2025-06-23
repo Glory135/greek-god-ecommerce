@@ -13,7 +13,7 @@ import { Separator } from './ui/separator';
 import Link from 'next/link';
 import { buttonVariants } from './ui/button';
 import Image from 'next/image';
-import { formatPrice } from '@/utils/commonFunctions';
+import { formatPrice } from '@/lib/utils';
 
 export default function Cart() {
 	const itemCount = 0;
@@ -51,11 +51,11 @@ export default function Cart() {
 									<span className='flex-1'>
 										Transaction Fee
 									</span>
-									<span>{formatPrice({num: fee})}</span>
+									<span>{formatPrice(fee)}</span>
 								</div>
 								<div className='flex'>
 									<span className='flex-1'>Total</span>
-									<span>{formatPrice({num: fee})}</span>
+									<span>{formatPrice(fee)}</span>
 								</div>
 							</div>
 							<SheetFooter>
