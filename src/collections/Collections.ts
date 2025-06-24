@@ -1,9 +1,9 @@
-import { AlignFeature, BlockquoteFeature, BoldFeature, FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical';
+// import { AlignFeature, BlockquoteFeature, BoldFeature, FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical';
 import type { CollectionConfig } from 'payload';
 
 export const Collections: CollectionConfig = {
   slug: "collections",
-  admin:{
+  admin: {
     useAsTitle: "title"
   },
   fields: [
@@ -21,17 +21,14 @@ export const Collections: CollectionConfig = {
     },
     {
       name: "description",
-      type: "richText",
+      type: "text",
       required: false,
-      editor: lexicalEditor({
-        features: () => [
-          AlignFeature(),
-          BlockquoteFeature(),
-          BoldFeature(),
-          FixedToolbarFeature(),
-          /* ... other features ... */
-        ],
-      }),
     },
+    {
+      name: "products",
+      type: "relationship",
+      relationTo: "products",
+      hasMany: true
+    }
   ]
 }

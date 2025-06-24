@@ -34,6 +34,7 @@ interface NavItem {
 interface INavItemProps {
 	navItem: NavItem;
 	handleOpen: () => void;
+	handleClose: () => void;
 	isOpen: boolean;
 	isAnyOpen: boolean;
 }
@@ -41,6 +42,7 @@ interface INavItemProps {
 export default function NavItem({
 	navItem,
 	handleOpen,
+	handleClose,
 	isOpen,
 	isAnyOpen,
 }: INavItemProps) {
@@ -110,7 +112,12 @@ export default function NavItem({
 										<div className="flex flex-col gap-2">
 											{
 												value.map((itm) => (
-													<Link key={itm.id} href={itm.href} className='hover:underline'>
+													<Link
+														key={itm.id}
+														href={itm.href}
+														onClick={handleClose}
+														className='hover:underline'
+													>
 														{itm.label}
 													</Link>
 												))
@@ -135,6 +142,7 @@ export default function NavItem({
 										</div>
 										<Link
 											href={item.href}
+											onClick={handleClose}
 											className='mt-6 block font-medium text-primary hover:underline'>
 											{item.label}
 										</Link>

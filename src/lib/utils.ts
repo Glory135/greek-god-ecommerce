@@ -9,7 +9,6 @@ export function formatPrice(
   price: string,
   options: {
     currency?: "USD" | "EUR" | "GBP" | "BDT"| "NGN",
-    notation?: Intl.NumberFormatOptions["notation"]
   } = {}
 ) {
   const numericValue = price.replace(/[^0-9.]/g, "")
@@ -22,13 +21,12 @@ export function formatPrice(
 
   if(isNaN(numberVaalue)) return "";
 
-  const { currency = "NGN", notation = "compact" } = options;
+  const { currency = "NGN", } = options;
   const formattedPrice = new Intl.NumberFormat(
     "en-US", {
     style: "currency",
     currency,
     currencyDisplay :'symbol',
-    notation,
     minimumFractionDigits: 0,
     maximumFractionDigits: 2
   }).format(numberVaalue);

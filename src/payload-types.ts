@@ -72,6 +72,7 @@ export interface Config {
     categories: Category;
     collections: Collection;
     products: Product;
+    colors: Color;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -87,6 +88,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    colors: ColorsSelect<false> | ColorsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -185,21 +187,8 @@ export interface Collection {
   id: string;
   title: string;
   slug: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  description?: string | null;
+  products?: (string | Product)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -215,9 +204,21 @@ export interface Product {
    * Price In Naira
    */
   price: number;
-  category: string | Category;
+  category: (string | Category)[];
+  'available colors'?: (string | Color)[] | null;
   image?: (string | null) | Media;
   collection?: (string | Collection)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "colors".
+ */
+export interface Color {
+  id: string;
+  label: string;
+  color: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -247,6 +248,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'products';
         value: string | Product;
+      } | null)
+    | ({
+        relationTo: 'colors';
+        value: string | Color;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -344,6 +349,7 @@ export interface CollectionsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  products?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -356,8 +362,19 @@ export interface ProductsSelect<T extends boolean = true> {
   description?: T;
   price?: T;
   category?: T;
+  'available colors'?: T;
   image?: T;
   collection?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "colors_select".
+ */
+export interface ColorsSelect<T extends boolean = true> {
+  label?: T;
+  color?: T;
   updatedAt?: T;
   createdAt?: T;
 }

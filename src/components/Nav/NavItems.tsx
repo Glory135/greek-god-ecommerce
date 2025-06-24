@@ -7,20 +7,21 @@ import useDashboardStore from '@/zustand/DashboardStore';
 import { useTRPC } from '@/trpc/client';
 import { useQuery } from '@tanstack/react-query';
 import { INavItem } from './types';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export default function NavItems() {
 	const [activeIndex, setActiveIndex] = useState<null | number>(null);
 	const { setSearchOpen } = useDashboardStore((state => state))
 	const pathname = usePathname()
+	const searchParams = useSearchParams()
 
 	// Fetch navigation data dynamically
 	const trpc = useTRPC();
 	const { data: navItems, isLoading } = useQuery(trpc.layout.getNavigationData.queryOptions());
 
-	useEffect(()=>{
+	useEffect(() => {
 		setActiveIndex(null);
-	}, [pathname])
+	}, [pathname, searchParams])
 
 	useEffect(() => {
 		const handler = (e: KeyboardEvent) => {
@@ -66,6 +67,9 @@ export default function NavItems() {
 						setSearchOpen(false)
 					}
 				};
+				const handleClose = () => {
+					setActiveIndex(null);
+				}
 				const isOpen = index === activeIndex;
 
 				return (
@@ -73,6 +77,7 @@ export default function NavItems() {
 						navItem={navItem}
 						isOpen={isOpen}
 						handleOpen={handleOpen}
+						handleClose={handleClose}
 						key={navItem.value}
 						isAnyOpen={isAnyOpen}
 					/>
