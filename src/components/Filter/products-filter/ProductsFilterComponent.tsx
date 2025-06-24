@@ -8,7 +8,6 @@ import PriceFilter from './PriceFilter'
 import { useProductFilters } from '@/hooks/use-products-filters'
 import ColorsFilter from './ColorsFilter'
 import ProductSort from './ProductSort'
-import { useRouter } from 'next/navigation'
 
 interface ProductFilterProps {
   title: string
