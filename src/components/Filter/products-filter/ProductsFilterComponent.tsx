@@ -66,7 +66,7 @@ const ProductsFilterComponent = () => {
       category: "",
       subcategory: "",
       colors: [],
-      sort: "default"
+      sort: "featured"
     })
   }
 
