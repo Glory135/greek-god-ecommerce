@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Link from 'next/link';
 import NavItems from './NavItems';
@@ -50,7 +50,14 @@ export default function Navbar() {
 
 						{/* desktop navs start */}
 						<div className='hidden z-50 lg:ml-8 lg:flex lg:self-stretch items-center '>
-							<NavItems />
+							<Suspense fallback={<div className='flex gap-4'>
+								{/* Loading skeleton */}
+								{Array.from({ length: 5 }).map((_, index) => (
+									<div key={index} className="h-8 w-20 bg-gray-200 animate-pulse rounded" />
+								))}
+							</div>}>
+								<NavItems />
+							</Suspense>
 						</div>
 						<div className='hidden lg:flex lg:items-center lg:justify-end'>
 							<SearchBtn />
