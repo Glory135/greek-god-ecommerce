@@ -27,7 +27,7 @@ export default async function ProductsPage({ searchParams }: Props) {
           <div className="hidden md:block w-[350px]">
             <ProductsFilterComponent />
           </div>
-          <div className="flex-1 h-[500vh]">
+          <div className="flex-1 h-auto">
             <HydrationBoundary state={dehydrate(queryClient)}>
               <Suspense fallback={<ProductListSkeleton />}>
                 <ProductList />

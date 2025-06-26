@@ -15,12 +15,12 @@ const ProductSort = () => {
       <CheckBoxFilter
         isChecked={filters.sort === "oldest"}
         checkChange={() => { setFilters({ sort: "oldest" }) }}
-        label='Oldest'
+        label='Old To New'
       />
       <CheckBoxFilter
         isChecked={filters.sort === "newest"}
         checkChange={() => { setFilters({ sort: "newest" }) }}
-        label='Newest'
+        label='New To Old'
       />
       <CheckBoxFilter
         isChecked={filters.sort === "bestseller"}

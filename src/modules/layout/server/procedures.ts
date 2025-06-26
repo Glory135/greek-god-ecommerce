@@ -47,7 +47,7 @@ export const layoutRouter = createTRPCRouter({
             id: (index + 1) * 100,
             label: (col as Collection).title,
             value: (col as Collection).slug,
-            href: `/${col.slug}`
+            href: `/collections/${col.slug}`
           }))
         },
         featured: [
@@ -84,13 +84,13 @@ export const layoutRouter = createTRPCRouter({
             id: (index + 1) * 1000,
             label: (col as Collection).title,
             value: (col as Collection).slug,
-            href: `/${col.slug}`
+            href: `/collections/${col.slug}`
           })),
           "more": (moreCollections ?? []).map((col, index) => ({
             id: (index + 1) * 10000,
             label: (col as Collection).title,
             value: (col as Collection).slug,
-            href: `/${col.slug}`
+            href: `/collections/${col.slug}`
           })),
         },
         featured: [

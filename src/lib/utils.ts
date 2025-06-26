@@ -26,7 +26,7 @@ export function formatPrice(
     "en-US", {
     style: "currency",
     currency,
-    currencyDisplay :'symbol',
+    currencyDisplay :'narrowSymbol',
     minimumFractionDigits: 0,
     maximumFractionDigits: 2
   }).format(numberVaalue);
