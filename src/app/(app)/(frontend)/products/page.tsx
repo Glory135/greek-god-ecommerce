@@ -8,6 +8,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { loadProductsFilters } from "@/hooks/search-params";
 import MobileProductFilter from "@/components/Filter/products-filter/MobileProductFilter";
+import { DEFAULT_LIMIT } from "@/constants";
 
 interface Props {
   searchParams: Promise<SearchParams>;
@@ -15,9 +16,10 @@ interface Props {
 export default async function ProductsPage({ searchParams }: Props) {
   const filters = await loadProductsFilters(searchParams)
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(trpc.products.getMany.queryOptions({
+  void queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({
     ...filters,
     category: !!filters?.subcategory ? filters?.subcategory : filters?.category,
+    limit: DEFAULT_LIMIT
   }))
 
   return (
@@ -25,11 +27,11 @@ export default async function ProductsPage({ searchParams }: Props) {
       <ProductsHero />
       <MaxWidthWrapper className="flex gap-5 my-10 flex-col md:flex-row">
         <>
-        {/* mobile */}
-        <div className="block md:hidden">
-           <MobileProductFilter />
-        </div>
-        {/* desktop */}
+          {/* mobile */}
+          <div className="block md:hidden">
+            <MobileProductFilter />
+          </div>
+          {/* desktop */}
           <div className="hidden md:block w-[350px]">
             <ProductsFilterComponent />
           </div>
