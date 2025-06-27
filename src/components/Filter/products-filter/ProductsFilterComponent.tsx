@@ -41,7 +41,7 @@ const ProductFilters = ({ title, className, children }: ProductFilterProps) => {
   )
 }
 
-const ProductsFilterComponent = () => {
+const ProductsFilterComponent = ({ showHeader = true }: { showHeader?: boolean }) => {
   const [filters, setFilters] = useProductFilters();
 
   const onChange = (key: keyof typeof filters, value: unknown) => {
@@ -72,16 +72,19 @@ const ProductsFilterComponent = () => {
 
   return (
     <div className='w-full sticky top-24'>
-      <div className="flex justify-between mb-5">
-        <p className="text-2xl font-medium text-primary">Filters</p>
-        {
-          hasFilters && (
-            <Button onClick={onClear} variant={"link"} className='' type='button' size={"sm"}>
-              Clear
-            </Button>
-          )
-        }
-      </div>
+      {
+        showHeader && (<div className="flex justify-between mb-5">
+          <p className="text-2xl font-medium text-primary">Filters</p>
+          {
+            hasFilters && (
+              <Button onClick={onClear} variant={"link"} className='' type='button' size={"sm"}>
+                Clear
+              </Button>
+            )
+          }
+        </div>)
+      }
+
 
       <div className="w-full flex flex-col gap-5">
         <ProductFilters title='Sort By'>
@@ -96,7 +99,7 @@ const ProductsFilterComponent = () => {
             onMaxPriceChange={(value) => onChange("maxPrice", value)}
           />
         </ProductFilters>
-        
+
         <ProductFilters title='Colors'>
           <ColorsFilter value={filters.colors} onChange={(value) => onChange("colors", value)} />
         </ProductFilters>

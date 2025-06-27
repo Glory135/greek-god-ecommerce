@@ -7,6 +7,7 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { loadProductsFilters } from "@/hooks/search-params";
+import MobileProductFilter from "@/components/Filter/products-filter/MobileProductFilter";
 
 interface Props {
   searchParams: Promise<SearchParams>;
@@ -22,8 +23,13 @@ export default async function ProductsPage({ searchParams }: Props) {
   return (
     <div className="w-full">
       <ProductsHero />
-      <MaxWidthWrapper className="flex gap-5 my-10">
+      <MaxWidthWrapper className="flex gap-5 my-10 flex-col md:flex-row">
         <>
+        {/* mobile */}
+        <div className="block md:hidden">
+           <MobileProductFilter />
+        </div>
+        {/* desktop */}
           <div className="hidden md:block w-[350px]">
             <ProductsFilterComponent />
           </div>
