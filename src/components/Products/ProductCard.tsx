@@ -57,7 +57,7 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors }: Props) =
             <div className="flex gap-2">
               {
                 colors?.map((color) => (
-                  <div className="w-5 h-5 rounded-full" style={{
+                  <div key={color.id} className="w-5 h-5 rounded-full" style={{
                     backgroundColor: color?.color
                   }} />
                 ))
