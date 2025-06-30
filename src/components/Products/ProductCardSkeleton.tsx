@@ -2,14 +2,14 @@ import React from 'react';
 
 const ProductCardSkeleton = () => {
   return (
-    <div className='rounded-md bg-white overflow-hidden h-full flex flex-col shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200'>
+    <div className='rounded-md bg-background overflow-hidden h-full flex flex-col shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200'>
       {/* Image skeleton with shimmer effect */}
       <div className="relative aspect-[2.5/3] bg-gradient-to-br from-gray-200 via-gray-100 to-gray-200">
         {/* Heart icon skeleton */}
         <div className="absolute top-5 right-5 w-5 h-5 bg-gray-300 rounded-full animate-pulse" />
         
         {/* Shimmer overlay for image */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-background/30 to-transparent animate-shimmer" />
       </div>
       
       {/* Content skeleton */}

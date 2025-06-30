@@ -1,4 +1,5 @@
 import BreadCrumbNav from "@/components/BreadCrumbNav";
+import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Nav/Navbar";
 
 export default function FrontendLayout({
@@ -12,6 +13,7 @@ export default function FrontendLayout({
         <Navbar />
         <BreadCrumbNav />
         {children}
+        <Footer />
       </div>
     </div>
   )

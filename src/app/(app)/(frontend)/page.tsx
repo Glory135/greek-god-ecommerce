@@ -1,19 +1,34 @@
-"use client"
-
 import LandingHero from "@/components/Hero/LandingHero";
-import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import BestSellersSection from "@/components/Sections/BestSellerSection/BestSellersSection";
+import BestSellersSectionSkeleton from "@/components/Sections/BestSellerSection/BestSellersSectionSkeleton";
+import CollectionsSection from "@/components/Sections/CollectionsSection/CollectionsSection";
+import CTASection from "@/components/Sections/CTASection";
+import TrendingSection from "@/components/Sections/TrendingSection/TrendingSection";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 export default function LandingPage() {
-  const trpc = useTRPC();
-  const { data } = useQuery(trpc.auth.session.queryOptions())
-
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(trpc.products.getMany.queryOptions(
+    {
+      sort: "bestseller",
+      limit: 10,
+      cursor: 1
+    }
+  ))
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-10 md:gap-16">
       <LandingHero />
-      <div className="h-[200vh]">
-        {JSON.stringify(data?.user, null, 2)}
-      </div>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<BestSellersSectionSkeleton />}>
+          <BestSellersSection />
+        </Suspense>
+      </HydrationBoundary>
+      <CollectionsSection />
+      <CTASection />
+      <TrendingSection />
+      <div className=""></div>
     </div>
   )
 }
