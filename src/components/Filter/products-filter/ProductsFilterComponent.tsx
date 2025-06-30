@@ -42,7 +42,7 @@ const ProductFilters = ({ title, className, children }: ProductFilterProps) => {
   )
 }
 
-const ProductsFilterComponent = ({ showHeader = true }: { showHeader?: boolean }) => {
+const ProductsFilterComponent = ({ showHeader = true, showActions = false, actionEffect }: { showHeader?: boolean, showActions?: boolean, actionEffect?: () => void }) => {
   const [filters, setFilters] = useProductFilters();
 
   const onChange = (key: keyof typeof filters, value: unknown) => {
@@ -85,6 +85,29 @@ const ProductsFilterComponent = ({ showHeader = true }: { showHeader?: boolean }
             )
           }
         </div>)
+      }
+
+      {
+        showActions && (
+          <div className="w-full flex gap-2 my-5">
+            <Button
+              onClick={() => {
+                onClear();
+                actionEffect && actionEffect()
+              }}
+              variant={"ghost"}
+              className='flex-1'>
+              Clear Filter
+            </Button>
+            <Button onClick={() => {
+              actionEffect && actionEffect()
+            }}
+              variant={"greek"}
+              className='flex-1'>
+              Apply Filter
+            </Button>
+          </div>
+        )
       }
 
 

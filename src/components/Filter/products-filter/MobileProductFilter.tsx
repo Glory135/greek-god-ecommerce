@@ -1,13 +1,16 @@
+"use client"
+
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '@/components/ui/sheet'
 import { SlidersHorizontal } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import ProductsFilterComponent from './ProductsFilterComponent'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 
 const MobileProductFilter = () => {
+  const [open, setOpen] = useState(false)
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <div className="w-full flex justify-center">
         <SheetTrigger className='group -m-2 flex items-center p-2 justify-center gap-2 my-5' asChild>
           <Button variant={"secondary"} className='w-fit !px-20 relative z-40'>
@@ -28,7 +31,11 @@ const MobileProductFilter = () => {
           /> <h2 className='font-bold text-lg'> Filter Products</h2>
         </SheetHeader>
         <ScrollArea className='h-full pb-2 flex flex-col overflow-y-auto'>
-          <ProductsFilterComponent showHeader={false} />
+          <ProductsFilterComponent
+            showHeader={false}
+            showActions={true}
+            actionEffect={() => setOpen(false)}
+          />
         </ScrollArea>
       </SheetContent>
     </Sheet>
