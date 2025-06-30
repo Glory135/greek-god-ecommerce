@@ -93,15 +93,20 @@ const ProductsFilterComponent = ({ showHeader = true, showActions = false, actio
             <Button
               onClick={() => {
                 onClear();
-                actionEffect && actionEffect()
+                if (actionEffect) {
+                  actionEffect()
+                }
               }}
               variant={"ghost"}
               className='flex-1'>
               Clear Filter
             </Button>
-            <Button onClick={() => {
-              actionEffect && actionEffect()
-            }}
+            <Button
+              onClick={() => {
+                if (actionEffect) {
+                  actionEffect()
+                }
+              }}
               variant={"greek"}
               className='flex-1'>
               Apply Filter
