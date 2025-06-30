@@ -10,7 +10,7 @@ const MobileProductFilter = () => {
     <Sheet>
       <div className="w-full flex justify-center">
         <SheetTrigger className='group -m-2 flex items-center p-2 justify-center gap-2 my-5' asChild>
-          <Button variant={"secondary"} className='w-fit !px-20'>
+          <Button variant={"secondary"} className='w-fit !px-20 relative z-40'>
             <SlidersHorizontal
               aria-hidden='true'
               className='h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500'

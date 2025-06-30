@@ -51,6 +51,7 @@ const ProductList = () => {
                 reviewRating={10}
                 collection={product?.collection[0]}
                 colors={product['available colors']}
+                description={product?.description}
               />
             )
           })

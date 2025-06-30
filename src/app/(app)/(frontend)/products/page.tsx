@@ -28,7 +28,7 @@ export default async function ProductsPage({ searchParams }: Props) {
       <MaxWidthWrapper className="flex gap-5 my-10 flex-col md:flex-row">
         <>
           {/* mobile */}
-          <div className="block md:hidden">
+          <div className="block md:hidden sticky top-20 !z-30">
             <MobileProductFilter />
           </div>
           {/* desktop */}

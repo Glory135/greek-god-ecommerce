@@ -13,8 +13,6 @@ export default function LandingPage() {
   void queryClient.prefetchQuery(trpc.products.getMany.queryOptions(
     {
       sort: "bestseller",
-      limit: 10,
-      cursor: 1
     }
   ))
   return (
@@ -28,7 +26,6 @@ export default function LandingPage() {
       <CollectionsSection />
       <CTASection />
       <TrendingSection />
-      <div className=""></div>
     </div>
   )
 }

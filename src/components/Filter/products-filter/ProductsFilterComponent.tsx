@@ -8,6 +8,7 @@ import PriceFilter from './PriceFilter'
 import { useProductFilters } from '@/hooks/use-products-filters'
 import ColorsFilter from './ColorsFilter'
 import ProductSort from './ProductSort'
+import SizesFilter from './SizesFilter'
 
 interface ProductFilterProps {
   title: string
@@ -66,6 +67,7 @@ const ProductsFilterComponent = ({ showHeader = true }: { showHeader?: boolean }
       category: "",
       subcategory: "",
       colors: [],
+      sizes: [],
       sort: "featured"
     })
   }
@@ -102,6 +104,10 @@ const ProductsFilterComponent = ({ showHeader = true }: { showHeader?: boolean }
 
         <ProductFilters title='Colors'>
           <ColorsFilter value={filters.colors} onChange={(value) => onChange("colors", value)} />
+        </ProductFilters>
+
+        <ProductFilters title='Sizes'>
+          <SizesFilter value={filters.sizes} onChange={(value) => onChange("sizes", value)} />
         </ProductFilters>
       </div>
     </div>

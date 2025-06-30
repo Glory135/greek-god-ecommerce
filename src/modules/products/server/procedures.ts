@@ -15,6 +15,7 @@ export const productsRouter = createTRPCRouter({
         minPrice: z.string().nullable().optional(),
         maxPrice: z.string().nullable().optional(),
         colors: z.array(z.string()).nullable().optional(),
+        sizes: z.array(z.string()).nullable().optional(),
         sort: z.enum(sortValues).nullable().optional()
       })
     )
@@ -97,6 +98,13 @@ export const productsRouter = createTRPCRouter({
       if (input.colors && input.colors.length > 0) {
         where["available colors.label"] = {
           in: input.colors
+        }
+      }
+
+      // Size filter logic
+      if (input.sizes && input.sizes.length > 0) {
+        where["available sizes.size"] = {
+          in: input.sizes
         }
       }
 

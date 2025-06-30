@@ -5,6 +5,7 @@ import { collectionsRouter } from '@/modules/collections/server/procedures';
 import { colorsRouter } from '@/modules/colors/server/procedures';
 import { layoutRouter } from '@/modules/layout/server/procedures';
 import { productsRouter } from '@/modules/products/server/procedures';
+import { sizesRouter } from '@/modules/sizes/server/procedures';
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
@@ -13,6 +14,7 @@ export const appRouter = createTRPCRouter({
   layout: layoutRouter,
   products: productsRouter,
   colors: colorsRouter,
+  sizes: sizesRouter,
 });
 
 // export type definition of API

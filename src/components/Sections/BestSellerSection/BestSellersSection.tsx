@@ -13,8 +13,6 @@ const BestSellersSection = () => {
   const { data } = useQuery(trpc.products.getMany.queryOptions(
     {
       sort: "bestseller",
-      limit: 10,
-      cursor: 1
     }
   ))
   return (

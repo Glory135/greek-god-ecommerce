@@ -23,6 +23,9 @@ const params = {
     }).withDefault(""),
   colors: parseAsArrayOf(parseAsString).withOptions({
     clearOnDefault: true
+  }).withDefault([]),
+  sizes: parseAsArrayOf(parseAsString).withOptions({
+    clearOnDefault: true
   }).withDefault([])
 }
 

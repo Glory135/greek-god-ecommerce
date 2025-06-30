@@ -13,6 +13,7 @@ import { Categories } from './collections/Categories'
 import { Collections } from './collections/Collections'
 import { Products } from './collections/Products'
 import { Colors } from './collections/Colors'
+import { Sizes } from './collections/Sizes'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -30,7 +31,8 @@ export default buildConfig({
     Categories,
     Collections,
     Products,
-    Colors
+    Colors,
+    Sizes,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

@@ -1,5 +1,6 @@
 import { formatPrice } from '@/lib/utils';
 import { Collection, Color } from '@/payload-types';
+import { shortenText } from '@/utils/commonFunctions';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
@@ -12,10 +13,11 @@ interface Props {
   reviewCount?: number;
   price: number;
   collection?: Collection;
-  colors?: Color[]
+  colors?: Color[];
+  description?: string | null;
 }
 
-const ProductCard = ({ id, name, imageUrl, price, collection, colors }: Props) => {
+const ProductCard = ({ id, name, imageUrl, price, collection, colors, description }: Props) => {
   return (
     // <Link href={"/"}>
     <div className='rounded-md bg-white overflow-hidden h-full flex flex-col'>
@@ -40,13 +42,18 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors }: Props) =
         </Link>
         <div className="w-full flex justify-between gap-x-5 gap-y-2 flex-wrap">
           {
-            collection && (
-              <Link href={`/collections/${collection.slug}`} className='hover:underline'>
-                <p className="capitalize">
-                  {collection.title}
-                </p>
-              </Link>
+            description ? (
+              <p className="capitalize">
+                {shortenText(description, 25)}
+              </p>
             )
+              : collection ? (
+                <Link href={`/collections/${collection.slug}`} className='hover:underline'>
+                  <p className="capitalize">
+                    {shortenText(collection.title, 25)}
+                  </p>
+                </Link>
+              ) : null
           }
           <p className="font-bold">
             {formatPrice(price.toString())}
@@ -57,7 +64,7 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors }: Props) =
             <div className="flex gap-2">
               {
                 colors?.map((color) => (
-                  <div key={color.id} className="w-5 h-5 rounded-full" style={{
+                  <div key={color.id} className="w-5 h-5 rounded-full border" style={{
                     backgroundColor: color?.color
                   }} />
                 ))

@@ -12,13 +12,13 @@ const CollectionsSection = () => {
           <Image fill alt="collection" className='object-center object-cover' src={"/images/collection1.jpg"} />
         </div>
         <div className="border relative aspect-[2.5/3]">
-          <Image fill alt="collection" className='object-center object-cover' src={"/images/collection1.jpg"} />
+          <Image fill alt="collection" className='object-center object-cover' src={"/images/collection2.jpg"} />
         </div>
         <div className="border relative aspect-[2.5/3]">
-          <Image fill alt="collection" className='object-center object-cover' src={"/images/collection1.jpg"} />
+          <Image fill alt="collection" className='object-center object-cover' src={"/images/collection3.jpg"} />
         </div>
         <div className="border relative aspect-[2.5/3]">
-          <Image fill alt="collection" className='object-center object-cover' src={"/images/collection1.jpg"} />
+          <Image fill alt="collection" className='object-center object-cover' src={"/images/collection4.jpg"} />
         </div>
       </div>
     </MaxWidthWrapper>

@@ -73,6 +73,7 @@ export interface Config {
     collections: Collection;
     products: Product;
     colors: Color;
+    sizes: Size;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -89,6 +90,7 @@ export interface Config {
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     colors: ColorsSelect<false> | ColorsSelect<true>;
+    sizes: SizesSelect<false> | SizesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -207,6 +209,7 @@ export interface Product {
   price: number;
   category: (string | Category)[];
   'available colors'?: (string | Color)[] | null;
+  'available sizes'?: (string | Size)[] | null;
   image?: (string | null) | Media;
   collection?: (string | Collection)[] | null;
   updatedAt: string;
@@ -220,6 +223,17 @@ export interface Color {
   id: string;
   label: string;
   color: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sizes".
+ */
+export interface Size {
+  id: string;
+  label: string;
+  size: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -253,6 +267,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'colors';
         value: string | Color;
+      } | null)
+    | ({
+        relationTo: 'sizes';
+        value: string | Size;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -365,6 +383,7 @@ export interface ProductsSelect<T extends boolean = true> {
   price?: T;
   category?: T;
   'available colors'?: T;
+  'available sizes'?: T;
   image?: T;
   collection?: T;
   updatedAt?: T;
@@ -377,6 +396,16 @@ export interface ProductsSelect<T extends boolean = true> {
 export interface ColorsSelect<T extends boolean = true> {
   label?: T;
   color?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sizes_select".
+ */
+export interface SizesSelect<T extends boolean = true> {
+  label?: T;
+  size?: T;
   updatedAt?: T;
   createdAt?: T;
 }

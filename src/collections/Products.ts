@@ -34,6 +34,12 @@ export const Products: CollectionConfig = {
       hasMany: true
     },
     {
+      name: "available sizes",
+      type: "relationship",
+      relationTo: "sizes",
+      hasMany: true
+    },
+    {
       name: "image",
       type: "upload",
       relationTo: "media"
