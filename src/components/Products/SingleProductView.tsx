@@ -27,7 +27,7 @@ const SingleProductView = ({ productId }: { productId: string }) => {
           <Image
             fill
             alt={data.name}
-            src={data?.image?.url || `/images/placeholder.jpg`}
+            src={data?.image?.url || `/images/placeholder.png`}
             className='object-cover object-center'
           />
         </div>
@@ -83,7 +83,7 @@ const SingleProductView = ({ productId }: { productId: string }) => {
                     <div className="w-fit flex gap-2 flex-wrap">
                       {
                         data?.['available sizes'].map((size) => (
-                          <div className="px-2 py-1 border w-fit bg-secondary">
+                          <div key={size.id} className="px-2 py-1 border w-fit bg-secondary">
                             <p className="text-xs text-secondary-foreground font-medium">{size.label}</p>
                           </div>
                         ))

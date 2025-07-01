@@ -78,7 +78,7 @@ export default function Cart() {
 							className='relative md=-4 h-60 w-60 text-muted-foreground'
 							aria-hidden='true'>
 							<Image
-								src={'/images/emptycart.png'}
+								src={'/images/emptybag.png'}
 								fill
 								alt='Empty cart'
 							/>

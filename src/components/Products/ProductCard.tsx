@@ -27,7 +27,7 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
           alt={name}
           fill
           className='object-cover object-center'
-          src={imageUrl || "/images/placeholder.jpg"}
+          src={imageUrl || "/images/placeholder.png"}
         />
         <Image
           alt={name}
