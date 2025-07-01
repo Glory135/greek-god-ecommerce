@@ -1,5 +1,6 @@
 import { Category, Collection } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+import { generateCategoryLink, generateCollectionLink } from "@/utils/commonFunctions";
 
 export const layoutRouter = createTRPCRouter({
 
@@ -41,13 +42,13 @@ export const layoutRouter = createTRPCRouter({
             id: (index + 1) * 10,
             label: (cat as Category).name,
             value: (cat as Category).slug,
-            href: cat.slug === "all" ? "/products" : `/products?category=${cat.slug}`
+            href: cat.slug === "all" ? "/products" : generateCategoryLink(cat.slug)
           })),
           "trending": (trendingCollections ?? []).map((col, index) => ({
             id: (index + 1) * 100,
             label: (col as Collection).title,
             value: (col as Collection).slug,
-            href: `/collections/${col.slug}`
+            href: generateCollectionLink(col.slug)
           }))
         },
         featured: [
@@ -84,13 +85,13 @@ export const layoutRouter = createTRPCRouter({
             id: (index + 1) * 1000,
             label: (col as Collection).title,
             value: (col as Collection).slug,
-            href: `/collections/${col.slug}`
+            href: generateCollectionLink(col.slug)
           })),
           "more": (moreCollections ?? []).map((col, index) => ({
             id: (index + 1) * 10000,
             label: (col as Collection).title,
             value: (col as Collection).slug,
-            href: `/collections/${col.slug}`
+            href: generateCollectionLink(col.slug)
           })),
         },
         featured: [

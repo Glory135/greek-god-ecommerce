@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 import { LogoFull } from '@/components/Logo';
 import { Home, Search, Compass, Shield } from 'lucide-react';
+import { PAGES_LINKS } from '@/utils/linksData';
 
 export default function NotFound() {
   return (
@@ -79,7 +80,7 @@ export default function NotFound() {
                 </Button>
               </Link>
               
-              <Link href="/products">
+              <Link href={PAGES_LINKS.products.link}>
                 <Button variant="outline" size="lg" className="w-full sm:w-auto group border-greek/30 hover:border-greek hover:bg-greek/5">
                   <Compass className="w-4 h-4 transition-transform group-hover:rotate-12" />
                   <span>Explore Products</span>

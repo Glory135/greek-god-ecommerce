@@ -1,6 +1,7 @@
 import { formatPrice } from '@/lib/utils';
 import { Collection, Color } from '@/payload-types';
-import { shortenText } from '@/utils/commonFunctions';
+import { generateCollectionLink, shortenText } from '@/utils/commonFunctions';
+import { PAGES_LINKS } from '@/utils/linksData';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
@@ -37,7 +38,7 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
         />
       </div>
       <div className="w-full p-2 flex flex-col gap-3 flex-1">
-        <Link href={`/products/${id}`} className='hover:underline'>
+        <Link href={`${PAGES_LINKS.products.link}/${id}`} className='hover:underline'>
           <h3 className='font-bold text-primary capitalize'>{name}</h3>
         </Link>
         <div className="w-full flex justify-between gap-x-5 gap-y-2 flex-wrap">
@@ -48,7 +49,7 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
               </p>
             )
               : collection ? (
-                <Link href={`/collections/${collection.slug}`} className='hover:underline'>
+                <Link href={generateCollectionLink(collection.slug)} className='hover:underline'>
                   <p className="capitalize">
                     {shortenText(collection.title, 25)}
                   </p>

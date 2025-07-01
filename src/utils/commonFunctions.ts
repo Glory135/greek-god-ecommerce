@@ -1,5 +1,7 @@
 // import Decimal from "decimal.js";
 
+import { PAGES_LINKS } from "./linksData";
+
 
 export const shortenText = (text: string, by: number) => {
   if (text?.length > by) {
@@ -22,6 +24,13 @@ export const paramBuilder = (path: string, params: Record<string, string>): stri
 
   return urlObj.pathname + urlObj.search;
 };
+
+export const generateCategoryLink = (slug: string) => {
+  return `${PAGES_LINKS.products.link}?category=${slug}`
+}
+export const generateCollectionLink = (slug: string) => {
+  return `${PAGES_LINKS.collections.link}/${slug}`
+}
 
 
 

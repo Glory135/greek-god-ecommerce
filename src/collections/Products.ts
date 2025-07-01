@@ -49,6 +49,12 @@ export const Products: CollectionConfig = {
       type: "relationship",
       relationTo: "collections",
       hasMany: true
+    },
+    {
+      name: "in stock",
+      type: "checkbox",
+      required: true,
+      defaultValue: true
     }
   ]
 }

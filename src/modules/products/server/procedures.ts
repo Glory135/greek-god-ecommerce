@@ -1,11 +1,34 @@
 import { DEFAULT_LIMIT } from "@/constants";
 import { sortValues } from "@/hooks/search-params";
-import { Category, Collection, Color, Media } from "@/payload-types";
+import { Category, Collection, Color, Media, Size } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Sort, Where } from "payload";
 import { z } from "zod";
 
 export const productsRouter = createTRPCRouter({
+  getOne: baseProcedure
+    .input(
+      z.object({
+        id: z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const product = await ctx.payload.findByID({
+        collection: "products",
+        id: input.id,
+        depth: 2,
+      })
+
+      return {
+        ...product,
+        image: product.image as Media | null,
+        ["available colors"]: product["available colors"] as Color[],
+        ["available sizes"]: product["available sizes"] as Size[],
+        collection: product.collection as Collection[],
+        category: product.category as Category[],
+      }
+    }),
+
   getMany: baseProcedure
     .input(
       z.object({

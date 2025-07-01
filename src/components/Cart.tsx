@@ -1,6 +1,5 @@
 'use client';
 
-import { ShoppingCart } from 'lucide-react';
 import {
 	Sheet,
 	SheetContent,
@@ -14,6 +13,8 @@ import Link from 'next/link';
 import { buttonVariants } from './ui/button';
 import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
+import { PAGES_LINKS } from '@/utils/linksData';
+import { FaShoppingBag } from 'react-icons/fa';
 
 export default function Cart() {
 	const itemCount = 0;
@@ -22,7 +23,7 @@ export default function Cart() {
 	return (
 		<Sheet>
 			<SheetTrigger className='group -m-2 flex items-center p-2'>
-				<ShoppingCart
+				<FaShoppingBag
 					aria-hidden='true'
 					className='h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
 				/>
@@ -32,13 +33,13 @@ export default function Cart() {
 			</SheetTrigger>
 			<SheetContent className='flex w-full flex-col pr-0 sm:max-w-lg'>
 				<SheetHeader className='space-y-2.5 pr-6'>
-					<SheetTitle>Cart ({itemCount})</SheetTitle>
+					<SheetTitle>Bag ({itemCount})</SheetTitle>
 				</SheetHeader>
 				{itemCount > 0 ? (
 					<>
 						<div className='flex w-full flex-col pr-6'>
 							{/* Toto: cart login */}
-							cart items
+							Bag items
 						</div>
 						<div className='space-y-4 pr-6'>
 							<Separator />
@@ -83,21 +84,21 @@ export default function Cart() {
 							/>
 						</div>
 						<div className='text-sm text-gray-500'>
-							No items in your cart
+							No items in your bag
 						</div>
 						<div className='text-sm text-gray-700'>
-							Start adding songs to your cart by visiting the
-							merch page.
+							Start adding songs to your bag by visiting the
+							products page.
 						</div>
 						<SheetTrigger asChild>
 							<Link
-								href={'/merch'}
+								href={PAGES_LINKS.products.link}
 								className={buttonVariants({
 									variant: 'link',
 									size: 'sm',
 									className: 'text-sm text-muted-foreground',
 								})}>
-								Exploe Our Merch
+								Exploe Our Products
 							</Link>
 						</SheetTrigger>
 					</div>

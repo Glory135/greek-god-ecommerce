@@ -212,6 +212,7 @@ export interface Product {
   'available sizes'?: (string | Size)[] | null;
   image?: (string | null) | Media;
   collection?: (string | Collection)[] | null;
+  'in stock': boolean;
   updatedAt: string;
   createdAt: string;
 }
@@ -386,6 +387,7 @@ export interface ProductsSelect<T extends boolean = true> {
   'available sizes'?: T;
   image?: T;
   collection?: T;
+  'in stock'?: T;
   updatedAt?: T;
   createdAt?: T;
 }
