@@ -1,3 +1,5 @@
+"use client"
+
 import { formatPrice } from '@/lib/utils';
 import { Collection, Color } from '@/payload-types';
 import { generateCollectionLink, shortenText } from '@/utils/commonFunctions';
@@ -5,6 +7,18 @@ import { PAGES_LINKS } from '@/utils/linksData';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
+import dynamic from 'next/dynamic';
+
+// to solve hydration error
+const AddToCartButton = dynamic(
+  () => import('../Cart/AddToCartButton').then(
+    (mod)=> mod.default
+  ),
+  {
+    ssr: false,
+    loading: () => <p>Loading...</p>
+  }
+)
 
 interface Props {
   id: string;
@@ -34,8 +48,9 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
           width={20}
           height={20}
           src={"/icons/heart.svg"}
-          className='absolute top-5 right-5 cursor-pointer'
+          className='absolute top-5 left-5 cursor-pointer'
         />
+        <AddToCartButton productId={id} userSlug='' className='absolute top-5 right-5 cursor-pointer' small={true} />
       </div>
       <div className="w-full p-2 flex flex-col gap-3 flex-1">
         <Link href={`${PAGES_LINKS.products.link}/${id}`} className='hover:underline'>

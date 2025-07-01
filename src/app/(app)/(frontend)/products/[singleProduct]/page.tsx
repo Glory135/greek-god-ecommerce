@@ -16,7 +16,7 @@ export default async function SinglePRoductsPage({ params }: Props) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <SingleProductView productId={singleProduct} />
+      <SingleProductView productId={singleProduct} userId="" />
     </HydrationBoundary>
   )
 }

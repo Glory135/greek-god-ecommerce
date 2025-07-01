@@ -11,10 +11,20 @@ import { generateCategoryLink, generateCollectionLink } from '@/utils/commonFunc
 import StarRating from '../Rating/StarRating'
 import { Button } from '../ui/button'
 import { CheckIcon, LinkIcon, StarIcon, X } from 'lucide-react'
-import { FaShoppingBag } from 'react-icons/fa'
 import { Progress } from '../ui/progress'
+import dynamic from 'next/dynamic';
 
-const SingleProductView = ({ productId }: { productId: string }) => {
+// to solve hydration error
+const AddToCartButton = dynamic(
+  () => import('../Cart/AddToCartButton').then(
+    (mod)=> mod.default
+  ),
+  {
+    ssr: false,
+    loading: () => <p>Loading...</p>
+  }
+)
+const SingleProductView = ({ productId, userId }: { productId: string, userId: string }) => {
   const trpc = useTRPC()
   const { data } = useSuspenseQuery(trpc.products.getOne.queryOptions({
     id: productId
@@ -23,7 +33,7 @@ const SingleProductView = ({ productId }: { productId: string }) => {
   return (
     <MaxWidthWrapper>
       <div className="border rounded-md bg-background overflow-hidden">
-        <div className="relative aspect-[3.9] border-b">
+        <div className="relative aspect-[3.7/4] md:aspect-[3.7]  border-b">
           <Image
             fill
             alt={data.name}
@@ -157,13 +167,11 @@ const SingleProductView = ({ productId }: { productId: string }) => {
                 </div>
 
                 <div className="flex flex-row items-center gap-2">
-                  <Button
+                  <AddToCartButton
+                    productId={productId}
                     disabled={!data['in stock']}
-                    variant={"greek"}
-                    className='flex-1'>
-                    <FaShoppingBag />
-                    Add To Bag
-                  </Button>
+                    userSlug={userId}
+                  />
                   <Button
                     variant={"secondary"}
                     onClick={() => { }}

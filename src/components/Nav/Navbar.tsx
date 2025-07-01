@@ -5,7 +5,7 @@ import MaxWidthWrapper from '../MaxWidthWrapper';
 import Link from 'next/link';
 import NavItems from './NavItems';
 import { buttonVariants } from '../ui/button';
-import Cart from '../Cart';
+import Cart from '../Cart/Cart';
 import { LogoFull, LogoIcon } from '../Logo';
 import { Heart, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
