@@ -1,14 +1,16 @@
 "use client"
 
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { Minus, Plus } from 'lucide-react'
+import { cn, formatPrice } from '@/lib/utils'
+import { Minus, Plus, X } from 'lucide-react'
 import React, { useState } from 'react'
 import PriceFilter from './PriceFilter'
 import { useProductFilters } from '@/hooks/use-products-filters'
 import ColorsFilter from './ColorsFilter'
 import ProductSort from './ProductSort'
 import SizesFilter from './SizesFilter'
+import { TbMathEqualGreater, TbMathEqualLower } from "react-icons/tb";
+
 
 interface ProductFilterProps {
   title: string
@@ -42,7 +44,10 @@ const ProductFilters = ({ title, className, children }: ProductFilterProps) => {
   )
 }
 
-const ProductsFilterComponent = ({ showHeader = true, showActions = false, actionEffect }: { showHeader?: boolean, showActions?: boolean, actionEffect?: () => void }) => {
+const ProductsFilterComponent = (
+  { showHeader = true, showActions = false, actionEffect }:
+    { showHeader?: boolean, showActions?: boolean, actionEffect?: () => void }
+) => {
   const [filters, setFilters] = useProductFilters();
 
   const onChange = (key: keyof typeof filters, value: unknown) => {
@@ -115,6 +120,54 @@ const ProductsFilterComponent = ({ showHeader = true, showActions = false, actio
         )
       }
 
+      <div className="w-full flex flex-wrap gap-1 text-sm text-greek-foreground my-5">
+        {
+          Object.entries(filters).map(([key, value]) => {
+            const isArray = Array.isArray(value)
+            const hasValue = !isArray ? !!value : !!value.length
+
+            const handleRemove = () => {
+              setFilters({
+                ...filters,
+                [key]: isArray ? [] : ""
+              })
+            }
+
+            if (!hasValue) return null
+            if (isArray) {
+              return (
+                <FilterItem handleRemove={handleRemove} key={key}>
+                  <p className='capitalize'>
+                    <span className='font-bold'>{key}: </span>
+                    {value.join(", ")}
+                  </p>
+                </FilterItem>
+              )
+            }
+            if (key === "minPrice") {
+              return (
+                <FilterItem handleRemove={handleRemove} key={key} >
+                  <p className='flex gap-1 items-center'>
+                    <TbMathEqualGreater /> {formatPrice(value)}
+                  </p>
+                </FilterItem>
+              )
+            }
+            if (key === "maxPrice") {
+              return (
+                <FilterItem handleRemove={handleRemove} key={key} >
+                  <p className='flex gap-1 items-center'>
+                    <TbMathEqualLower /> {formatPrice(value)}
+                  </p>
+                </FilterItem>
+              )
+            }
+            return (
+              <FilterItem sort={key === "sort"} handleRemove={handleRemove} key={key} ><p className="capitalize"> {value}</p></FilterItem>
+            )
+          })
+        }
+      </div>
 
       <div className="w-full flex flex-col gap-5">
         <ProductFilters title='Sort By'>
@@ -143,3 +196,18 @@ const ProductsFilterComponent = ({ showHeader = true, showActions = false, actio
 }
 
 export default ProductsFilterComponent
+
+const FilterItem = ({ sort = false, children, handleRemove }: {
+  sort?: boolean,
+  children: React.ReactNode,
+  handleRemove?: () => void,
+}) => {
+  return (
+    <div className="p-3 bg-greek/80 flex items-center justify-center gap-2 text-sm">
+      {children}
+      {
+        !sort && (<X size={15} className='cursor-pointer' onClick={() => { handleRemove && handleRemove() }} />)
+      }
+    </div>
+  )
+}
