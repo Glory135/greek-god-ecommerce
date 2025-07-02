@@ -8,15 +8,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import dynamic from 'next/dynamic';
+import NotLoggedInCatcher from '../Auth/NotLoggedInCatcher';
+import { Button } from '../ui/button';
+import { LoaderIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 // to solve hydration error
 const AddToCartButton = dynamic(
   () => import('../Cart/AddToCartButton').then(
-    (mod)=> mod.default
+    (mod) => mod.default
   ),
   {
     ssr: false,
-    loading: () => <p>Loading...</p>
+    loading: () => <Button disabled className='absolute top-5 right-5 w-fit h-fit !p-2 !py-2' variant={"greek"}><LoaderIcon className='animate-spin w-10' /></Button>
   }
 )
 
@@ -33,63 +37,88 @@ interface Props {
 }
 
 const ProductCard = ({ id, name, imageUrl, price, collection, colors, description }: Props) => {
+  const router = useRouter()
+
+  const linkClick = (e: React.MouseEvent, to: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    router.push(to)
+  }
+
   return (
-    // <Link href={"/"}>
-    <div className='rounded-md bg-white overflow-hidden h-full flex flex-col'>
-      <div className="relative aspect-[2.5/3]">
-        <Image
-          alt={name}
-          fill
-          className='object-cover object-center'
-          src={imageUrl || "/images/placeholder.png"}
-        />
-        <Image
-          alt={name}
-          width={20}
-          height={20}
-          src={"/icons/heart.svg"}
-          className='absolute top-5 left-5 cursor-pointer'
-        />
-        <AddToCartButton productId={id} userSlug='' className='absolute top-5 right-5 cursor-pointer' small={true} />
-      </div>
-      <div className="w-full p-2 flex flex-col gap-3 flex-1">
-        <Link href={`${PAGES_LINKS.products.link}/${id}`} className='hover:underline'>
-          <h3 className='font-bold text-primary capitalize'>{name}</h3>
-        </Link>
-        <div className="w-full flex justify-between gap-x-5 gap-y-2 flex-wrap">
-          {
-            description ? (
-              <p className="capitalize">
-                {shortenText(description, 25)}
-              </p>
-            )
-              : collection ? (
-                <Link href={generateCollectionLink(collection.slug)} className='hover:underline'>
-                  <p className="capitalize">
+    <Link href={`${PAGES_LINKS.products.link}/${id}`} className='hover:opacity-90 '>
+      <div className='rounded-md bg-white overflow-hidden h-full flex flex-col'>
+        <div className="relative aspect-[2.5/3]">
+          <Image
+            alt={name}
+            fill
+            className='object-cover object-center'
+            src={imageUrl || "/images/placeholder.png"}
+          />
+          <NotLoggedInCatcher>
+            <Image
+              alt={name}
+              width={20}
+              height={20}
+              src={"/icons/heart.svg"}
+              className='absolute top-5 left-5 cursor-pointer'
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation()
+
+                // TODO add to wishlist logic here
+                console.log("Added to wishlist!!");
+              }}
+            />
+          </NotLoggedInCatcher>
+          <AddToCartButton
+            productId={id}
+            className='absolute top-5 right-5 cursor-pointer'
+            small={true}
+          />
+        </div>
+        <div className="w-full p-2 pb-5 flex flex-col gap-3 flex-1">
+          <h3 className='font-bold text-primary capitalize hover:underline'>
+            {shortenText(name, 30)}
+          </h3>
+          <div className="w-full flex justify-between gap-x-5 gap-y-2 flex-wrap">
+            {
+              description ? (
+                <p className="capitalize">
+                  {shortenText(description, 25)}
+                </p>
+              )
+                : collection ? (
+                  <p
+                    onClick={(e) =>
+                      linkClick(e, generateCollectionLink(collection.slug))
+                    }
+                    className="capitalize hover:underline"
+                    >
                     {shortenText(collection.title, 25)}
                   </p>
-                </Link>
-              ) : null
+                ) : null
+            }
+            <p className="font-bold">
+              {formatPrice(price.toString())}
+            </p>
+          </div>
+          {
+            colors && colors.length > 0 && (
+              <div className="flex gap-2">
+                {
+                  colors?.slice(0, 10).map((color) => (
+                    <div key={color.id} className="w-5 h-5 rounded-full border" style={{
+                      backgroundColor: color?.color
+                    }} />
+                  ))
+                }
+              </div>)
           }
-          <p className="font-bold">
-            {formatPrice(price.toString())}
-          </p>
         </div>
-        {
-          colors && colors.length > 0 && (
-            <div className="flex gap-2">
-              {
-                colors?.map((color) => (
-                  <div key={color.id} className="w-5 h-5 rounded-full border" style={{
-                    backgroundColor: color?.color
-                  }} />
-                ))
-              }
-            </div>)
-        }
       </div>
-    </div>
-    // </Link >
+    </Link >
   )
 }
 

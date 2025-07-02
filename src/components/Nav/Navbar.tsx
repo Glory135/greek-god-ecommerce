@@ -17,7 +17,7 @@ import useGetUser from '@/hooks/use-get-user';
 
 
 export default function Navbar() {
-	const user = useGetUser()
+	const user = useGetUser()	
 
 	return (
 		<div className='w-full sticky z-50 top-0 inset-x-0'>

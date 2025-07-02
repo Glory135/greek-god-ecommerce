@@ -207,11 +207,24 @@ export interface Product {
    * Price In Naira
    */
   price: number;
+  deliveryFee?: number | null;
+  totalPrice?: number | null;
   category: (string | Category)[];
   'available colors'?: (string | Color)[] | null;
   'available sizes'?: (string | Size)[] | null;
-  image?: (string | null) | Media;
+  images: {
+    image: string | Media;
+    id?: string | null;
+  }[];
+  /**
+   * please select one of the images you have picked in the images field for the cover image
+   */
+  cover: string | Media;
   collection?: (string | Collection)[] | null;
+  /**
+   * This is the valid time range the clothcan be returned eg: 30-days, 1-month etc.
+   */
+  'return policy'?: string | null;
   'in stock': boolean;
   updatedAt: string;
   createdAt: string;
@@ -382,11 +395,20 @@ export interface ProductsSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   price?: T;
+  deliveryFee?: T;
+  totalPrice?: T;
   category?: T;
   'available colors'?: T;
   'available sizes'?: T;
-  image?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  cover?: T;
   collection?: T;
+  'return policy'?: T;
   'in stock'?: T;
   updatedAt?: T;
   createdAt?: T;

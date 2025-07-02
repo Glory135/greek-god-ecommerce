@@ -21,7 +21,8 @@ export const productsRouter = createTRPCRouter({
 
       return {
         ...product,
-        image: product.image as Media | null,
+        images: product.images as Array<{image: Media}> | null,
+        cover: product.cover as Media | null,
         ["available colors"]: product["available colors"] as Color[],
         ["available sizes"]: product["available sizes"] as Size[],
         collection: product.collection as Collection[],
@@ -147,7 +148,8 @@ export const productsRouter = createTRPCRouter({
           ...doc,
           ["available colors"]: doc["available colors"] as Color[],
           collection: doc.collection as Collection[],
-          image: doc.image as Media | null
+          images: doc.images as Array<{image: Media}> | null,
+          cover: doc.cover as Media | null,
         }))
       }
     }),

@@ -21,6 +21,17 @@ export const Products: CollectionConfig = {
       }
     },
     {
+      name: 'deliveryFee',
+      type: 'number',
+    },
+    {
+      name: 'totalPrice',
+      type: 'number',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
       name: "category",
       type: "relationship",
       relationTo: "categories",
@@ -40,9 +51,28 @@ export const Products: CollectionConfig = {
       hasMany: true
     },
     {
-      name: "image",
-      type: "upload",
-      relationTo: "media"
+      name: "images",
+      type: 'array',
+      minRows: 1,
+      maxRows: 3,
+      required: true,
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'cover',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
+      admin:{
+        description: "please select one of the images you have picked in the images field for the cover image"
+      }
     },
     {
       name: "collection",
@@ -51,10 +81,27 @@ export const Products: CollectionConfig = {
       hasMany: true
     },
     {
+      name: "return policy",
+      type: "text",
+      admin:{
+        description: "This is the valid time range the clothcan be returned eg: 30-days, 1-month etc."
+      }
+    },
+    {
       name: "in stock",
       type: "checkbox",
       required: true,
       defaultValue: true
     }
-  ]
+  ],
+  hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        if (typeof data?.price === 'number' && typeof data?.deliveryFee === 'number') {
+          data.totalPrice = data?.price + data?.deliveryFee
+        }
+        return data
+      },
+    ],
+  },
 }

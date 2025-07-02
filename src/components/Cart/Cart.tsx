@@ -15,10 +15,14 @@ import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
 import { PAGES_LINKS } from '@/utils/linksData';
 import { FaShoppingBag } from 'react-icons/fa';
+import useGetUser from '@/hooks/use-get-user';
+import { useCart } from '@/zustand/checkout/hooks/use-cart';
 
 export default function Cart() {
-	const itemCount = 0;
-	const fee = "10";
+	const user = useGetUser()
+  const cart = useCart(user?.id || "")
+	
+	const itemCount = cart?.totalProductsInCart || 0;
     
 	return (
 		<Sheet>
@@ -52,11 +56,11 @@ export default function Cart() {
 									<span className='flex-1'>
 										Transaction Fee
 									</span>
-									<span>{formatPrice(fee)}</span>
+									<span>{formatPrice("100")}</span>
 								</div>
 								<div className='flex'>
 									<span className='flex-1'>Total</span>
-									<span>{formatPrice(fee)}</span>
+									<span>{formatPrice("100")}</span>
 								</div>
 							</div>
 							<SheetFooter>
@@ -87,7 +91,7 @@ export default function Cart() {
 							No items in your bag
 						</div>
 						<div className='text-sm text-gray-700'>
-							Start adding songs to your bag by visiting the
+							Start adding products to your bag by visiting the
 							products page.
 						</div>
 						<SheetTrigger asChild>
