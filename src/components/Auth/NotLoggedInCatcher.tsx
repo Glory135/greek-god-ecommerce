@@ -11,7 +11,7 @@ const NotLoggedInCatcher = ({ children }: Props) => {
   const user = useGetUser()
   const isLoggedIn = !!user
 
-  const handleClick = (originalOnClick?: (e: any) => void) => (e: React.MouseEvent) => {
+  const handleClick = (originalOnClick?: (e: React.MouseEvent) => void) => (e: React.MouseEvent) => {
     if (!isLoggedIn) {
       e.preventDefault()
       e.stopPropagation()

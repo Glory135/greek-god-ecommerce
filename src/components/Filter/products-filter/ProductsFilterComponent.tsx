@@ -206,7 +206,15 @@ const FilterItem = ({ sort = false, children, handleRemove }: {
     <div className="p-3 bg-greek/80 flex items-center justify-center gap-2 text-sm">
       {children}
       {
-        !sort && (<X size={15} className='cursor-pointer' onClick={() => { handleRemove && handleRemove() }} />)
+        !sort && (
+          <X
+            size={15}
+            className='cursor-pointer'
+            onClick={() => {
+              if (handleRemove) {
+                handleRemove()
+              }
+            }} />)
       }
     </div>
   )
