@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 const Footer = () => {
   return (
-    <footer className='w-full  py-5 md:py-10 bg-greek text-greek-foreground mt-10'>
+    <footer className='w-full  pb-5 pt-10 md:py-10 bg-greek text-greek-foreground mt-10'>
       <MaxWidthWrapper className="relative flex flex-col-reverse md:flex-row justify-between gap-10 md:gap-20">
         <>
           <div className="flex-1 max-w-[500px] flex flex-col gap-10 lg:gap-32">

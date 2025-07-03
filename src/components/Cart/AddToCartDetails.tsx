@@ -25,10 +25,19 @@ const AddToCartButton = dynamic(
 
 const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
   const [selectedColor, setSelectedColor] = useState(0);
-  const [selectedSze, setSelectedSze] = useState(0);
+  const [selectedSize, setSelectedSize] = useState(0);
+  const [quantity, setQuantity] = useState(1)
 
   const user = useGetUser()
   const cart = useCart(user?.id || "")
+
+  const increaseQuantity = () => {
+    setQuantity(q => q + 1)
+  }
+  const decreaseQuantity = () => {
+    if (quantity <= 1) return;
+    setQuantity(q => q - 1)
+  }
 
   return (
     <div className='w-full flex flex-col gap-5 p-5 lg:p-10'>
@@ -66,12 +75,12 @@ const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
           <p className="text-base font-medium">{formatPrice(`${product.price}`)}</p>
         </div>
 
-          <div className="px-2 py-1 w-fit">
-            <StarRating
-              rating={3}
-              iconClassName='size-4'
-            />
-          </div>
+        <div className="px-2 py-1 w-fit">
+          <StarRating
+            rating={3}
+            iconClassName='size-4'
+          />
+        </div>
       </div>
 
 
@@ -107,10 +116,10 @@ const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
                 product?.['available sizes'].map((size, idx) => (
                   <div
                     key={size.id}
-                    onClick={() => setSelectedSze(idx)}
+                    onClick={() => setSelectedSize(idx)}
                     className={cn(
                       "px-2 py-1 border w-fit bg-secondary cursor-pointer",
-                      idx === selectedSze && "ring-2 ring-primary"
+                      idx === selectedSize && "ring-2 ring-primary"
                     )}>
                     <p className="text-xs text-secondary-foreground font-medium">{size.label}</p>
                   </div>
@@ -121,8 +130,17 @@ const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
         )
       }
 
+      <div className='flex w-fit bg-greek/60 text-greek-foreground font-bold'>
+        <div className="p-2 cursor-pointer" onClick={decreaseQuantity}>-</div>
+        <div className="p-2 ">{quantity || 1}</div>
+        <div className="p-2 cursor-pointer" onClick={increaseQuantity}>+</div>
+      </div>
+
       <div className="w-full flex gap-2 mt-5">
         <AddToCartButton
+          color={product?.['available colors']?.length > 0 ? product?.['available colors'][selectedColor]?.id : undefined}
+          size={product?.['available sizes']?.length > 0 ? product?.['available sizes'][selectedSize]?.id : undefined}
+          quantity={quantity}
           productId={product.id}
           price={`${product.price}`}
           disabled={!product['in stock'] && !cart.isProductInCart(product.id)}

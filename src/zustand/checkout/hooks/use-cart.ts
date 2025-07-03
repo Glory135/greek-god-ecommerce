@@ -1,26 +1,40 @@
-import { useCartStore } from "../store/use-cart-store"
+import { IProductInCart, useCartStore } from "../store/use-cart-store"
 
 export const useCart = (userSlug: string) => {
   const {
     addProduct,
+    quantity,
     clearAllCarts,
     clearCart,
     getCartByUser,
     removeProduct,
+    getSingleProductInCartByUser
   } = useCartStore()
 
-  const productIds = getCartByUser(userSlug)
+  const products = getCartByUser(userSlug)
 
-  const toggleProduct = (productId: string) => {
-    if (productIds.includes(productId)) {
-      removeProduct(userSlug, productId);
+  const singleProductInCart = (productId: string) => {
+    getSingleProductInCartByUser(userSlug, productId)
+  }
+
+  const toggleProduct = (product: IProductInCart) => {    
+    if (products.find(i=>i.productId === product.productId)) {
+      removeProduct(userSlug, product.productId);
     } else {
-      addProduct(userSlug, productId)
+      addProduct(userSlug, product)
     }
   };
 
+  const increaseQuantity = (prodId: string) => {
+    quantity(userSlug, prodId, "+")
+  }
+  const decreaseQuantity = (prodId: string) => {
+    quantity(userSlug, prodId, "-")
+  }
+
   const isProductInCart = (productId: string) => {
-    return productIds.includes(productId)
+    const isIn = products.filter(i => i.productId === productId)
+    return isIn.length > 0 ? true : false
   }
 
   const clearUserCart = () => {
@@ -28,13 +42,16 @@ export const useCart = (userSlug: string) => {
   }
 
   return {
-    productIds,
-    addProduct: (productId: string) => addProduct(userSlug, productId),
-    removeProduct: (productId: string) => addProduct(userSlug, productId),
+    products,
+    singleProductInCart,
+    addProduct: (product: IProductInCart) => addProduct(userSlug, product),
+    removeProduct: (productId: string) => removeProduct(userSlug, productId),
     clearCart: clearUserCart,
     clearAllCarts,
     toggleProduct,
+    increaseQuantity,
+    decreaseQuantity,
     isProductInCart,
-    totalProductsInCart: productIds.length
+    totalProductsInCart: products.length
   }
 }

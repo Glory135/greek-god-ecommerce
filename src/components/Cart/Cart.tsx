@@ -12,20 +12,27 @@ import { Separator } from '../ui/separator';
 import Link from 'next/link';
 import { buttonVariants } from '../ui/button';
 import Image from 'next/image';
-import { formatPrice } from '@/lib/utils';
 import { PAGES_LINKS } from '@/utils/linksData';
 import { FaShoppingBag } from 'react-icons/fa';
 import useGetUser from '@/hooks/use-get-user';
 import { useCart } from '@/zustand/checkout/hooks/use-cart';
+import { ScrollArea } from '../ui/scroll-area';
+import ProductInCart from './ProductInCart';
+import { useState } from 'react';
 
 export default function Cart() {
+	const [cartOpen, setCartOpen] = useState(false)
 	const user = useGetUser()
-  const cart = useCart(user?.id || "")
-	
+	const cart = useCart(user?.id || "")
+
 	const itemCount = cart?.totalProductsInCart || 0;
-    
+
+	const closeCart = () => {
+		setCartOpen(false)
+	}
+
 	return (
-		<Sheet>
+		<Sheet open={cartOpen} onOpenChange={setCartOpen}>
 			<SheetTrigger className='group -m-2 flex items-center p-2'>
 				<FaShoppingBag
 					aria-hidden='true'
@@ -35,34 +42,24 @@ export default function Cart() {
 					{itemCount}
 				</span>
 			</SheetTrigger>
-			<SheetContent className='flex w-full flex-col pr-0 sm:max-w-lg'>
+			<SheetContent className='flex w-full flex-col pr-0 sm:max-w-lg p-5'>
 				<SheetHeader className='space-y-2.5 pr-6'>
 					<SheetTitle>Bag ({itemCount})</SheetTitle>
 				</SheetHeader>
 				{itemCount > 0 ? (
 					<>
 						<div className='flex w-full flex-col pr-6'>
-							{/* Toto: cart login */}
 							Bag items
 						</div>
-						<div className='space-y-4 pr-6'>
+						<div className='space-y-4'>
 							<Separator />
-							<div className='space-y-1.5 text-sm'>
-								<div className='flex'>
-									<span className='flex-1'>Shipping</span>
-									<span className=''>Free</span>
-								</div>
-								<div className='flex'>
-									<span className='flex-1'>
-										Transaction Fee
-									</span>
-									<span>{formatPrice("100")}</span>
-								</div>
-								<div className='flex'>
-									<span className='flex-1'>Total</span>
-									<span>{formatPrice("100")}</span>
-								</div>
-							</div>
+							<ScrollArea className='h-[65dvh] w-full pb-2 flex flex-col overflow-y-auto'>
+								{
+									cart.products.map(((prod) => (
+										<ProductInCart key={prod.productId} product={prod} close={closeCart} />
+									)))
+								}
+							</ScrollArea>
 							<SheetFooter>
 								<SheetTrigger asChild>
 									<Link
@@ -77,7 +74,7 @@ export default function Cart() {
 						</div>
 					</>
 				) : (
-					<div className='flex h-full flex-col items-center justify-center space-y-1'>
+					<div className='flex h-full flex-col items-center justify-center space-y-1 text-center'>
 						<div
 							className='relative md=-4 h-60 w-60 text-muted-foreground'
 							aria-hidden='true'>
@@ -87,24 +84,44 @@ export default function Cart() {
 								alt='Empty cart'
 							/>
 						</div>
-						<div className='text-sm text-gray-500'>
-							No items in your bag
+						<h4 className='text-base font-bold capitalize'>
+							Your Bag Is empty.
+						</h4>
+						<p className='text-sm text-gray-700 capitalize'>
+							discover GreekGod and add products to your Bag
+						</p>
+						<div className="flex flex-col gap-2">
+							<SheetTrigger asChild>
+								<Link
+									href={PAGES_LINKS.products.link}
+									className={buttonVariants({
+										variant: 'link',
+										size: 'sm',
+									})}>
+									Best Sellers
+								</Link>
+							</SheetTrigger>
+							<SheetTrigger asChild>
+								<Link
+									href={PAGES_LINKS.collections.link}
+									className={buttonVariants({
+										variant: 'link',
+										size: 'sm',
+									})}>
+									Collections
+								</Link>
+							</SheetTrigger>
+							<SheetTrigger asChild>
+								<Link
+									href={PAGES_LINKS.products.link}
+									className={buttonVariants({
+										variant: 'link',
+										size: 'sm',
+									})}>
+									Exploe Our Products
+								</Link>
+							</SheetTrigger>
 						</div>
-						<div className='text-sm text-gray-700'>
-							Start adding products to your bag by visiting the
-							products page.
-						</div>
-						<SheetTrigger asChild>
-							<Link
-								href={PAGES_LINKS.products.link}
-								className={buttonVariants({
-									variant: 'link',
-									size: 'sm',
-									className: 'text-sm text-muted-foreground',
-								})}>
-								Exploe Our Products
-							</Link>
-						</SheetTrigger>
 					</div>
 				)}
 			</SheetContent>

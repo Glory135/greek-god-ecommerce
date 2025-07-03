@@ -11,13 +11,16 @@ import useGetUser from '@/hooks/use-get-user';
 
 interface Props {
   productId: string;
+  color?: string;
+  size?: string;
+  quantity?: number;
   price?: string;
   small?: boolean;
   disabled?: boolean
   className?: string
 }
 
-const AddToCartButton = ({ productId, disabled = false, small = false, className, price }: Props) => {
+const AddToCartButton = ({ productId, color, size, quantity = 1, disabled = false, small = false, className, price }: Props) => {
   const user = useGetUser()
   const cart = useCart(user?.id || "")
 
@@ -25,8 +28,9 @@ const AddToCartButton = ({ productId, disabled = false, small = false, className
     e.preventDefault();
     e.stopPropagation();
 
-    cart.toggleProduct(productId)
+    cart.toggleProduct({ productId, quantity, color, size })
   }
+  
 
   return (
     <NotLoggedInCatcher>
@@ -35,7 +39,7 @@ const AddToCartButton = ({ productId, disabled = false, small = false, className
         variant={!small && cart.isProductInCart(productId) ? "ghost" : "greek"}
         className={cn(
           'flex-1',
-          small && "w-fit h-fit !p-1 !py-2",
+          small && "w-fit h-fit !p-2 !py-2",
           cart.isProductInCart(productId) ? "!text-red-500" : "!text-greek-foreground",
           className && className
         )}
@@ -43,7 +47,7 @@ const AddToCartButton = ({ productId, disabled = false, small = false, className
       >
         {
           cart.isProductInCart(productId)
-            ? <TbShoppingBagX className='!w-10' /> : <TbShoppingBagPlus className='!w-10' />
+            ? <TbShoppingBagX className='' /> : <TbShoppingBagPlus className='' />
         }
         {
           !small && cart.isProductInCart(productId)

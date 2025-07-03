@@ -32,6 +32,10 @@ export const generateCollectionLink = (slug: string) => {
   return `${PAGES_LINKS.collections.link}/${slug}`
 }
 
+export const generateProductLink = (slug: string) => {
+  return `${PAGES_LINKS.products.link}/${slug}`
+}
+
 
 
 // export const parseMoney = (
