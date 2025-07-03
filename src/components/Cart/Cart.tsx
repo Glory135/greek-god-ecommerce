@@ -47,8 +47,13 @@ export default function Cart() {
 				</SheetHeader>
 				{itemCount > 0 ? (
 					<>
-						<div className='flex w-full flex-col pr-6'>
-							Bag items
+						<div className='flex w-full justify-between'>
+							<h4>Bag items</h4>
+							{
+								cart.products && cart.products.length > 0 && (
+									<span onClick={() => cart.clearCart()} className="hover:underline text-base text-nowrap cursor-pointer">Clear Items</span>
+								)
+							}
 						</div>
 						<div className='space-y-4'>
 							<Separator />
