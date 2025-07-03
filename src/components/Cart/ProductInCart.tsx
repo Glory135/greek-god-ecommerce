@@ -79,7 +79,7 @@ const ProductInCart = ({ product, lg = false, close }: { product: IProductInCart
 }
 
 // Skeleton component for loading state
-const ProductInCartSkeleton = ({ lg = false }: { lg?: boolean }) => (
+export const ProductInCartSkeleton = ({ lg = false }: { lg?: boolean }) => (
   <div className="relative text-sm w-full flex my-3 shadow-md animate-pulse">
     <div
       className={cn(

@@ -26,7 +26,6 @@ export default function Cart() {
 	const cart = useCart(user?.id || "")
 
 	const itemCount = cart?.totalProductsInCart || 0;
-
 	const closeCart = () => {
 		setCartOpen(false)
 	}
@@ -63,7 +62,7 @@ export default function Cart() {
 							<SheetFooter>
 								<SheetTrigger asChild>
 									<Link
-										href='/merch'
+										href='/checkout'
 										className={buttonVariants({
 											className: 'w-full',
 										})}>
