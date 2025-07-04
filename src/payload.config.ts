@@ -31,9 +31,9 @@ const cloudinaryAdapter = () => ({
   async handleUpload({
     file,
     collection,
-    data,
-    req,
-    clientUploadContext,
+    // data,
+    // req,
+    // clientUploadContext,
   }: Parameters<HandleUpload>[0]) {
     try {
       // createing a function that will upload your file in cloudinary
@@ -45,7 +45,7 @@ const cloudinaryAdapter = () => ({
         const uploadStream = cloudinary.uploader.upload_stream(
           {
             resource_type: 'auto', // auto-detect file type (image, video, etc.)
-            public_id: `media/${file.filename.replace(/\.[^/.]+$/, '')}`, // Set custom file name without extension, and it also previxed the cleaned filename with media/
+            public_id: `${collection}/${file.filename.replace(/\.[^/.]+$/, '')}`, // Set custom file name without extension, and it also previxed the cleaned filename with media/
             overwrite: false, // Do not overwrite if a file with the same name exists
             use_filename: true, // Use original filename
           },
@@ -64,13 +64,18 @@ const cloudinaryAdapter = () => ({
       console.error('Upload Error', err)
     }
   },
-  async handleDelete({ collection, doc, filename, req }: Parameters<HandleDelete>[0]) {
+  async handleDelete({
+    collection,
+    filename,
+    // doc,
+    // req
+  }: Parameters<HandleDelete>[0]) {
     console.log('handleDelete has been called')
     // if filename is present then we will look for that file
     try {
       // We remove the file extension from the filename and then target the file
       // inside the "media/" folder on Cloudinary (which we used as the upload path)
-      await cloudinary.uploader.destroy(`media/${filename.replace(/\.[^/.]+$/, '')}`)
+      await cloudinary.uploader.destroy(`${collection}/${filename.replace(/\.[^/.]+$/, '')}`)
     } catch (error) {
       // if something error occured we will catch the error and respond the error in console
       console.error('Cloudinary Delete Error:', error)
