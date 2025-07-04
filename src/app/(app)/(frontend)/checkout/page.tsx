@@ -18,24 +18,24 @@ import { toast } from "sonner"
 
 export default function CheckoutPage() {
   const user = useGetUser()
-  const cart = useCart(user?.id || "")
+  const { clearAllCarts, products, clearCart, totalProductsInCart } = useCart(user?.id || "")
   const trpc = useTRPC()
 
   const { data, error } = useQuery(trpc.checkout.getProducts.queryOptions({
-    ids: cart.products.map(i => i.productId)
+    ids: products.map(i => i.productId)
   }))
 
   useEffect(() => {
     if (!error) return;
     if (error?.data?.code === "NOT_FOUND") {
-      cart.clearAllCarts()
+      clearAllCarts()
       toast.warning("Invalid products found, your cart has been cleared!")
     }
-  }, [error, cart.clearAllCarts])
+  }, [error, clearAllCarts])
 
   const calculateTotals = () => {
     const total = data?.docs && data?.docs.length > 0 ? data?.docs.reduce((accumulator, singleProd) => {
-      const quantity = cart.products.find(i => i.productId === singleProd.id)?.quantity;
+      const quantity = products.find(i => i.productId === singleProd.id)?.quantity;
       const totalPrice = singleProd.price * (quantity || 1)
       return (accumulator + totalPrice)
     }, 0) : 0
@@ -60,13 +60,13 @@ export default function CheckoutPage() {
           <div className="w-full flex items-center justify-between mb-5">
             <SectionTitle className="!m-0" title="Checkout" />
             {
-              cart.products && cart.products.length > 0 && (
-                <span onClick={() => cart.clearCart()} className="hover:underline text-base text-nowrap cursor-pointer">Clear Items</span>
+              products && products.length > 0 && (
+                <span onClick={() => clearCart()} className="hover:underline text-base text-nowrap cursor-pointer">Clear Items</span>
               )
             }
           </div>
           {
-            !cart.products || cart.products.length < 1 ? (
+            !products || products.length < 1 ? (
               <div className="my-10 w-full flex flex-col gap-5 justify-center items-center">
                 <div
                   className='relative md=-4 h-60 w-60 text-muted-foreground'
@@ -114,7 +114,7 @@ export default function CheckoutPage() {
               (
                 <div className="w-full flex flex-col gap-5">
                   {
-                    cart.products.map((singleProduct) => (
+                    products.map((singleProduct) => (
                       <ProductInCart key={singleProduct.productId} product={singleProduct} lg={true} />
                     ))
                   }
@@ -123,7 +123,7 @@ export default function CheckoutPage() {
           }
         </div>
         {
-          cart.products && cart.products.length > 0 && (
+          products && products.length > 0 && (
             <div className="lg:col-span-3 h-fit lg:sticky top-24">
               <SectionTitle title="Order Summary" />
               <div className="w-full flex flex-col gap-5">
@@ -141,7 +141,7 @@ export default function CheckoutPage() {
                 <ScrollArea className="h-auto lg:h-[30vh]">
                   {
                     data?.docs.map((singleProd) => {
-                      const quantity = cart.products.find(i => i.productId === singleProd.id)?.quantity;
+                      const quantity = products.find(i => i.productId === singleProd.id)?.quantity;
                       const totalPrice = singleProd.price * (quantity || 1)
 
                       return (
@@ -162,7 +162,7 @@ export default function CheckoutPage() {
                 </ScrollArea>
                 <div className="w-full border-t border-primary flex flex-col gap-5 py-5">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-base font-bold">Subtotal ({cart.totalProductsInCart})</h4>
+                    <h4 className="text-base font-bold">Subtotal ({totalProductsInCart})</h4>
                     <p className="text-base">{formatPrice(`${calculateTotals()}`)}</p>
                   </div>
                   <div className="flex items-center justify-between">

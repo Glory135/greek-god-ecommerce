@@ -4,7 +4,7 @@ import { cn, formatPrice } from '@/lib/utils'
 import { ProductsGetOneOutput } from '@/modules/products/types'
 import React, { useState } from 'react'
 import { CiDeliveryTruck } from "react-icons/ci";
-import { CheckIcon, Heart, LinkIcon, LoaderIcon, X } from 'lucide-react'
+import { CheckIcon, LinkIcon, LoaderIcon, X } from 'lucide-react'
 import { Button } from '../ui/button'
 import dynamic from 'next/dynamic';
 import { useCart } from '@/zustand/checkout/hooks/use-cart';
