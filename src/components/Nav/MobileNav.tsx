@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from '../ui/sheet'
-import { Menu, User } from 'lucide-react'
+import { Heart, Menu, User } from 'lucide-react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import { ScrollArea } from '../ui/scroll-area'
@@ -127,14 +127,24 @@ const MobileNav = () => {
         <SheetFooter className='flex gap-2 flex-row'>
           {
             user ? (
-              <SheetTrigger className='flex-1' asChild>
-                <Button asChild>
-                  <Link className='flex gap-2 items-center' href={PAGES_LINKS.account.link}>
-                    <User />
-                    Account
-                  </Link>
-                </Button>
-              </SheetTrigger>
+              <div className='w-full flex flex-col gap-2'>
+                <SheetTrigger className='flex-1' asChild>
+                  <Button variant={"outline"} asChild>
+                    <Link className='flex gap-2 items-center' href={PAGES_LINKS.account.link}>
+                      <Heart />
+                      Wish List
+                    </Link>
+                  </Button>
+                </SheetTrigger>
+                <SheetTrigger className='flex-1' asChild>
+                  <Button asChild>
+                    <Link className='flex gap-2 items-center' href={PAGES_LINKS.account.link}>
+                      <User />
+                      Account
+                    </Link>
+                  </Button>
+                </SheetTrigger>
+              </div>
             ) :
               (
                 <>
