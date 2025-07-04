@@ -21,6 +21,15 @@ const AddToCartButton = dynamic(
     loading: () => <Button disabled className='flex-1' variant={"greek"}><LoaderIcon className='animate-spin w-10' /> Bag</Button>
   }
 )
+const AddToWishListButton = dynamic(
+  () => import('../WishList/AddToWishList').then(
+    (mod) => mod.default
+  ),
+  {
+    ssr: false,
+    loading: () => <Button disabled variant={"greek"}><LoaderIcon className='animate-spin w-10' /> Wiash List</Button>
+  }
+)
 
 
 const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
@@ -161,8 +170,9 @@ const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
           <p>Return Easy</p>
         </div>
         <div className="flex items-center gap-1">
-          <Heart />
-          <p>Add To Wishlist</p>
+          <AddToWishListButton
+            productId={product.id}
+          />
         </div>
       </div>
     </div>

@@ -7,7 +7,6 @@ import { Toaster } from "sonner";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 
-
 const montserrat = Montserrat({
   variable: "--font-monstrat",
   subsets: ["latin"],

@@ -8,7 +8,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import dynamic from 'next/dynamic';
-import NotLoggedInCatcher from '../Auth/NotLoggedInCatcher';
 import { Button } from '../ui/button';
 import { LoaderIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -21,6 +20,15 @@ const AddToCartButton = dynamic(
   {
     ssr: false,
     loading: () => <Button disabled className='absolute top-5 right-5 w-fit h-fit !p-2 !py-2' variant={"greek"}><LoaderIcon className='animate-spin w-10' /></Button>
+  }
+)
+const AddToWishListButton = dynamic(
+  () => import('../WishList/AddToWishList').then(
+    (mod) => mod.default
+  ),
+  {
+    ssr: false,
+    loading: () => <Button disabled className='absolute top-5 left-5 w-fit h-fit !p-2 !py-2' variant={"ghost"}><LoaderIcon className='animate-spin w-10' /></Button>
   }
 )
 
@@ -48,7 +56,7 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
 
   return (
     <Link href={`${PAGES_LINKS.products.link}/${id}`} className='hover:opacity-90 '>
-      <div className='rounded-md bg-white overflow-hidden h-full flex flex-col'>
+      <div className='rounded-md bg-background overflow-hidden h-full flex flex-col'>
         <div className="relative aspect-[2.5/3]">
           <Image
             alt={name}
@@ -56,22 +64,11 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
             className='object-cover object-center'
             src={imageUrl || "/images/placeholder.png"}
           />
-          <NotLoggedInCatcher>
-            <Image
-              alt={name}
-              width={20}
-              height={20}
-              src={"/icons/heart.svg"}
-              className='absolute top-5 left-5 cursor-pointer'
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation()
-
-                // TODO add to wishlist logic here
-                console.log("Added to wishlist!!");
-              }}
-            />
-          </NotLoggedInCatcher>
+          <AddToWishListButton
+            productId={id}
+            className='absolute top-5 left-5 cursor-pointer'
+            small={true}
+          />
           <AddToCartButton
             productId={id}
             className='absolute top-5 right-5 cursor-pointer'
@@ -95,7 +92,7 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
                       linkClick(e, generateCollectionLink(collection.slug))
                     }
                     className="capitalize hover:underline"
-                    >
+                  >
                     {shortenText(collection.title, 25)}
                   </p>
                 ) : null

@@ -17,7 +17,7 @@ import useGetUser from '@/hooks/use-get-user';
 
 
 export default function Navbar() {
-	const user = useGetUser()	
+	const user = useGetUser()
 
 	return (
 		<div className='w-full sticky z-50 top-0 inset-x-0'>
@@ -75,7 +75,8 @@ export default function Navbar() {
 									<>
 										<span className='h-6 w-px bg-gray-200' />
 										<Link
-											href={'/favourite'}
+											title='Your Wish List'
+											href={PAGES_LINKS.wishlist.link}
 											className={buttonVariants({
 												variant: 'ghost',
 												size: "sm"
