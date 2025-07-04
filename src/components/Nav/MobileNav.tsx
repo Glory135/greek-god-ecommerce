@@ -130,7 +130,7 @@ const MobileNav = () => {
               <div className='w-full flex flex-col gap-2'>
                 <SheetTrigger className='flex-1' asChild>
                   <Button variant={"outline"} asChild>
-                    <Link className='flex gap-2 items-center' href={PAGES_LINKS.account.link}>
+                    <Link className='flex gap-2 items-center' href={PAGES_LINKS.wishlist.link}>
                       <Heart />
                       Wish List
                     </Link>
