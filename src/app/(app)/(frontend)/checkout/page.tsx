@@ -34,20 +34,20 @@ export default function CheckoutPage() {
   }, [error, cart.clearAllCarts])
 
   const calculateTotals = () => {
-    const total = data?.docs.reduce((accumulator, singleProd) => {
+    const total = data?.docs && data?.docs.length > 0 ? data?.docs.reduce((accumulator, singleProd) => {
       const quantity = cart.products.find(i => i.productId === singleProd.id)?.quantity;
       const totalPrice = singleProd.price * (quantity || 1)
       return (accumulator + totalPrice)
-    }, 0)
+    }, 0) : 0
 
     return total
   }
 
   const getDeliveryFee = () => {
-    const highest = data?.docs.reduce((prev, current) =>
+    const highest = data?.docs && data?.docs.length > 0 ? data?.docs.reduce((prev, current) =>
       current?.deliveryFee && prev?.deliveryFee &&
         current?.deliveryFee > prev?.deliveryFee ? current : prev
-    )
+    ) : null
     return highest?.deliveryFee
   }
 
@@ -58,7 +58,7 @@ export default function CheckoutPage() {
       <MaxWidthWrapper className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16 relative">
         <div className="lg:col-span-4">
           <div className="w-full flex items-center justify-between mb-5">
-            <SectionTitle className="!m-0" title="Order Summary" />
+            <SectionTitle className="!m-0" title="Checkout" />
             {
               cart.products && cart.products.length > 0 && (
                 <span onClick={() => cart.clearCart()} className="hover:underline text-base text-nowrap cursor-pointer">Clear Items</span>
@@ -124,8 +124,8 @@ export default function CheckoutPage() {
         </div>
         {
           cart.products && cart.products.length > 0 && (
-            <div className="lg:col-span-3 h-fit lg:sticky top-20 py-5">
-              <SectionTitle title="Next Steps" />
+            <div className="lg:col-span-3 h-fit lg:sticky top-24">
+              <SectionTitle title="Order Summary" />
               <div className="w-full flex flex-col gap-5">
                 <div className="w-full grid grid-cols-3">
                   <div className="">
