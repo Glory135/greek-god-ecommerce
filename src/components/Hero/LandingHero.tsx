@@ -1,6 +1,9 @@
 import React from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-import { Button } from '../ui/button'
+import { buttonVariants } from '../ui/button'
+import Link from 'next/link'
+import { PAGES_LINKS } from '@/utils/linksData'
+import { cn } from '@/lib/utils'
 
 const LandingHero = () => {
   return (
@@ -15,7 +18,13 @@ const LandingHero = () => {
             Crafted for every journey, designed for every man.
             Enduring style, unwavering confidence
           </p>
-          <Button className='flex w-fit px-10' >New Arrivals</Button>
+          <Link href={PAGES_LINKS.products.link} className={
+            cn(
+              buttonVariants({
+                variant: "greek"
+              }),
+              'flex w-fit px-10'
+            )} >New Arrivals</Link>
         </div>
       </MaxWidthWrapper>
     </section>
