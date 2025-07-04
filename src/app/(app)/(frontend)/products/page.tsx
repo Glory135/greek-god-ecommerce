@@ -32,7 +32,7 @@ export default async function ProductsPage({ searchParams }: Props) {
             <MobileProductFilter />
           </div>
           {/* desktop */}
-          <div className="hidden md:block w-[350px]">
+          <div className="hidden md:block md:w-[250px] lg:w-[350px]">
             <ProductsFilterComponent />
           </div>
           <div className="flex-1 h-auto">
