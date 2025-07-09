@@ -68,6 +68,8 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
+    appAccounts: AppAccount;
+    appUsers: AppUser;
     media: Media;
     categories: Category;
     collections: Collection;
@@ -85,6 +87,8 @@ export interface Config {
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    appAccounts: AppAccountsSelect<false> | AppAccountsSelect<true>;
+    appUsers: AppUsersSelect<false> | AppUsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
@@ -133,8 +137,10 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
-  username: string;
+  last_name?: string | null;
+  first_name?: string | null;
   roles: ('user' | 'super-admin')[];
+  appUserId?: (string | null) | AppUser;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -145,6 +151,64 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appUsers".
+ */
+export interface AppUser {
+  id: string;
+  email: string;
+  last_name?: string | null;
+  first_name?: string | null;
+  hashedPassword?: string | null;
+  hashSalt?: string | null;
+  hashIterations?: number | null;
+  verificationCode?: string | null;
+  verificationHash?: string | null;
+  verificationTokenExpire?: number | null;
+  verificationKind?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appAccounts".
+ */
+export interface AppAccount {
+  id: string;
+  name?: string | null;
+  picture?: string | null;
+  user: string | AppUser;
+  issuerName: string;
+  scope?: string | null;
+  sub: string;
+  passkey?: {
+    credentialId: string;
+    publicKey:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    counter: number;
+    transports:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    deviceType: string;
+    backedUp: boolean;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -263,6 +327,14 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
+        relationTo: 'appAccounts';
+        value: string | AppAccount;
+      } | null)
+    | ({
+        relationTo: 'appUsers';
+        value: string | AppUser;
+      } | null)
+    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -333,8 +405,10 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  username?: T;
+  last_name?: T;
+  first_name?: T;
   roles?: T;
+  appUserId?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -344,6 +418,48 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appAccounts_select".
+ */
+export interface AppAccountsSelect<T extends boolean = true> {
+  name?: T;
+  picture?: T;
+  user?: T;
+  issuerName?: T;
+  scope?: T;
+  sub?: T;
+  passkey?:
+    | T
+    | {
+        credentialId?: T;
+        publicKey?: T;
+        counter?: T;
+        transports?: T;
+        deviceType?: T;
+        backedUp?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appUsers_select".
+ */
+export interface AppUsersSelect<T extends boolean = true> {
+  email?: T;
+  last_name?: T;
+  first_name?: T;
+  hashedPassword?: T;
+  hashSalt?: T;
+  hashIterations?: T;
+  verificationCode?: T;
+  verificationHash?: T;
+  verificationTokenExpire?: T;
+  verificationKind?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

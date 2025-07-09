@@ -14,6 +14,9 @@ importers:
       '@payloadcms/db-mongodb':
         specifier: ^3.42.0
         version: 3.42.0(@aws-sdk/credential-providers@3.828.0)(payload@3.42.0(graphql@16.11.0)(typescript@5.8.3))
+      '@payloadcms/email-resend':
+        specifier: ^3.42.0
+        version: 3.46.0(payload@3.42.0(graphql@16.11.0)(typescript@5.8.3))
       '@payloadcms/next':
         specifier: ^3.42.0
         version: 3.42.0(@types/react@19.1.8)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.3.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(payload@3.42.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
@@ -21,7 +24,7 @@ importers:
         specifier: ^3.42.0
         version: 3.42.0(payload@3.42.0(graphql@16.11.0)(typescript@5.8.3))
       '@payloadcms/plugin-cloud-storage':
-        specifier: ^3.45.0
+        specifier: ^3.42.0
         version: 3.45.0(@types/react@19.1.8)(monaco-editor@0.52.2)(next@15.3.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(payload@3.42.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
       '@payloadcms/richtext-lexical':
         specifier: ^3.42.0
@@ -101,6 +104,9 @@ importers:
       payload:
         specifier: ^3.42.0
         version: 3.42.0(graphql@16.11.0)(typescript@5.8.3)
+      payload-auth-plugin:
+        specifier: ^0.7.3
+        version: 0.7.3(payload@3.42.0(graphql@16.11.0)(typescript@5.8.3))
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -708,6 +714,9 @@ packages:
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
 
+  '@hexagon/base64@1.1.28':
+    resolution: {integrity: sha512-lhqDEAvWixy3bZ+UOYbPwUbBkwBq5C1LAJ/xPC8Oi+lL54oyakv/npbA0aU2hgCsx/1NUd4IBvV03+aUBWxerw==}
+
   '@hookform/resolvers@5.1.1':
     resolution: {integrity: sha512-J/NVING3LMAEvexJkyTLjruSm7aOFx7QX21pzkiJfMoNG0wl5aFEjLTl7ay7IQb9EWY6AkrBy7tHL2Alijpdcg==}
     peerDependencies:
@@ -873,6 +882,9 @@ packages:
 
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
+
+  '@levischuck/tiny-cbor@0.2.11':
+    resolution: {integrity: sha512-llBRm4dT4Z89aRsm6u2oEZ8tfwL/2l6BwpZ7JcyieouniDECM5AqNgr/y08zalEIvW3RSK4upYyybDcmjXqAow==}
 
   '@lexical/clipboard@0.28.0':
     resolution: {integrity: sha512-LYqion+kAwFQJStA37JAEMxTL/m1WlZbotDfM/2WuONmlO0yWxiyRDI18oeCwhBD6LQQd9c3Ccxp9HFwUG1AVw==}
@@ -1045,6 +1057,12 @@ packages:
     peerDependencies:
       payload: 3.42.0
 
+  '@payloadcms/email-resend@3.46.0':
+    resolution: {integrity: sha512-xoL/54bRba9CE/VMo59FBvNWJ0/ms8stvDmAH8Jg/RQSgd7SOJ8SESlqcyUCSsXJl5EIC8s7vErQ/5xH+6kcJw==}
+    engines: {node: ^18.20.2 || >=20.9.0}
+    peerDependencies:
+      payload: 3.46.0
+
   '@payloadcms/graphql@3.42.0':
     resolution: {integrity: sha512-+bceeYYbAui5gESZ9QadObmufqgJRd+/cyTmmgRFNU6KtYyhtza/3Ph1IS9OUAe+0JwVKd32yT0EQ776KdwRtg==}
     hasBin: true
@@ -1106,6 +1124,21 @@ packages:
       payload: 3.45.0
       react: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
       react-dom: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
+
+  '@peculiar/asn1-android@2.3.16':
+    resolution: {integrity: sha512-a1viIv3bIahXNssrOIkXZIlI2ePpZaNmR30d4aBL99mu2rO+mT9D6zBsp7H6eROWGtmwv0Ionp5olJurIo09dw==}
+
+  '@peculiar/asn1-ecc@2.3.15':
+    resolution: {integrity: sha512-/HtR91dvgog7z/WhCVdxZJ/jitJuIu8iTqiyWVgRE9Ac5imt2sT/E4obqIVGKQw7PIy+X6i8lVBoT6wC73XUgA==}
+
+  '@peculiar/asn1-rsa@2.3.15':
+    resolution: {integrity: sha512-p6hsanvPhexRtYSOHihLvUUgrJ8y0FtOM97N5UEpC+VifFYyZa0iZ5cXjTkZoDwxJ/TTJ1IJo3HVTB2JJTpXvg==}
+
+  '@peculiar/asn1-schema@2.3.15':
+    resolution: {integrity: sha512-QPeD8UA8axQREpgR5UTAfu2mqQmm97oUqahDtNdBcfj3qAnoXzFdQW+aNf/tD2WVXF8Fhmftxoj0eMIT++gX2w==}
+
+  '@peculiar/asn1-x509@2.3.15':
+    resolution: {integrity: sha512-0dK5xqTqSLaxv1FHXIcd4Q/BZNuopg+u1l23hT9rOmQ1g4dNtw0g/RnEi+TboB0gOwGtrWn269v27cMgchFIIg==}
 
   '@radix-ui/number@1.1.1':
     resolution: {integrity: sha512-MkKCwxlXTgz6CFoJx3pCwn07GKp36+aZyu/u2Ln2VrA5DcdyCZkASEDBTd8x5whTQQL5CiYf4prXKLcgQdv29g==}
@@ -1417,6 +1450,13 @@ packages:
 
   '@rushstack/eslint-patch@1.11.0':
     resolution: {integrity: sha512-zxnHvoMQVqewTJr/W4pKjF0bMGiKJv1WX7bSrkl46Hg0QjESbzBROWK0Wg4RphzSOS5Jiy7eFimmM3UgMrMZbQ==}
+
+  '@simplewebauthn/browser@13.1.2':
+    resolution: {integrity: sha512-aZnW0KawAM83fSBUgglP5WofbrLbLyr7CoPqYr66Eppm7zO86YX6rrCjRB3hQKPrL7ATvY4FVXlykZ6w6FwYYw==}
+
+  '@simplewebauthn/server@13.1.2':
+    resolution: {integrity: sha512-VwoDfvLXSCaRiD+xCIuyslU0HLxVggeE5BL06+GbsP2l1fGf5op8e0c3ZtKoi+vSg1q4ikjtAghC23ze2Q3H9g==}
+    engines: {node: '>=20.0.0'}
 
   '@smithy/abort-controller@4.0.4':
     resolution: {integrity: sha512-gJnEjZMvigPDQWHrW3oPrFhQtkrgqBkyjj3pCIdF3A5M6vsZODG93KNlfJprv6bp4245bdT32fsHK4kkH3KYDA==}
@@ -2057,6 +2097,10 @@ packages:
   arraybuffer.prototype.slice@1.0.4:
     resolution: {integrity: sha512-BNoCY6SXXPQ7gF2opIP4GBE+Xw7U+pHMYKuzjgCN3GwiaIR09UUeKfheyIry77QtrCBlC0KK0q5/TER/tYh3PQ==}
     engines: {node: '>= 0.4'}
+
+  asn1js@3.0.6:
+    resolution: {integrity: sha512-UOCGPYbl0tv8+006qks/dTgV9ajs97X2p0FAbyS2iyCRrmLSRolDaHdp+v/CLgnzHc3fVB+CwYiUmei7ndFcgA==}
+    engines: {node: '>=12.0.0'}
 
   ast-types-flow@0.0.8:
     resolution: {integrity: sha512-OH/2E5Fg20h2aPrbe+QL8JZQFko0YZaF+j4mnQ7BGhfavO7OpSLa8a0y9sBwomHdSbkhTS8TQNayBfnW5DwbvQ==}
@@ -2977,6 +3021,9 @@ packages:
   jose@5.9.6:
     resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==}
 
+  jose@6.0.8:
+    resolution: {integrity: sha512-EyUPtOKyTYq+iMOszO42eobQllaIjJnwkZ2U93aJzNyPibCy7CEvT9UQnaCVB51IAd49gbNdCew1c0LcLTCB2g==}
+
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
@@ -3414,6 +3461,9 @@ packages:
       react-router-dom:
         optional: true
 
+  oauth4webapi@3.5.5:
+    resolution: {integrity: sha512-1K88D2GiAydGblHo39NBro5TebGXa+7tYoyIbxvqv3+haDDry7CBE1eSYuNbOSsYCCU6y0gdynVZAkm4YPw4hg==}
+
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
@@ -3505,6 +3555,11 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
+  payload-auth-plugin@0.7.3:
+    resolution: {integrity: sha512-P0mg/OYKCDjZ2MmB6JzS+vYh3ddOZZb20hUW2B3GzWwketh16+t3C/rANqGSmBALKSScgOuCEkrTU+/CbqMCmQ==}
+    peerDependencies:
+      payload: latest
+
   payload@3.42.0:
     resolution: {integrity: sha512-VWLAyCxwDQ4uzwtTa1yRzFKoKhQ8VCUFpEDpNi91+TA3Q6WCXWNPzQGnjYehUWiDA5bl3BgCddIygJxv7ttunw==}
     engines: {node: ^18.20.2 || >=20.9.0}
@@ -3586,6 +3641,13 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  pvtsutils@1.3.6:
+    resolution: {integrity: sha512-PLgQXQ6H2FWCaeRak8vvk1GW462lMxB5s3Jm673N82zI4vqtVUPuZdffdZbPDFRoU8kAhItWFtPCWiPpp4/EDg==}
+
+  pvutils@1.1.3:
+    resolution: {integrity: sha512-pMpnA0qRdFp32b1sJl1wOJNxZLQ2cbQx+k6tjNtZ8CpvVhNqEPRgivZ2WOUev2YMajecdH7ctUPDvEe87nariQ==}
+    engines: {node: '>=6.0.0'}
 
   q@1.5.1:
     resolution: {integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==}
@@ -5192,6 +5254,8 @@ snapshots:
 
   '@floating-ui/utils@0.2.9': {}
 
+  '@hexagon/base64@1.1.28': {}
+
   '@hookform/resolvers@5.1.1(react-hook-form@7.58.1(react@19.1.0))':
     dependencies:
       '@standard-schema/utils': 0.3.0
@@ -5313,6 +5377,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   '@jsdevtools/ono@7.1.3': {}
+
+  '@levischuck/tiny-cbor@0.2.11': {}
 
   '@lexical/clipboard@0.28.0':
     dependencies:
@@ -5551,6 +5617,10 @@ snapshots:
       nodemailer: 6.9.16
       payload: 3.42.0(graphql@16.11.0)(typescript@5.8.3)
 
+  '@payloadcms/email-resend@3.46.0(payload@3.42.0(graphql@16.11.0)(typescript@5.8.3))':
+    dependencies:
+      payload: 3.42.0(graphql@16.11.0)(typescript@5.8.3)
+
   '@payloadcms/graphql@3.42.0(graphql@16.11.0)(payload@3.42.0(graphql@16.11.0)(typescript@5.8.3))(typescript@5.8.3)':
     dependencies:
       graphql: 16.11.0
@@ -5739,6 +5809,39 @@ snapshots:
       - monaco-editor
       - supports-color
       - typescript
+
+  '@peculiar/asn1-android@2.3.16':
+    dependencies:
+      '@peculiar/asn1-schema': 2.3.15
+      asn1js: 3.0.6
+      tslib: 2.8.1
+
+  '@peculiar/asn1-ecc@2.3.15':
+    dependencies:
+      '@peculiar/asn1-schema': 2.3.15
+      '@peculiar/asn1-x509': 2.3.15
+      asn1js: 3.0.6
+      tslib: 2.8.1
+
+  '@peculiar/asn1-rsa@2.3.15':
+    dependencies:
+      '@peculiar/asn1-schema': 2.3.15
+      '@peculiar/asn1-x509': 2.3.15
+      asn1js: 3.0.6
+      tslib: 2.8.1
+
+  '@peculiar/asn1-schema@2.3.15':
+    dependencies:
+      asn1js: 3.0.6
+      pvtsutils: 1.3.6
+      tslib: 2.8.1
+
+  '@peculiar/asn1-x509@2.3.15':
+    dependencies:
+      '@peculiar/asn1-schema': 2.3.15
+      asn1js: 3.0.6
+      pvtsutils: 1.3.6
+      tslib: 2.8.1
 
   '@radix-ui/number@1.1.1': {}
 
@@ -6013,6 +6116,18 @@ snapshots:
   '@rtsao/scc@1.1.0': {}
 
   '@rushstack/eslint-patch@1.11.0': {}
+
+  '@simplewebauthn/browser@13.1.2': {}
+
+  '@simplewebauthn/server@13.1.2':
+    dependencies:
+      '@hexagon/base64': 1.1.28
+      '@levischuck/tiny-cbor': 0.2.11
+      '@peculiar/asn1-android': 2.3.16
+      '@peculiar/asn1-ecc': 2.3.15
+      '@peculiar/asn1-rsa': 2.3.15
+      '@peculiar/asn1-schema': 2.3.15
+      '@peculiar/asn1-x509': 2.3.15
 
   '@smithy/abort-controller@4.0.4':
     dependencies:
@@ -6789,6 +6904,12 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.3.0
       is-array-buffer: 3.0.5
+
+  asn1js@3.0.6:
+    dependencies:
+      pvtsutils: 1.3.6
+      pvutils: 1.1.3
+      tslib: 2.8.1
 
   ast-types-flow@0.0.8: {}
 
@@ -7854,6 +7975,8 @@ snapshots:
 
   jose@5.9.6: {}
 
+  jose@6.0.8: {}
+
   joycon@3.1.1: {}
 
   js-cookie@2.2.1: {}
@@ -8358,6 +8481,8 @@ snapshots:
     optionalDependencies:
       next: 15.3.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4)
 
+  oauth4webapi@3.5.5: {}
+
   object-assign@4.1.1: {}
 
   object-inspect@1.13.4: {}
@@ -8463,6 +8588,15 @@ snapshots:
   path-to-regexp@6.3.0: {}
 
   path-type@4.0.0: {}
+
+  payload-auth-plugin@0.7.3(payload@3.42.0(graphql@16.11.0)(typescript@5.8.3)):
+    dependencies:
+      '@simplewebauthn/browser': 13.1.2
+      '@simplewebauthn/server': 13.1.2
+      jose: 6.0.8
+      oauth4webapi: 3.5.5
+      payload: 3.42.0(graphql@16.11.0)(typescript@5.8.3)
+      qs-esm: 7.0.2
 
   payload@3.42.0(graphql@16.11.0)(typescript@5.8.3):
     dependencies:
@@ -8586,6 +8720,12 @@ snapshots:
       once: 1.4.0
 
   punycode@2.3.1: {}
+
+  pvtsutils@1.3.6:
+    dependencies:
+      tslib: 2.8.1
+
+  pvutils@1.1.3: {}
 
   q@1.5.1: {}
 

@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PAGES_LINKS } from "@/utils/linksData";
-import Image from "next/image";
 import Link from "next/link";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -15,6 +14,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { GoogleOAuthButton } from "@/components/Auth/GoogleOAuthButton";
 
 
 export default function LoginPage() {
@@ -28,6 +28,7 @@ export default function LoginPage() {
     },
     onSuccess: async () => {
       router.push("/");
+      toast.success("Logged in successfully!")
       await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
     }
   }))
@@ -46,7 +47,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-full max-w-[400px] flex flex-col items-center gap-10">
+    <div className="w-full max-w-[400px] flex flex-col items-center gap-6">
       <h1 className="w-full text-center font-bold text-primary text-2xl">Log In</h1>
       <Form {...form}>
         <form
@@ -98,13 +99,9 @@ export default function LoginPage() {
 
       <p>Or</p>
 
-      <div className="flex gap-5">
-        <Image className="cursor-pointer" src={"/images/oauth/apple.png"} width={35} height={35} alt="apple" />
-        <Image className="cursor-pointer" src={"/images/oauth/google.png"} width={35} height={35} alt="google" />
-        <Image className="cursor-pointer" src={"/images/oauth/facebook.png"} width={35} height={35} alt="facebook" />
-      </div>
+      <GoogleOAuthButton />
 
       <p>New to GreekGod? <Link className="text-greek" href={PAGES_LINKS.register.link}> create an account</Link></p>
     </div>
-    )
+  )
 }

@@ -15,10 +15,20 @@ import { Products } from './collections/Products'
 import { Colors } from './collections/Colors'
 import { Sizes } from './collections/Sizes'
 
+import { authPlugin } from 'payload-auth-plugin'
+import {
+  GoogleAuthProvider,
+} from 'payload-auth-plugin/providers'
+
 import type { HandleUpload, HandleDelete } from '@payloadcms/plugin-cloud-storage/types'
 import type { UploadApiResponse } from 'cloudinary'
 import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
 import { v2 as cloudinary } from 'cloudinary'
+import { AppUsers } from './collections/AppUsers'
+import { AppAccounts } from './collections/AppAccounts'
+import { OAUTH_NAME } from './constants'
+import { resendAdapter } from "@payloadcms/email-resend"
+
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -90,6 +100,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  serverURL: process.env.NEXT_PUBLIC_APP_URL || "",
   admin: {
     user: Users.slug,
     importMap: {
@@ -98,6 +109,8 @@ export default buildConfig({
   },
   collections: [
     Users,
+    AppAccounts,
+    AppUsers,
     Media,
     Categories,
     Collections,
@@ -105,6 +118,7 @@ export default buildConfig({
     Colors,
     Sizes,
   ],
+  cookiePrefix: `__${OAUTH_NAME}-session`,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -114,9 +128,30 @@ export default buildConfig({
     url: process.env.DATABASE_URI || '',
   }),
   sharp,
+  email: resendAdapter({
+    defaultFromAddress: process.env.RESEND_FROM_ADDRESS || '',
+    defaultFromName: 'GreekGod',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   plugins: [
     payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    // auth plugin
+    authPlugin({
+      name: OAUTH_NAME,
+      allowOAuthAutoSignUp: true,
+      usersCollectionSlug: AppUsers.slug,
+      accountsCollectionSlug: AppAccounts.slug,
+      successRedirectPath: `/${OAUTH_NAME}/callback/google`,
+      errorRedirectPath: '/login',
+      providers: [
+        GoogleAuthProvider({
+          client_id: process.env.GOOGLE_CLIENT_ID as string,
+          client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
+        }),
+      ]
+    }),
+
+    // cloudinary plugin
     cloudStoragePlugin({
       collections: {
         media: {

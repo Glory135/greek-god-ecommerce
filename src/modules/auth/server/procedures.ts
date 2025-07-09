@@ -16,15 +16,15 @@ export const authRouter = createTRPCRouter({
     .input(registerSchema)
     .mutation(
       async ({ input, ctx }) => {
-        const existingDataUsername = await ctx.payload.find({
-          collection: "users",
-          limit: 1,
-          where: {
-            username: {
-              equals: input.username
-            }
-          }
-        })
+        // const existingDataUsername = await ctx.payload.find({
+        //   collection: "users",
+        //   limit: 1,
+        //   where: {
+        //     username: {
+        //       equals: input.username
+        //     }
+        //   }
+        // })
         const existingDataEmail = await ctx.payload.find({
           collection: "users",
           limit: 1,
@@ -35,15 +35,15 @@ export const authRouter = createTRPCRouter({
           }
         })
 
-        const existingUser = existingDataUsername.docs[0];
+        // const existingUser = existingDataUsername.docs[0];
         const existingEmail = existingDataEmail.docs[0];
 
-        if (existingUser) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Username already taken!"
-          })
-        }
+        // if (existingUser) {
+        //   throw new TRPCError({
+        //     code: "BAD_REQUEST",
+        //     message: "Username already taken!"
+        //   })
+        // }
         if (existingEmail) {
           throw new TRPCError({
             code: "BAD_REQUEST",
@@ -55,8 +55,10 @@ export const authRouter = createTRPCRouter({
           collection: "users",
           data: {
             email: input.email,
-            username: input.username,
-            password: input.password, // will be aut hashed
+            // username: input.username,
+            first_name: input.first_name,
+            last_name: input.last_name,
+            password: input.password, // will be auto hashed
             roles: ["user"]
           }
         });
@@ -108,4 +110,47 @@ export const authRouter = createTRPCRouter({
         return data
       }
     ),
+
+  googleAuthCallback: baseProcedure.mutation(async ({ ctx }) => {
+    const headers = await getHeaders();
+    const session = await ctx.payload.auth({ headers });
+
+    const appUser = session?.user;
+
+    if (!appUser?.email) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'OAuth session invalid or missing email',
+      });
+    }    
+
+    const email = appUser.email;
+
+    // Check if user already exists in our main 'users' collection
+    const existing = await ctx.payload.find({
+      collection: 'users',
+      where: {
+        email: { equals: email },
+      },
+      limit: 1,
+    });
+
+    if (!existing.docs.length) {
+      // Create new user in 'users' collection
+      await ctx.payload.create({
+        collection: 'users',
+        data: {
+          email,
+          first_name: appUser?.first_name,
+          last_name: appUser?.last_name,
+          roles: ['user'],
+          password: `${Date.now()}-${Math.random()}`,
+          appUserId: appUser?.appUserId
+        },
+      });
+    }
+
+    return session;
+  }),
+
 })
