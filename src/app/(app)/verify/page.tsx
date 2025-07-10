@@ -66,7 +66,7 @@ export default function VerifyEmailPage() {
             <h1 className="text-2xl font-bold text-gray-800 mb-4">Email Verified Successfully! 🎉</h1>
             <p className="text-gray-600 text-center max-w-md mb-6">
               Welcome to GreekGod! Your email has been verified and your account is now active.
-              You'll be redirected to the home page shortly.
+              You&apos;ll be redirected to the home page shortly.
             </p>
             <div className="w-full justify-center flex flex-col sm:flex-row gap-3">
               <Button
@@ -92,7 +92,7 @@ export default function VerifyEmailPage() {
             </div>
             <h1 className="text-2xl font-bold text-gray-800 mb-4">Verification Failed</h1>
             <p className="text-gray-600 text-center max-w-md mb-6">
-              We couldn't verify your email address. This could be because the link has expired
+              We couldn&apos;t verify your email address. This could be because the link has expired
               or is invalid. Please try requesting a new verification email.
             </p>
             <div className="w-full justify-center flex flex-col sm:flex-row gap-3">
