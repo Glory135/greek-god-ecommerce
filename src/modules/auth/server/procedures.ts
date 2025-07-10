@@ -115,7 +115,7 @@ export const authRouter = createTRPCRouter({
     const headers = await getHeaders();
     const session = await ctx.payload.auth({ headers });
     const appUser = session?.user;
-    
+
     if (!appUser?.email) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
@@ -137,7 +137,7 @@ export const authRouter = createTRPCRouter({
     if (!existing.docs.length) {
       // Create new user in 'users' collection
       try {
-        const created = await ctx.payload.create({
+        await ctx.payload.create({
           collection: 'users',
           data: {
             email,
