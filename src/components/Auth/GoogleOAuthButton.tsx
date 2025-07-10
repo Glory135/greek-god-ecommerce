@@ -2,12 +2,18 @@
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import { appAuthClient } from "@/lib/auth";
+import { usePathname } from 'next/navigation';
+import { AUTH_CALLBACK_STORE_STRING } from '@/constants';
 
 
-export const GoogleOAuthButton = () => {
+export const GoogleOAuthButton = ({notLoginPage = false}: {notLoginPage?:boolean}) => {
   const { oauth } = appAuthClient.signin()
+  const pathname = usePathname()
 
   const handleGoogleSignin = async () => {
+    if (window !== undefined && notLoginPage) {
+      localStorage.setItem(AUTH_CALLBACK_STORE_STRING, pathname);
+    }
     oauth('google')
   }
 

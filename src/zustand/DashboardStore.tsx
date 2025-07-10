@@ -5,9 +5,7 @@ const useDashboardStore = create(
   combine(
     {
       searchOpen: false,
-      navItems: {
-
-      }
+      loginModalOpen: false,
     },
     (set) => ({
       toggleSearchOpen: () => set((state) => (
@@ -15,7 +13,13 @@ const useDashboardStore = create(
       )),
       setSearchOpen: (open: boolean) => set({
         searchOpen: open
-      })
+      }),
+      setLoginModalOpen: (open: boolean) => set({
+        loginModalOpen: open
+      }),
+      toggleLoginModal: () => set((state) => ({
+        loginModalOpen: !state.loginModalOpen
+      }))
     })
   )
 )

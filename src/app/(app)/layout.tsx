@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "sonner";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import LoginModal from "@/components/Auth/LoginModal";
 
 
 const montserrat = Montserrat({
@@ -34,6 +35,7 @@ export default function RootLayout({
           <TRPCReactProvider >
             <main className='relative flex flex-col min-h-screen'>
               <div className='flex-grow flex-1'>{children}</div>
+              <LoginModal />
             </main>
             <Toaster />
           </TRPCReactProvider>

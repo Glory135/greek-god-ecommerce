@@ -1,6 +1,7 @@
 "use client"
 
 import useGetUser from '@/hooks/use-get-user'
+import useDashboardStore from '@/zustand/DashboardStore'
 import React, { isValidElement, cloneElement } from 'react'
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 
 const NotLoggedInCatcher = ({ children }: Props) => {
   const user = useGetUser()
+  const { setLoginModalOpen } = useDashboardStore()
   const isLoggedIn = !!user
 
   const handleClick = (originalOnClick?: (e: React.MouseEvent) => void) => (e: React.MouseEvent) => {
@@ -16,8 +18,8 @@ const NotLoggedInCatcher = ({ children }: Props) => {
       e.preventDefault()
       e.stopPropagation()
 
-      // TODO display login modal
-      console.log("login first!!")
+      // open login modal
+      setLoginModalOpen(true)
       return
     }
 

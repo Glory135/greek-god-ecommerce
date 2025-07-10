@@ -15,10 +15,12 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { GoogleOAuthButton } from "@/components/Auth/GoogleOAuthButton";
+import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 
 
 export default function LoginPage() {
   const router = useRouter()
+  const callBack_url_redirect = window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
 
   const trpc = useTRPC();
   const queryClient = useQueryClient()
@@ -27,8 +29,11 @@ export default function LoginPage() {
       toast(error.message)
     },
     onSuccess: async () => {
-      router.push("/");
+      router.push(callBack_url_redirect || "/");
       toast.success("Logged in successfully!")
+      if (window !== undefined) {
+        localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
+      }
       await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
     }
   }))

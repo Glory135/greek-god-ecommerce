@@ -17,10 +17,12 @@ import { useRouter } from "next/navigation";
 import React from 'react'
 import { GoogleOAuthButton } from "@/components/Auth/GoogleOAuthButton";
 import { cn } from "@/lib/utils";
+import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 
 
 export default function RegisterPage() {
-  const router = useRouter()
+  const router = useRouter();
+  const callBack_url_redirect = window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
 
   const trpc = useTRPC();
   const queryClient = useQueryClient()
@@ -29,8 +31,11 @@ export default function RegisterPage() {
       toast(error.message)
     },
     onSuccess: async () => {
-      router.push("/")
-      toast.success("Logged in successfully!")
+      router.push(callBack_url_redirect || "/");
+      toast.success("Logged in successfully!");
+      if (window !== undefined) {
+        localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
+      }
       await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
     }
   }))
@@ -141,7 +146,7 @@ export default function RegisterPage() {
       <p>Or</p>
 
       <GoogleOAuthButton />
-      
+
       <p className="text-center">
         By clicking &apos;Register Now&apos; you agree to <Link className="text-greek" href="#">terms & conditions</Link> and <Link className="text-greek" href="#">privacy policy</Link>.
       </p>
