@@ -15,16 +15,16 @@ export default function GoogleCallback() {
   const trpc = useTRPC();
   const hasRunRef = useRef(false);
 
-  const callBack_url_redirect = window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
+  const callBack_url_redirect = typeof window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
 
 
   const callbackMutation = useMutation(trpc.auth.googleAuthCallback.mutationOptions({
     onSuccess: () => {
       router.replace(callBack_url_redirect || "/");
       toast.success("Logged in successfully!")
-      // if (window !== undefined) {
+      if (typeof window !== undefined) {
         localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
-      // }
+      }
     },
     onError: (error: unknown) => {
       // Fallback for any other error

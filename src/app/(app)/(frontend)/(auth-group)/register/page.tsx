@@ -22,7 +22,7 @@ import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const callBack_url_redirect = window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
+  const callBack_url_redirect = typeof window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
 
   const trpc = useTRPC();
   const queryClient = useQueryClient()
@@ -33,7 +33,7 @@ export default function RegisterPage() {
     onSuccess: async () => {
       router.push(callBack_url_redirect || "/");
       toast.success("Logged in successfully!");
-      if (window !== undefined) {
+      if (typeof window !== undefined) {
         localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
       }
       await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
