@@ -137,6 +137,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  username: string;
   last_name?: string | null;
   first_name?: string | null;
   roles: ('user' | 'super-admin')[];
@@ -161,6 +162,7 @@ export interface AppUser {
   email: string;
   last_name?: string | null;
   first_name?: string | null;
+  username: string;
   hashedPassword?: string | null;
   hashSalt?: string | null;
   hashIterations?: number | null;
@@ -405,6 +407,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  username?: T;
   last_name?: T;
   first_name?: T;
   roles?: T;
@@ -451,6 +454,7 @@ export interface AppUsersSelect<T extends boolean = true> {
   email?: T;
   last_name?: T;
   first_name?: T;
+  username?: T;
   hashedPassword?: T;
   hashSalt?: T;
   hashIterations?: T;

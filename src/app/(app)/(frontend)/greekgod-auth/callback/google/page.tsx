@@ -12,9 +12,7 @@ import { toast } from "sonner";
 export default function GoogleCallback() {
   const router = useRouter();
   const trpc = useTRPC();
-
   const hasRunRef = useRef(false);
-
 
   const callbackMutation = useMutation(trpc.auth.googleAuthCallback.mutationOptions({
     onSuccess: () => {
@@ -22,22 +20,21 @@ export default function GoogleCallback() {
       toast.success("Logged in successfully!")
     },
     onError: (error: unknown) => {
+      // Fallback for any other error
       console.error("OAuth failed:", error);
-      // router.replace("/login?error=oauth");
+      toast.error("Google login failed. Please try again.");
+      router.replace("/login?error=oauth");
     },
   }));
 
   useEffect(() => {
-    // const timeout = setTimeout(() => {
-    //   callbackMutation.mutate();
-    // }, 300); // wait 300ms
-
     if (!hasRunRef.current) {
-      callbackMutation.mutate();
       hasRunRef.current = true;
-    }
 
-    // return () => clearTimeout(timeout);
+      setTimeout(() => {
+        callbackMutation.mutate();
+      }, 100);
+    }
   }, []);
 
   return (

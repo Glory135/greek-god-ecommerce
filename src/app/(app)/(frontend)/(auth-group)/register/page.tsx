@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PAGES_LINKS } from "@/utils/linksData";
 import Link from "next/link";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "@/modules/auth/schemas";
 import { z } from "zod";
@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import React from 'react'
 import { GoogleOAuthButton } from "@/components/Auth/GoogleOAuthButton";
+import { cn } from "@/lib/utils";
 
 
 export default function RegisterPage() {
@@ -38,7 +39,7 @@ export default function RegisterPage() {
     mode: "all",
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      // username: "",
+      username: "",
       last_name: "",
       first_name: "",
       email: "",
@@ -50,9 +51,9 @@ export default function RegisterPage() {
     register.mutate(values)
   }
 
-  // const username = form.watch("username")
-  // const usernameErrors = form.formState.errors.username;
-  // const showPreview = username && !usernameErrors;
+  const username = form.watch("username")
+  const usernameErrors = form.formState.errors.username;
+  const showPreview = username && !usernameErrors;
 
   return (
     <div className="w-full max-w-[400px] flex flex-col items-center gap-5">
@@ -63,7 +64,7 @@ export default function RegisterPage() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full flex flex-col items-center gap-3"
         >
-          {/* <FormField
+          <FormField
             name="username"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -77,7 +78,7 @@ export default function RegisterPage() {
                 <FormMessage />
               </FormItem>
             )}
-          /> */}
+          />
           <FormField
             name="first_name"
             render={({ field }) => (
