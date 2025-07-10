@@ -20,37 +20,37 @@ const LoginModal = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Login First</DialogTitle>
-          <DialogDescription>
-            Please Login first to be able to perform this action!
-          </DialogDescription>
-          <DialogFooter>
-            <div className='w-full flex flex-col items-center gap-5 mt-5'>
-              <DialogTrigger asChild>
-                <Link
-                  onClick={() => {
-                    // if (typeof window !== undefined) {
-                    //   localStorage.setItem(AUTH_CALLBACK_STORE_STRING, pathname);
-                    // }
-                  }}
-                  href={`${PAGES_LINKS.login.link}`}
-                  className={cn(
-                    buttonVariants({
-                      variant: "greek",
-                    }),
-                    "flex-1 w-full"
-                  )}
-                >
-                  Login
-                </Link>
-              </DialogTrigger>
-              <p>or</p>
-              <DialogTrigger asChild>
-                <GoogleOAuthButton notLoginPage={true} />
-              </DialogTrigger>
-            </div>
-
-          </DialogFooter>
         </DialogHeader>
+        <DialogDescription>
+          Please Login first to be able to perform this action!
+        </DialogDescription>
+        <DialogFooter>
+          <div className='w-full flex flex-col items-center gap-5 mt-5'>
+            <DialogTrigger asChild>
+              <Link
+                onClick={() => {
+                  // if (typeof window !== undefined) {
+                  //   localStorage.setItem(AUTH_CALLBACK_STORE_STRING, pathname);
+                  // }
+                }}
+                href={`${PAGES_LINKS.login.link}`}
+                className={cn(
+                  buttonVariants({
+                    variant: "greek",
+                  }),
+                  "flex-1 w-full"
+                )}
+              >
+                Login
+              </Link>
+            </DialogTrigger>
+            <p>or</p>
+            <DialogTrigger asChild>
+              <GoogleOAuthButton notLoginPage={true} />
+            </DialogTrigger>
+          </div>
+
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

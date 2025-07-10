@@ -3,6 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { headers as getHeaders } from "next/headers";
 import { loginSchema, registerSchema } from "../schemas";
 import { generateAuthCookies } from "../utils";
+import { z } from "zod";
 
 export const authRouter = createTRPCRouter({
 
@@ -84,6 +85,42 @@ export const authRouter = createTRPCRouter({
         })
       }),
 
+  verifyEmail: baseProcedure
+    .input(z.object({
+      token: z.string().min(1, "Verification token is required")
+    }))
+    .mutation(async ({ input, ctx }) => {
+      try {
+        // Call Payload's verifyEmail method
+        const isVerified = await ctx.payload.verifyEmail({
+          collection: 'users',
+          token: input.token,
+        });
+
+        if (!isVerified) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Email verification failed. The token may be invalid or expired."
+          });
+        }
+
+        return {
+          success: true,
+          message: "Email verified successfully!",
+        };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+
+        console.error("Email verification error:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to verify email. Please try again."
+        });
+      }
+    }),
+
   login: baseProcedure
     .input(loginSchema)
     .mutation(
@@ -147,6 +184,7 @@ export const authRouter = createTRPCRouter({
             roles: ['user'],
             password: `${Date.now()}-${Math.random()}`,
             appUserId: appUser.id,
+            _verified: true
           },
         });
       } catch (err) {
@@ -161,5 +199,4 @@ export const authRouter = createTRPCRouter({
 
     return session;
   }),
-
 })

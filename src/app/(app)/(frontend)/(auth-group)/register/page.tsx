@@ -13,15 +13,17 @@ import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import React from 'react'
+// import { useRouter } from "next/navigation";
+import React, { useState } from 'react'
 import { GoogleOAuthButton } from "@/components/Auth/GoogleOAuthButton";
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 // import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 
 
 export default function RegisterPage() {
-  const router = useRouter();
+  const [verifyModalOpen, setVerifyModalOpen] = useState(false)
+  // const router = useRouter();
   // const callBack_url_redirect = typeof window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
 
   const trpc = useTRPC();
@@ -31,8 +33,9 @@ export default function RegisterPage() {
       toast(error.message)
     },
     onSuccess: async () => {
-      router.push("/");
-      toast.success("Logged in successfully!");
+      setVerifyModalOpen(true)
+      // router.push("/");
+      // toast.success("Logged in successfully!");
       // if (typeof window !== undefined) {
       //   localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
       // }
@@ -61,95 +64,107 @@ export default function RegisterPage() {
   const showPreview = username && !usernameErrors;
 
   return (
-    <div className="w-full max-w-[400px] flex flex-col items-center gap-5">
-      <h1 className="w-full text-center font-bold text-primary text-2xl">Create Account</h1>
+    <>
+      <Dialog open={verifyModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Verif your email</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            We’ve sent an email to you for verifycation and to activate your account.
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
+      <div className="w-full max-w-[400px] flex flex-col items-center gap-5">
+        <h1 className="w-full text-center font-bold text-primary text-2xl">Create Account</h1>
 
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full flex flex-col items-center gap-3"
-        >
-          <FormField
-            name="username"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input {...field} type="text" placeholder="Username" />
-                </FormControl>
-                <FormDescription
-                  className={cn("hidden", showPreview && "block")}>
-                  Your username will be: <strong>{username?.toLowerCase()}</strong>
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="first_name"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input {...field} type="text" placeholder="First Name" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="last_name"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input {...field} type="text" placeholder="Last Name" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="email"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input {...field} type="email" placeholder="Email" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="password"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input {...field} type="password" placeholder="Password" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            disabled={register.isPending}
-            className="w-full"
-            type="submit">
-            {
-              register.isPending && (<Loader2 className="animate-spin" />)
-            }
-            {
-              register.isPending ? "Registering" : "Register Account"
-            }
-          </Button>
-          <p>Already have an account? <Link className="text-greek" href={PAGES_LINKS.login.link}> Log in</Link></p>
-        </form>
-      </Form>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full flex flex-col items-center gap-3"
+          >
+            <FormField
+              name="username"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input {...field} type="text" placeholder="Username" />
+                  </FormControl>
+                  <FormDescription
+                    className={cn("hidden", showPreview && "block")}>
+                    Your username will be: <strong>{username?.toLowerCase()}</strong>
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="first_name"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input {...field} type="text" placeholder="First Name" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="last_name"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input {...field} type="text" placeholder="Last Name" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="email"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input {...field} type="email" placeholder="Email" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="password"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input {...field} type="password" placeholder="Password" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              disabled={register.isPending}
+              className="w-full"
+              type="submit">
+              {
+                register.isPending && (<Loader2 className="animate-spin" />)
+              }
+              {
+                register.isPending ? "Registering" : "Register Account"
+              }
+            </Button>
+            <p>Already have an account? <Link className="text-greek" href={PAGES_LINKS.login.link}> Log in</Link></p>
+          </form>
+        </Form>
 
-      <p>Or</p>
+        <p>Or</p>
 
-      <GoogleOAuthButton />
+        <GoogleOAuthButton />
 
-      <p className="text-center">
-        By clicking &apos;Register Now&apos; you agree to <Link className="text-greek" href="#">terms & conditions</Link> and <Link className="text-greek" href="#">privacy policy</Link>.
-      </p>
-    </div>
+        <p className="text-center">
+          By clicking &apos;Register Now&apos; you agree to <Link className="text-greek" href="#">terms & conditions</Link> and <Link className="text-greek" href="#">privacy policy</Link>.
+        </p>
+      </div>
+    </>
   )
 }
