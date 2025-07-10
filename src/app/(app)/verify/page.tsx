@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTRPC } from '@/trpc/client'
 import { useMutation } from '@tanstack/react-query'
@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { PAGES_LINKS } from '@/utils/linksData'
 import Link from 'next/link'
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
@@ -143,5 +143,53 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+function VerifyEmailFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-greek-50 to-emerald-100 px-4">
+      <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center w-full max-w-md border border-greek-100">
+        {/* Logo */}
+        <div className="mb-8">
+          <Image
+            src="/logo/logo-icon.png"
+            alt="GreekGod Logo"
+            width={64}
+            height={64}
+            className="rounded-lg shadow-md"
+          />
+        </div>
+
+        {/* Loading Content */}
+        <div className="text-center">
+          <div className="mb-6">
+            <Loader2 className="w-16 h-16 text-greek-500 animate-spin mx-auto" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Loading Verification</h1>
+          <p className="text-gray-600 text-center max-w-md">
+            Please wait while we prepare your verification page...
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-8 pt-6 border-t border-greek-200 w-full">
+          <p className="text-sm text-gray-500 text-center">
+            Need help?{' '}
+            <Link href="/contact" className="text-greek-600 hover:text-greek-700 font-medium">
+              Contact Support
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<VerifyEmailFallback />}>
+      <VerifyEmailContent />
+    </Suspense>
   )
 }
