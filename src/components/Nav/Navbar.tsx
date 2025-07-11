@@ -6,7 +6,7 @@ import Link from 'next/link';
 import NavItems from './NavItems';
 import { buttonVariants } from '../ui/button';
 import Cart from '../Cart/Cart';
-import { LogoFull, LogoIcon } from '../Logo';
+import { LogoFull, LogoIcon, LogoText } from '../Logo';
 import { Heart, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import MobileNav from './MobileNav';
@@ -33,12 +33,18 @@ export default function Navbar() {
 						</div>
 
 						<LogoFull className='hidden md:block' />
-						<LogoIcon className='block md:hidden' />
+						<LogoText className='block md:hidden' />
 
 						{/* Mobile Nav */}
 						<div className='flex gap-2 lg:hidden items-center'>
 							<Link
-								href={user ? PAGES_LINKS.account.link : PAGES_LINKS.login.link}
+								href={
+									user && user.roles.includes("super-admin")
+										? PAGES_LINKS.admin.link :
+										user && !user.roles.includes("super-admin")
+											? PAGES_LINKS.account.link :
+											PAGES_LINKS.login.link
+								}
 								className={buttonVariants({
 									variant: 'ghost',
 									size: "sm"
@@ -63,7 +69,13 @@ export default function Navbar() {
 							<SearchBtn />
 							<span className='h-6 w-px bg-gray-200' />
 							<Link
-								href={user ? PAGES_LINKS.account.link : PAGES_LINKS.login.link}
+								href={
+									user && user.roles.includes("super-admin")
+										? PAGES_LINKS.admin.link :
+										user && !user.roles.includes("super-admin")
+											? PAGES_LINKS.account.link :
+											PAGES_LINKS.login.link
+								}
 								className={buttonVariants({
 									variant: 'ghost',
 									size: "sm"

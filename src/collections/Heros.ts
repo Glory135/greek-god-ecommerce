@@ -11,7 +11,10 @@ export const Heros: CollectionConfig = {
       type: "text",
       required: true,
       unique: true,
-      index: true
+      index: true,
+      access: {
+        update: () => false
+      }
     },
     {
       name: 'hero',

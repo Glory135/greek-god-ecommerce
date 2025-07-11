@@ -115,19 +115,19 @@ export default buildConfig({
     AppAccounts,
     AppUsers,
 
-    // media collections
-    Media,
-    LayoutMedia,
-
     // product related collections
+    Products,
     Categories,
     Collections,
-    Products,
     Colors,
     Sizes,
 
     // layout collections
-    Heros
+    Heros,
+    
+    // media collections
+    Media,
+    LayoutMedia,
   ],
   cookiePrefix: `__${OAUTH_NAME}-session`,
   editor: lexicalEditor(),

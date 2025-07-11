@@ -19,6 +19,9 @@ export const PAGES_LINKS = {
   },
   "wishlist": {
     link: "/account/wishlist"
+  },
+  "admin": {
+    link: "/admin"
   }
 }
 

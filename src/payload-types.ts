@@ -70,14 +70,14 @@ export interface Config {
     users: User;
     appAccounts: AppAccount;
     appUsers: AppUser;
-    media: Media;
-    layoutMedia: LayoutMedia;
+    products: Product;
     categories: Category;
     collections: Collection;
-    products: Product;
     colors: Color;
     sizes: Size;
     heros: Hero;
+    media: Media;
+    layoutMedia: LayoutMedia;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -91,14 +91,14 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     appAccounts: AppAccountsSelect<false> | AppAccountsSelect<true>;
     appUsers: AppUsersSelect<false> | AppUsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
-    layoutMedia: LayoutMediaSelect<false> | LayoutMediaSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
-    products: ProductsSelect<false> | ProductsSelect<true>;
     colors: ColorsSelect<false> | ColorsSelect<true>;
     sizes: SizesSelect<false> | SizesSelect<true>;
     heros: HerosSelect<false> | HerosSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    layoutMedia: LayoutMediaSelect<false> | LayoutMediaSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -218,78 +218,6 @@ export interface AppAccount {
   createdAt: string;
 }
 /**
- * Images uploaded should not be above 5MB
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: string;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * Images uploaded should not be above 10MB
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "layoutMedia".
- */
-export interface LayoutMedia {
-  id: string;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  parent?: (string | null) | Category;
-  subcategories?: {
-    docs?: (string | Category)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "collections".
- */
-export interface Collection {
-  id: string;
-  hero?: (string | null) | LayoutMedia;
-  title: string;
-  slug: string;
-  description?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
@@ -325,6 +253,23 @@ export interface Product {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  parent?: (string | null) | Category;
+  subcategories?: {
+    docs?: (string | Category)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "colors".
  */
 export interface Color {
@@ -344,6 +289,61 @@ export interface Size {
   size: string;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * Images uploaded should not be above 5MB
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections".
+ */
+export interface Collection {
+  id: string;
+  hero?: (string | null) | LayoutMedia;
+  title: string;
+  slug: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Images uploaded should not be above 10MB
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "layoutMedia".
+ */
+export interface LayoutMedia {
+  id: string;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -378,12 +378,8 @@ export interface PayloadLockedDocument {
         value: string | AppUser;
       } | null)
     | ({
-        relationTo: 'media';
-        value: string | Media;
-      } | null)
-    | ({
-        relationTo: 'layoutMedia';
-        value: string | LayoutMedia;
+        relationTo: 'products';
+        value: string | Product;
       } | null)
     | ({
         relationTo: 'categories';
@@ -392,10 +388,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'collections';
         value: string | Collection;
-      } | null)
-    | ({
-        relationTo: 'products';
-        value: string | Product;
       } | null)
     | ({
         relationTo: 'colors';
@@ -408,6 +400,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'heros';
         value: string | Hero;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'layoutMedia';
+        value: string | LayoutMedia;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -517,39 +517,29 @@ export interface AppUsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
+ * via the `definition` "products_select".
  */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  price?: T;
+  deliveryFee?: T;
+  totalPrice?: T;
+  category?: T;
+  'available colors'?: T;
+  'available sizes'?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  cover?: T;
+  collection?: T;
+  'return policy'?: T;
+  'in stock'?: T;
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "layoutMedia_select".
- */
-export interface LayoutMediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -572,32 +562,6 @@ export interface CollectionsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products_select".
- */
-export interface ProductsSelect<T extends boolean = true> {
-  name?: T;
-  description?: T;
-  price?: T;
-  deliveryFee?: T;
-  totalPrice?: T;
-  category?: T;
-  'available colors'?: T;
-  'available sizes'?: T;
-  images?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
-  cover?: T;
-  collection?: T;
-  'return policy'?: T;
-  'in stock'?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -632,6 +596,42 @@ export interface HerosSelect<T extends boolean = true> {
   description?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "layoutMedia_select".
+ */
+export interface LayoutMediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

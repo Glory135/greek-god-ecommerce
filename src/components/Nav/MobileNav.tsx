@@ -67,7 +67,7 @@ const MobileNav = () => {
       <SheetContent side='left' className='flex lg:hidden w-full h-full flex-col'>
         <SheetHeader className='flex justify-center items-center border-b border-primary/60'>
           <SheetTrigger asChild>
-            <LogoFull />
+            <LogoFull className='h-[40px]' />
           </SheetTrigger>
         </SheetHeader>
 
@@ -82,7 +82,7 @@ const MobileNav = () => {
                     (
                       <SheetTrigger asChild>
                         <Link href={navItem.href}
-                          className='w-full p-5 flex items-center text-base text-left font-medium hover:bg-primary hover:text-primary-foreground border-b border-primary/80 capitalize'
+                          className='w-full p-5 flex items-center text-sm text-left font-light hover:bg-primary hover:text-primary-foreground border-b border-primary/80 capitalize'
                         >
                           {navItem.label}
                         </Link>
@@ -93,7 +93,7 @@ const MobileNav = () => {
                         className='w-full px-5 py-2 border-b border-primary/80'
                       >
                         <AccordionItem value="item-1">
-                          <AccordionTrigger className='text-base text-left !font-medium capitalize'>
+                          <AccordionTrigger className='text-sm font-light text-left capitalize'>
                             {navItem.label}
                           </AccordionTrigger>
 
@@ -105,7 +105,7 @@ const MobileNav = () => {
                                   value.map((itm) => (
                                     <SheetTrigger key={itm.id} asChild>
                                       <Link href={itm.href}
-                                        className='w-full py-2 px-5 flex items-center text-base text-left  hover:bg-primary hover:text-primary-foreground capitalize'
+                                        className='w-full py-2 px-5 flex items-center text-sm text-left  hover:bg-primary font-light hover:text-primary-foreground capitalize'
                                       >
                                         {itm.label}
                                       </Link>
@@ -138,7 +138,11 @@ const MobileNav = () => {
                 </SheetTrigger>
                 <SheetTrigger className='flex-1' asChild>
                   <Button asChild>
-                    <Link className='flex gap-2 items-center' href={PAGES_LINKS.account.link}>
+                    <Link className='flex gap-2 items-center' href={
+                      user && user.roles.includes("super-admin")
+                        ? PAGES_LINKS.admin.link :
+                        PAGES_LINKS.account.link
+                    }>
                       <User />
                       Account
                     </Link>
