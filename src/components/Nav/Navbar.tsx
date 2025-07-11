@@ -6,7 +6,7 @@ import Link from 'next/link';
 import NavItems from './NavItems';
 import { buttonVariants } from '../ui/button';
 import Cart from '../Cart/Cart';
-import { LogoFull, LogoIcon, LogoText } from '../Logo';
+import { LogoFull, LogoText } from '../Logo';
 import { Heart, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import MobileNav from './MobileNav';
