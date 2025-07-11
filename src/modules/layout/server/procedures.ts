@@ -1,6 +1,7 @@
-import { Category, Collection } from "@/payload-types";
+import { Category, Collection, LayoutMedia } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { generateCategoryLink, generateCollectionLink } from "@/utils/commonFunctions";
+import { z } from "zod";
 
 export const layoutRouter = createTRPCRouter({
 
@@ -134,5 +135,31 @@ export const layoutRouter = createTRPCRouter({
     ];
 
     return [categoriesForNav, collectionsForNav, ...staticNavItems];
-  })
+  }),
+
+  getHero: baseProcedure
+    .input(
+      z.object({
+        slug: z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const data = await ctx.payload.find({
+        collection: "heros",
+        depth: 2,
+        where: {
+          slug: {
+            equals: input.slug
+          }
+        }
+      })
+
+      return {
+        ...data,
+        docs: data.docs.map((doc) => ({
+          ...doc,
+          hero: doc.hero as LayoutMedia,
+        }))[0]
+      }
+    })
 })

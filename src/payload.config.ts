@@ -29,6 +29,7 @@ import { AppAccounts } from './collections/AppAccounts'
 import { OAUTH_NAME } from './constants'
 import { resendAdapter } from "@payloadcms/email-resend"
 import { LayoutMedia } from './collections/LayoutMedia'
+import { Heros } from './collections/Heros'
 
 
 cloudinary.config({
@@ -109,16 +110,24 @@ export default buildConfig({
     },
   },
   collections: [
+    // Auth collections
     Users,
     AppAccounts,
     AppUsers,
+
+    // media collections
     Media,
     LayoutMedia,
+
+    // product related collections
     Categories,
     Collections,
     Products,
     Colors,
     Sizes,
+
+    // layout collections
+    Heros
   ],
   cookiePrefix: `__${OAUTH_NAME}-session`,
   editor: lexicalEditor(),

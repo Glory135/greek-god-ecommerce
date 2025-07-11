@@ -77,6 +77,7 @@ export interface Config {
     products: Product;
     colors: Color;
     sizes: Size;
+    heros: Hero;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -97,6 +98,7 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     colors: ColorsSelect<false> | ColorsSelect<true>;
     sizes: SizesSelect<false> | SizesSelect<true>;
+    heros: HerosSelect<false> | HerosSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -345,6 +347,19 @@ export interface Size {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "heros".
+ */
+export interface Hero {
+  id: string;
+  slug: string;
+  hero: string | LayoutMedia;
+  title?: string | null;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -389,6 +404,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sizes';
         value: string | Size;
+      } | null)
+    | ({
+        relationTo: 'heros';
+        value: string | Hero;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -599,6 +618,18 @@ export interface ColorsSelect<T extends boolean = true> {
 export interface SizesSelect<T extends boolean = true> {
   label?: T;
   size?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "heros_select".
+ */
+export interface HerosSelect<T extends boolean = true> {
+  slug?: T;
+  hero?: T;
+  title?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
