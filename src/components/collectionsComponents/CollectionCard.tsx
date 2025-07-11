@@ -1,6 +1,7 @@
 import { PAGES_LINKS } from '@/utils/linksData'
 import Link from 'next/link'
 import React from 'react'
+import { shortenText } from '@/utils/commonFunctions'
 
 interface Props {
   slug: string;
@@ -29,7 +30,7 @@ const CollectionCard = ({ slug, title, description, heroimg }: Props) => {
               <h3 className="text-3xl font-bold text-white drop-shadow-lg">
                 {title}
               </h3>
-              <div className="mt-2 h-1 w-16 bg-white/30 rounded-full mx-auto"></div>
+              <div className="mt-2 h-1 w-16 bg-background/30 rounded-full mx-auto"></div>
             </div>
           </div>
         )}
@@ -49,7 +50,7 @@ const CollectionCard = ({ slug, title, description, heroimg }: Props) => {
         {description && (
           <div className="overflow-hidden">
             <p className="text-white/90 text-sm leading-relaxed transform translate-y-full transition-transform duration-500 group-hover:translate-y-0">
-              {description}
+              {shortenText(description, 100)}
             </p>
           </div>
         )}

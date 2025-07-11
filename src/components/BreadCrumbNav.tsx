@@ -13,7 +13,7 @@ const BreadCrumbNav = () => {
     setCrumbs(pathname.split("/"))
   }, [pathname])
 
-  if (pathname === "/" || pathname === "/login" || pathname === "/register") {
+  if (pathname === "/" || pathname === "/login" || pathname === "/register" || pathname.includes("products/")) {
     return null
   }
   return (

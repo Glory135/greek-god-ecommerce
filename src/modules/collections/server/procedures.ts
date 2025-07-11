@@ -1,5 +1,5 @@
 import { DEFAULT_LIMIT } from "@/constants";
-import { LayoutMedia } from "@/payload-types";
+import { Collection, Color, LayoutMedia, Media, Size } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { z } from "zod";
 
@@ -49,6 +49,51 @@ export const collectionsRouter = createTRPCRouter({
         docs: data.docs.map((doc) => ({
           ...doc,
           hero: doc.hero as LayoutMedia | null,
+        }))
+      }
+    }),
+
+  getProducts: baseProcedure
+    .input(
+      z.object({
+        collectionSlug: z.string(),
+        cursor: z.number().default(1),
+        limit: z.number().default(DEFAULT_LIMIT)
+      })
+    )
+    .query(async ({ ctx, input }) => {
+
+      const collectionData = await ctx.payload.find({
+        collection: "collections",
+        where: {
+          slug: {
+            equals: input.collectionSlug
+          }
+        }
+      })
+
+      const data = await ctx.payload.find({
+        collection: "products",
+        depth: 1,  // populate category collection and image
+        pagination: true,
+        page: input.cursor,
+        limit: input.limit,
+        where: {
+          collection: {
+            equals: collectionData.docs[0]?.id || ""
+          }
+        }
+      })
+
+      return {
+        ...data,
+        docs: data.docs.map((doc) => ({
+          ...doc,
+          ["available sizes"]: doc["available sizes"] as Size[],
+          ["available colors"]: doc["available colors"] as Color[],
+          collection: doc.collection as Collection[],
+          images: doc.images as Array<{ image: Media }> | null,
+          cover: doc.cover as Media | null,
         }))
       }
     }),
