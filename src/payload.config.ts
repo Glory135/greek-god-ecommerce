@@ -28,6 +28,7 @@ import { AppUsers } from './collections/AppUsers'
 import { AppAccounts } from './collections/AppAccounts'
 import { OAUTH_NAME } from './constants'
 import { resendAdapter } from "@payloadcms/email-resend"
+import { LayoutMedia } from './collections/LayoutMedia'
 
 
 cloudinary.config({
@@ -44,7 +45,7 @@ const cloudinaryAdapter = () => ({
     // data,
     // req,
     // clientUploadContext,
-  }: Parameters<HandleUpload>[0]) {
+  }: Parameters<HandleUpload>[0]) {    
     try {
       // createing a function that will upload your file in cloudinary
       // Uploading the file to Cloudinary using upload_stream.
@@ -55,7 +56,7 @@ const cloudinaryAdapter = () => ({
         const uploadStream = cloudinary.uploader.upload_stream(
           {
             resource_type: 'auto', // auto-detect file type (image, video, etc.)
-            public_id: `${collection}/${file.filename.replace(/\.[^/.]+$/, '')}`, // Set custom file name without extension, and it also previxed the cleaned filename with media/
+            public_id: `${collection.slug}/${file.filename.replace(/\.[^/.]+$/, '')}`, // Set custom file name without extension, and it also previxed the cleaned filename with media/
             overwrite: false, // Do not overwrite if a file with the same name exists
             use_filename: true, // Use original filename
           },
@@ -68,7 +69,7 @@ const cloudinaryAdapter = () => ({
         uploadStream.end(file.buffer) // this line send the file to cloudinary it means entire file is already in memory and will be send whole thing at once not in chunk
       })
       file.filename = uploadResult.public_id // Use Cloudinary's public_id as the file's unique name
-      file.mimeType = `${uploadResult.format}` // Set MIME type based on Cloudinary's format (e.g., image/png)
+      file.mimeType = uploadResult.resource_type + '/' + uploadResult.format // Set MIME type based on Cloudinary's format (e.g., image/png)
       file.filesize = uploadResult.bytes // Set the actual file size in bytes, for admin display and validations
     } catch (err) {
       console.error('Upload Error', err)
@@ -112,6 +113,7 @@ export default buildConfig({
     AppAccounts,
     AppUsers,
     Media,
+    LayoutMedia,
     Categories,
     Collections,
     Products,
@@ -162,6 +164,20 @@ export default buildConfig({
               secure: true,
               transformation: [
                 { width: 800, height: 800, crop: 'fill', gravity: 'auto' },
+                { quality: 'auto' },
+                { fetch_format: 'auto' }
+              ]
+            });
+          }
+        },
+        layoutMedia: {
+          adapter: cloudinaryAdapter,
+          disableLocalStorage: true, // Prevent Payload from saving files to disk
+          generateFileURL: ({ filename }) => {
+            return cloudinary.url(`layoutMedia/${filename}`, {
+              secure: true,
+              transformation: [
+                { width: 1600, crop: 'scale' },
                 { quality: 'auto' },
                 { fetch_format: 'auto' }
               ]

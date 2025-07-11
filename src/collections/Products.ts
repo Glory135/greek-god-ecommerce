@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const Products: CollectionConfig = {
   slug: "products",
+  admin: {
+    useAsTitle: 'name',
+  },
   fields: [
     {
       name: "name",
@@ -70,7 +73,7 @@ export const Products: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       required: true,
-      admin:{
+      admin: {
         description: "please select one of the images you have picked in the images field for the cover image"
       }
     },
@@ -83,7 +86,7 @@ export const Products: CollectionConfig = {
     {
       name: "return policy",
       type: "text",
-      admin:{
+      admin: {
         description: "This is the valid time range the clothcan be returned eg: 30-days, 1-month etc."
       }
     },

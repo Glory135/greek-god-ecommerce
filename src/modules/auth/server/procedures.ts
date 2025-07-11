@@ -195,6 +195,27 @@ export const authRouter = createTRPCRouter({
           cause: err,
         });
       }
+    } else {
+      try {
+        await ctx.payload.update({
+          collection: "users",
+          where: {
+            email: { equals: email }
+          },
+          data: {
+            username: appUser.username,
+            appUserId: appUser.id,
+            _verified: true,
+          }
+        });
+      } catch (err) {
+        console.error("❌ Failed to update user in 'users':", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating user from Google login",
+          cause: err,
+        });
+      }
     }
 
     return session;

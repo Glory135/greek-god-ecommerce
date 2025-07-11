@@ -71,6 +71,7 @@ export interface Config {
     appAccounts: AppAccount;
     appUsers: AppUser;
     media: Media;
+    layoutMedia: LayoutMedia;
     categories: Category;
     collections: Collection;
     products: Product;
@@ -90,6 +91,7 @@ export interface Config {
     appAccounts: AppAccountsSelect<false> | AppAccountsSelect<true>;
     appUsers: AppUsersSelect<false> | AppUsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    layoutMedia: LayoutMediaSelect<false> | LayoutMediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
@@ -142,6 +144,7 @@ export interface User {
   first_name?: string | null;
   roles: ('user' | 'super-admin')[];
   appUserId?: (string | null) | AppUser;
+  _verified?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -149,8 +152,6 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
-  _verified?: boolean | null;
-  _verificationToken?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
@@ -215,10 +216,33 @@ export interface AppAccount {
   createdAt: string;
 }
 /**
+ * Images uploaded should not be above 5MB
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
+  id: string;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * Images uploaded should not be above 10MB
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "layoutMedia".
+ */
+export interface LayoutMedia {
   id: string;
   alt: string;
   updatedAt: string;
@@ -256,10 +280,10 @@ export interface Category {
  */
 export interface Collection {
   id: string;
+  hero?: (string | null) | LayoutMedia;
   title: string;
   slug: string;
   description?: string | null;
-  products?: (string | Product)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -343,6 +367,10 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
+        relationTo: 'layoutMedia';
+        value: string | LayoutMedia;
+      } | null)
+    | ({
         relationTo: 'categories';
         value: string | Category;
       } | null)
@@ -414,6 +442,7 @@ export interface UsersSelect<T extends boolean = true> {
   first_name?: T;
   roles?: T;
   appUserId?: T;
+  _verified?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -421,8 +450,6 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
-  _verified?: T;
-  _verificationToken?: T;
   loginAttempts?: T;
   lockUntil?: T;
 }
@@ -489,6 +516,24 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "layoutMedia_select".
+ */
+export interface LayoutMediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
@@ -504,10 +549,10 @@ export interface CategoriesSelect<T extends boolean = true> {
  * via the `definition` "collections_select".
  */
 export interface CollectionsSelect<T extends boolean = true> {
+  hero?: T;
   title?: T;
   slug?: T;
   description?: T;
-  products?: T;
   updatedAt?: T;
   createdAt?: T;
 }

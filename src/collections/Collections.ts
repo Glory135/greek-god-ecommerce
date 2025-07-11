@@ -8,6 +8,12 @@ export const Collections: CollectionConfig = {
   },
   fields: [
     {
+      name: 'hero',
+      type: 'upload',
+      relationTo: 'layoutMedia',
+      required: false,
+    },
+    {
       name: "title",
       type: "text",
       required: true
@@ -24,11 +30,11 @@ export const Collections: CollectionConfig = {
       type: "text",
       required: false,
     },
-    {
-      name: "products",
-      type: "relationship",
-      relationTo: "products",
-      hasMany: true
-    }
+    // {
+    //   name: "products",
+    //   type: "relationship",
+    //   relationTo: "products",
+    //   hasMany: true
+    // },
   ]
 }
