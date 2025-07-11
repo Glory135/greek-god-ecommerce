@@ -43,7 +43,7 @@ const SingleCollectionPageHero = ({
           <div className="flex w-fit max-w-full flex-col gap-5">
             <h1 className="text-3xl font-bold drop-shadow-lg text-white">Collection Not Found</h1>
             <p className='text-white text-xl leading-relaxed max-w-3xl'>
-              Sorry, we couldn't load this collection. Please try again later.
+              Sorry, we couldn&apos;t load this collection. Please try again later.
             </p>
           </div>
         </MaxWidthWrapper>

@@ -2,6 +2,7 @@ import { PAGES_LINKS } from '@/utils/linksData'
 import Link from 'next/link'
 import React from 'react'
 import { shortenText } from '@/utils/commonFunctions'
+import Image from 'next/image';
 
 interface Props {
   slug: string;
@@ -19,10 +20,11 @@ const CollectionCard = ({ slug, title, description, heroimg }: Props) => {
       {/* Hero Image or Fallback */}
       <div className="relative h-80 w-full overflow-hidden">
         {heroimg ? (
-          <img
+          <Image
+            fill
             src={heroimg}
             alt={title}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600">
