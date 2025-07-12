@@ -39,9 +39,9 @@ export default function Navbar() {
 						<div className='flex gap-2 lg:hidden items-center'>
 							<Link
 								href={
-									user && user.roles.includes("super-admin")
+									user && user?.roles?.includes("super-admin")
 										? PAGES_LINKS.admin.link :
-										user && !user.roles.includes("super-admin")
+										user && !user?.roles?.includes("super-admin")
 											? PAGES_LINKS.account.link :
 											PAGES_LINKS.login.link
 								}
@@ -70,9 +70,9 @@ export default function Navbar() {
 							<span className='h-6 w-px bg-gray-200' />
 							<Link
 								href={
-									user && user.roles.includes("super-admin")
+									user && user?.roles?.includes("super-admin")
 										? PAGES_LINKS.admin.link :
-										user && !user.roles.includes("super-admin")
+										user && !user?.roles?.includes("super-admin")
 											? PAGES_LINKS.account.link :
 											PAGES_LINKS.login.link
 								}

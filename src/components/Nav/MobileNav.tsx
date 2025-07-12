@@ -139,7 +139,7 @@ const MobileNav = () => {
                 <SheetTrigger className='flex-1' asChild>
                   <Button asChild>
                     <Link className='flex gap-2 items-center' href={
-                      user && user.roles.includes("super-admin")
+                      user && user?.roles?.includes("super-admin")
                         ? PAGES_LINKS.admin.link :
                         PAGES_LINKS.account.link
                     }>
