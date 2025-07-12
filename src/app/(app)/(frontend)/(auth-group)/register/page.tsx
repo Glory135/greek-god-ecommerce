@@ -25,8 +25,6 @@ import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 
 export default function RegisterPage() {
   const [verifyModalOpen, setVerifyModalOpen] = useState(false)
-  // const router = useRouter();
-  // const callBack_url_redirect = typeof window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
   const [callbackUrl, setCallbackUrl] = useState<string | null>(null);
   const router = useRouter()
 
@@ -47,7 +45,7 @@ export default function RegisterPage() {
       setVerifyModalOpen(true)
       router.push(callbackUrl || "/");
       toast.success("Logged in successfully!");
-      if (typeof window !== undefined) {
+      if (typeof window !== "undefined") {
         localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
       }
       await queryClient.invalidateQueries(trpc.auth.session.queryFilter());

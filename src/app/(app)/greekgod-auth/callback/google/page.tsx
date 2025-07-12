@@ -28,7 +28,7 @@ export default function GoogleCallback() {
     onSuccess: () => {
       router.replace(callbackUrl || "/");
       toast.success("Logged in successfully!")
-      if (typeof window !== undefined) {
+      if (typeof window !== "undefined") {
         localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
       }
     },

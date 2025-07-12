@@ -40,7 +40,7 @@ export default function LoginPage() {
     onSuccess: async () => {
       router.push(callbackUrl || "/");
       toast.success("Logged in successfully!")
-      if (typeof window !== undefined) {
+      if (typeof window !== "undefined") {
         localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
       }
       await queryClient.invalidateQueries(trpc.auth.session.queryFilter());

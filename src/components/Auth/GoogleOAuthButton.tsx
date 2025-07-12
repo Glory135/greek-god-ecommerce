@@ -11,7 +11,7 @@ export const GoogleOAuthButton = ({ notLoginPage }: { notLoginPage?: boolean }) 
   const pathname = usePathname()
 
   const handleGoogleSignin = async () => {
-    if (typeof window !== undefined && notLoginPage) {
+    if (typeof window !== "undefined" && notLoginPage) {
       localStorage.setItem(AUTH_CALLBACK_STORE_STRING, pathname);
     }
     oauth('google')

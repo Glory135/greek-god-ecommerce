@@ -29,7 +29,7 @@ const LoginModal = () => {
             <DialogTrigger asChild>
               <Link
                 onClick={() => {
-                  if (typeof window !== undefined) {
+                  if (typeof window !== "undefined") {
                     localStorage.setItem(AUTH_CALLBACK_STORE_STRING, pathname);
                   }
                 }}
