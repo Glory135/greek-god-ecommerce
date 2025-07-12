@@ -51,14 +51,14 @@ const CollectionCard = ({ slug, title, description, heroimg }: Props) => {
         {/* Description - Slides up on hover */}
         {description && (
           <div className="overflow-hidden">
-            <p className="text-white/90 text-sm leading-relaxed transform translate-y-full transition-transform duration-500 group-hover:translate-y-0">
+            <p className="text-white/90 text-sm leading-relaxed transform sm:translate-y-full transition-transform duration-500 group-hover:translate-y-0">
               {shortenText(description, 100)}
             </p>
           </div>
         )}
 
         {/* Call to Action */}
-        <div className="mt-4 flex items-center text-white/80 text-sm font-medium opacity-0 transition-all duration-500 group-hover:opacity-100">
+        <div className="mt-4 flex items-center text-white/80 text-sm font-medium sm:opacity-0 transition-all duration-500 group-hover:opacity-100">
           <span>Explore Collection</span>
           <svg
             className="ml-2 h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-1"

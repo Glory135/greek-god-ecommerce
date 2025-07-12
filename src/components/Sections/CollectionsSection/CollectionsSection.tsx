@@ -67,19 +67,19 @@ const CollectionsSection = () => {
             {/* Content overlay */}
             <div className="absolute inset-0 flex flex-col gap-3 justify-end p-6">
               {/* Title and Description */}
-              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 ease-out">
+              <div className="sm:transform sm:translate-y-4 group-hover:translate-y-0 transition-transform duration-300 ease-out">
                 <h3 className="text-white text-xl font-bold mb-2 group-hover:text-white">
                   {collection.title || `Collection ${index + 1}`}
                 </h3>
                 {collection.description && (
-                  <p className="text-gray-200 text-sm mb-4 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                  <p className="text-gray-200 text-sm drop-shadow-xl mb-4 line-clamp-2 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
                     {shortenText(collection.description, 200)}
                   </p>
                 )}
               </div>
 
               {/* CTA Button */}
-              <div className="transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out delay-150">
+              <div className="transform sm:translate-y-8 sm:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out delay-150">
                 <span className={cn(
                   buttonVariants({ variant: "secondary", size: "sm" }),
                   "bg-white text-black hover:bg-gray-100 transition-colors duration-200"
