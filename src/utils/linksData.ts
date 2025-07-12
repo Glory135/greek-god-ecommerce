@@ -2,6 +2,9 @@ export const PAGES_LINKS = {
   "home": {
     link: "/"
   },
+  "about": {
+    link: "/about"
+  },
   "products": {
     link: "/products"
   },

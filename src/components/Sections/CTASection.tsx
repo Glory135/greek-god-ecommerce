@@ -1,5 +1,9 @@
 import React from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
+import Link from 'next/link'
+import { PAGES_LINKS } from '@/utils/linksData'
+import { cn } from '@/lib/utils'
+import { buttonVariants } from '../ui/button'
 
 const CTASection = () => {
   return (
@@ -14,7 +18,17 @@ const CTASection = () => {
             Beyond the fabric, lies the man. Dress with purpose,
             live with distinction.
           </p>
-          {/* <Button className='flex w-fit px-10' >New Arrivals</Button> */}
+          <Link
+            href={PAGES_LINKS.products.link}
+            className={
+              cn(
+                buttonVariants({
+                  variant: "greek"
+                }),
+                'flex w-fit px-10'
+              )}>
+            Explore Our Products
+          </Link>
         </div>
       </MaxWidthWrapper>
     </section>

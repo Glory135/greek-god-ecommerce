@@ -5,6 +5,7 @@ import MaxWidthWrapper from '../MaxWidthWrapper'
 import { FaInstagram, FaFacebook, FaPinterest, FaTiktok } from "react-icons/fa";
 import Link from 'next/link';
 import Image from 'next/image';
+import { PAGES_LINKS } from '@/utils/linksData';
 
 const Footer = () => {
   return (
@@ -38,37 +39,22 @@ const Footer = () => {
               <h4 className='font-bold text-base'>About GreekGod</h4>
               <ul className='flex flex-col gap-3'>
                 <li className='text-base'>
-                  <Link href={"#"}>Collection</Link>
+                  <Link href={PAGES_LINKS.about.link}>About Us</Link>
+                </li>
+                <li className='text-base'>
+                  <Link href={PAGES_LINKS.products.link}>Products</Link>
+                </li>
+                <li className='text-base'>
+                  <Link href={PAGES_LINKS.collections.link}>Collections</Link>
                 </li>
                 <li className='text-base'>
                   <Link href={"#"}>Trending</Link>
-                </li>
-                <li className='text-base'>
-                  <Link href={"#"}>Privacy Policy</Link>
-                </li>
-                <li className='text-base'>
-                  <Link href={"#"}>Support System</Link>
-                </li>
-                <li className='text-base'>
-                  <Link href={"#"}>Terms & Condition</Link>
-                </li>
-                <li className='text-base'>
-                  <Link href={"#"}>Copyright Notice</Link>
                 </li>
               </ul>
             </div>
             <div className="flex flex-col gap-5">
               <h4 className='font-bold text-base'>Help & Support</h4>
               <ul className='flex flex-col gap-3'>
-                <li className='text-base'>
-                  <Link href={"#"}>Orders & Shipping</Link>
-                </li>
-                <li className='text-base'>
-                  <Link href={"#"}>Returns & Refunds</Link>
-                </li>
-                <li className='text-base'>
-                  <Link href={"#"}>FAQs</Link>
-                </li>
                 <li className='text-base'>
                   <Link href={"#"}>Contact Us</Link>
                 </li>
