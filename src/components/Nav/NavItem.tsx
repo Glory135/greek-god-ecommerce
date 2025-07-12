@@ -129,7 +129,8 @@ export default function NavItem({
 
 							<div className='flex-1 h-full flex gap-2 gap-x-3'>
 								{navItem.children?.featured.slice(0, 3).map((item) => (
-									<div
+									<Link
+										href={item.href}
 										className='flex-1 h-full flex flex-col group relative text-base sm:text-sm'
 										key={item.id}>
 										<div className='relative h-full overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75'>
@@ -140,18 +141,16 @@ export default function NavItem({
 												className='object-cover object-center'
 											/>
 										</div>
-										<Link
-											href={item.href}
-											onClick={handleClose}
+										<p
 											className='mt-6 block font-medium text-primary hover:underline'>
 											{item.label}
-										</Link>
+										</p>
 										<p
 											className='mt-1'
 											aria-hidden='true'>
-											Buy now
+											Shop now
 										</p>
-									</div>
+									</Link>
 								))}
 							</div>
 						</div>

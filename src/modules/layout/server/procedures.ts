@@ -1,6 +1,7 @@
 import { Category, Collection, LayoutMedia } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { generateCategoryLink, generateCollectionLink } from "@/utils/commonFunctions";
+import { PAGES_LINKS } from "@/utils/linksData";
 import { z } from "zod";
 
 export const layoutRouter = createTRPCRouter({
@@ -28,23 +29,30 @@ export const layoutRouter = createTRPCRouter({
 
 
     const trendingCollections = collectionsData.docs.slice(0, 6); // First 3 collections
-    const featuredCollections = collectionsData.docs.slice(0, 8); // First 3 collections
-    const moreCollections = collectionsData.docs.slice(8, 16); // Rest of collections
+    const featuredCollections = collectionsData.docs.slice(0, 5); // First 3 collections
+    const moreCollections = collectionsData.docs.slice(5, 12); // Rest of collections
 
 
     // Transform categories into navigation format
     const categoriesForNav = {
       id: 1,
-      label: "New Arrivals",
+      label: "Products",
       value: "new-arrivals",
       children: {
         links: {
-          "categories": (categoriesData?.docs.slice(0, 9) ?? []).map((cat, index) => ({
-            id: (index + 1) * 10,
-            label: (cat as Category).name,
-            value: (cat as Category).slug,
-            href: cat.slug === "all" ? "/products" : generateCategoryLink(cat.slug)
-          })),
+          "categories": [
+            {
+              id: 121221,
+              label: "All Products",
+              value: "allproducts",
+              href: PAGES_LINKS.products.link
+            },
+            ...(categoriesData?.docs.slice(0, 9) ?? []).map((cat, index) => ({
+              id: (index + 1) * 10,
+              label: (cat as Category).name,
+              value: (cat as Category).slug,
+              href: cat.slug === "all" ? "/products" : generateCategoryLink(cat.slug)
+            }))],
           "trending": (trendingCollections ?? []).map((col, index) => ({
             id: (index + 1) * 100,
             label: (col as Collection).title,
@@ -55,21 +63,24 @@ export const layoutRouter = createTRPCRouter({
         featured: [
           {
             id: 8,
-            label: "Fall Collection",
-            href: "#",
-            imageSrc: "/images/stock1.jpg"
+            label: featuredCollections[0]?.title,
+            href: generateCollectionLink(featuredCollections[0]?.slug || ""),
+            // @ts-expect-error this is valid
+            imageSrc: featuredCollections[0]?.hero?.url || "/images/stock1.jpg"
           },
           {
             id: 9,
-            label: "Jackets",
-            href: "#",
-            imageSrc: "/images/stock2.jpg"
+            label: featuredCollections[1]?.title,
+            href: generateCollectionLink(featuredCollections[1]?.slug || ""),
+            // @ts-expect-error this is valid
+            imageSrc: featuredCollections[1]?.hero?.url || "/images/stock2.jpg"
           },
           {
             id: 10,
-            label: "Summer Collection",
-            href: "#",
-            imageSrc: "/images/stock3.jpg"
+            label: featuredCollections[2]?.title,
+            href: generateCollectionLink(featuredCollections[2]?.slug || ""),
+            // @ts-expect-error this is valid
+            imageSrc: featuredCollections[2]?.hero?.url || "/images/stock3.jpg"
           },
         ]
       }
@@ -82,12 +93,19 @@ export const layoutRouter = createTRPCRouter({
       value: "collections",
       children: {
         links: {
-          "featured": (featuredCollections ?? []).map((col, index) => ({
-            id: (index + 1) * 1000,
-            label: (col as Collection).title,
-            value: (col as Collection).slug,
-            href: generateCollectionLink(col.slug)
-          })),
+          "featured": [
+            {
+              id: 7676876,
+              label: "All Collections",
+              value: "allcollections",
+              href: PAGES_LINKS.collections.link
+            },
+            ...(featuredCollections ?? []).map((col, index) => ({
+              id: (index + 1) * 1000,
+              label: (col as Collection).title,
+              value: (col as Collection).slug,
+              href: generateCollectionLink(col.slug)
+            }))],
           "more": (moreCollections ?? []).map((col, index) => ({
             id: (index + 1) * 10000,
             label: (col as Collection).title,
@@ -98,15 +116,17 @@ export const layoutRouter = createTRPCRouter({
         featured: [
           {
             id: 3,
-            label: "Shirts",
-            href: "#",
-            imageSrc: "/images/stock4.jpg"
+            label: featuredCollections[3]?.title,
+            href: generateCollectionLink(featuredCollections[3]?.slug || ""),
+            // @ts-expect-error this is valid
+            imageSrc: featuredCollections[3]?.hero?.url || "/images/stock4.jpg"
           },
           {
             id: 4,
-            label: "Jackets",
-            href: "#",
-            imageSrc: "/images/stock5.jpg"
+            label: featuredCollections[4]?.title,
+            href: generateCollectionLink(featuredCollections[4]?.slug || ""),
+            // @ts-expect-error this is valid
+            imageSrc: featuredCollections[4]?.hero?.url || "/images/stock5.jpg"
           },
         ]
       }
@@ -118,19 +138,19 @@ export const layoutRouter = createTRPCRouter({
         id: 5,
         label: "Trending",
         value: "trending",
-        href: "/products?trending=true"
+        href: `${PAGES_LINKS.products.link}?sort=trending`
       },
       {
         id: 6,
         label: "Lookbook",
         value: "lookbook",
-        href: "/lookbook"
+        href: `${PAGES_LINKS.lookbook.link}`
       },
       {
         id: 7,
         label: "About",
         value: "about",
-        href: "/about"
+        href: `${PAGES_LINKS.about.link}`
       }
     ];
 

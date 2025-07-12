@@ -5,6 +5,9 @@ export const PAGES_LINKS = {
   "about": {
     link: "/about"
   },
+  "lookbook": {
+    link: "/lookbook"
+  },
   "products": {
     link: "/products"
   },
