@@ -1,3 +1,4 @@
+import { INavItem } from "@/components/Nav/types";
 import { Category, Collection, LayoutMedia } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { generateCategoryLink, generateCollectionLink } from "@/utils/commonFunctions";
@@ -26,11 +27,16 @@ export const layoutRouter = createTRPCRouter({
       pagination: false,
     });
 
+    const formattedCollectionData = collectionsData.docs.map(i => ({
+      ...i,
+      hero: i.hero as LayoutMedia | null
+    }))
 
 
-    const trendingCollections = collectionsData.docs.slice(0, 6); // First 3 collections
-    const featuredCollections = collectionsData.docs.slice(0, 5); // First 3 collections
-    const moreCollections = collectionsData.docs.slice(5, 12); // Rest of collections
+
+    const trendingCollections = formattedCollectionData.slice(0, 6); // First 3 collections
+    const featuredCollections = formattedCollectionData.slice(0, 5); // First 3 collections
+    const moreCollections = formattedCollectionData.slice(5, 12); // Rest of collections
 
 
     // Transform categories into navigation format
@@ -65,21 +71,18 @@ export const layoutRouter = createTRPCRouter({
             id: 8,
             label: featuredCollections[0]?.title,
             href: generateCollectionLink(featuredCollections[0]?.slug || ""),
-            // @ts-expect-error this is valid
             imageSrc: featuredCollections[0]?.hero?.url || "/images/stock1.jpg"
           },
           {
             id: 9,
             label: featuredCollections[1]?.title,
             href: generateCollectionLink(featuredCollections[1]?.slug || ""),
-            // @ts-expect-error this is valid
             imageSrc: featuredCollections[1]?.hero?.url || "/images/stock2.jpg"
           },
           {
             id: 10,
             label: featuredCollections[2]?.title,
             href: generateCollectionLink(featuredCollections[2]?.slug || ""),
-            // @ts-expect-error this is valid
             imageSrc: featuredCollections[2]?.hero?.url || "/images/stock3.jpg"
           },
         ]
@@ -102,14 +105,14 @@ export const layoutRouter = createTRPCRouter({
             },
             ...(featuredCollections ?? []).map((col, index) => ({
               id: (index + 1) * 1000,
-              label: (col as Collection).title,
-              value: (col as Collection).slug,
+              label: (col as Collection).title as string,
+              value: (col as Collection).slug as string,
               href: generateCollectionLink(col.slug)
             }))],
           "more": (moreCollections ?? []).map((col, index) => ({
             id: (index + 1) * 10000,
-            label: (col as Collection).title,
-            value: (col as Collection).slug,
+            label: (col as Collection).title as string,
+            value: (col as Collection).slug as string,
             href: generateCollectionLink(col.slug)
           })),
         },
@@ -118,14 +121,12 @@ export const layoutRouter = createTRPCRouter({
             id: 3,
             label: featuredCollections[3]?.title,
             href: generateCollectionLink(featuredCollections[3]?.slug || ""),
-            // @ts-expect-error this is valid
             imageSrc: featuredCollections[3]?.hero?.url || "/images/stock4.jpg"
           },
           {
             id: 4,
             label: featuredCollections[4]?.title,
             href: generateCollectionLink(featuredCollections[4]?.slug || ""),
-            // @ts-expect-error this is valid
             imageSrc: featuredCollections[4]?.hero?.url || "/images/stock5.jpg"
           },
         ]
@@ -154,7 +155,7 @@ export const layoutRouter = createTRPCRouter({
       }
     ];
 
-    return [categoriesForNav, collectionsForNav, ...staticNavItems];
+    return [categoriesForNav, collectionsForNav, ...staticNavItems] as INavItem[];
   }),
 
   getHero: baseProcedure
@@ -178,7 +179,7 @@ export const layoutRouter = createTRPCRouter({
         ...data,
         docs: data.docs.map((doc) => ({
           ...doc,
-          hero: doc.hero as LayoutMedia,
+          hero: doc.hero as LayoutMedia | null,
         }))[0]
       }
     })
