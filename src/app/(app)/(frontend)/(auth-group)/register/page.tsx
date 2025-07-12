@@ -14,10 +14,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 // import { useRouter } from "next/navigation";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GoogleOAuthButton } from "@/components/Auth/GoogleOAuthButton";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useRouter } from "next/router";
+import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 // import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 
 
@@ -25,6 +27,15 @@ export default function RegisterPage() {
   const [verifyModalOpen, setVerifyModalOpen] = useState(false)
   // const router = useRouter();
   // const callBack_url_redirect = typeof window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
+  const [callbackUrl, setCallbackUrl] = useState<string | null>(null);
+  const router = useRouter()
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem(AUTH_CALLBACK_STORE_STRING);
+      setCallbackUrl(stored || "/");
+    }
+  }, []);
 
   const trpc = useTRPC();
   const queryClient = useQueryClient()
@@ -34,11 +45,11 @@ export default function RegisterPage() {
     },
     onSuccess: async () => {
       setVerifyModalOpen(true)
-      // router.push("/");
-      // toast.success("Logged in successfully!");
-      // if (typeof window !== undefined) {
-      //   localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
-      // }
+      router.push(callbackUrl || "/");
+      toast.success("Logged in successfully!");
+      if (typeof window !== undefined) {
+        localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
+      }
       await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
     }
   }))

@@ -1,30 +1,36 @@
 "use client"
 
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { toast } from "sonner";
+import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 // import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 
 
 export default function GoogleCallback() {
+  const [callbackUrl, setCallbackUrl] = useState<string | null>(null);
   const router = useRouter();
   const trpc = useTRPC();
   const hasRunRef = useRef(false);
 
-  // const callBack_url_redirect = typeof window !== undefined ? localStorage.getItem(AUTH_CALLBACK_STORE_STRING) : "/"
-
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem(AUTH_CALLBACK_STORE_STRING);
+      setCallbackUrl(stored || "/");
+    }
+  }, []);
 
   const callbackMutation = useMutation(trpc.auth.googleAuthCallback.mutationOptions({
     onSuccess: () => {
-      router.replace("/");
+      router.replace(callbackUrl || "/");
       toast.success("Logged in successfully!")
-      // if (typeof window !== undefined) {
-      //   localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
-      // }
+      if (typeof window !== undefined) {
+        localStorage.removeItem(AUTH_CALLBACK_STORE_STRING);
+      }
     },
     onError: (error: unknown) => {
       // Fallback for any other error

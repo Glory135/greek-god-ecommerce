@@ -8,12 +8,12 @@ import Link from 'next/link'
 import { PAGES_LINKS } from '@/utils/linksData'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '../ui/button'
-// import { usePathname } from 'next/navigation'
-// import { AUTH_CALLBACK_STORE_STRING } from '@/constants'
+import { usePathname } from 'next/navigation'
+import { AUTH_CALLBACK_STORE_STRING } from '@/constants'
 
 const LoginModal = () => {
   const { loginModalOpen, setLoginModalOpen } = useDashboardStore()
-  // const pathname = usePathname()
+  const pathname = usePathname()
 
   return (
     <Dialog open={loginModalOpen} onOpenChange={setLoginModalOpen}>
@@ -29,9 +29,9 @@ const LoginModal = () => {
             <DialogTrigger asChild>
               <Link
                 onClick={() => {
-                  // if (typeof window !== undefined) {
-                  //   localStorage.setItem(AUTH_CALLBACK_STORE_STRING, pathname);
-                  // }
+                  if (typeof window !== undefined) {
+                    localStorage.setItem(AUTH_CALLBACK_STORE_STRING, pathname);
+                  }
                 }}
                 href={`${PAGES_LINKS.login.link}`}
                 className={cn(
