@@ -30,6 +30,7 @@ import { OAUTH_NAME } from './constants'
 import { resendAdapter } from "@payloadcms/email-resend"
 import { LayoutMedia } from './collections/LayoutMedia'
 import { Heros } from './collections/Heros'
+import { Orders } from './collections/Orders'
 
 
 cloudinary.config({
@@ -117,6 +118,7 @@ export default buildConfig({
 
     // product related collections
     Products,
+    Orders,
     Categories,
     Collections,
     Colors,

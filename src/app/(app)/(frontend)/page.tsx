@@ -15,6 +15,7 @@ import { PAGES_LINKS } from "@/utils/linksData";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import Link from "next/link";
 import { Suspense } from "react";
+import MonnifyButton from "../../../components/Checkout/MonnifyButton";
 
 export default function LandingPage() {
   const queryClient = getQueryClient();

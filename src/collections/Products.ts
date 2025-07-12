@@ -95,6 +95,15 @@ export const Products: CollectionConfig = {
       type: "checkbox",
       required: true,
       defaultValue: true
+    },
+    {
+      name: "orderCount",
+      type: "number",
+      required: true,
+      defaultValue: 0,
+      admin:{
+        disabled: true
+      }
     }
   ],
   hooks: {

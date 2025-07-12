@@ -1,3 +1,5 @@
+import { link } from "fs"
+
 export const PAGES_LINKS = {
   "home": {
     link: "/"
@@ -25,6 +27,12 @@ export const PAGES_LINKS = {
   },
   "wishlist": {
     link: "/account/wishlist"
+  },
+  "checkout": {
+    link: "/checkout"
+  },
+  "delivery": {
+    link: "/checkout/delivery"
   },
   "admin": {
     link: "/admin"

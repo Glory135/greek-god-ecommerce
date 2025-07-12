@@ -67,7 +67,7 @@ export default function Cart() {
 							<SheetFooter>
 								<SheetTrigger asChild>
 									<Link
-										href='/checkout'
+										href={PAGES_LINKS.checkout.link}
 										className={buttonVariants({
 											className: 'w-full',
 										})}>
