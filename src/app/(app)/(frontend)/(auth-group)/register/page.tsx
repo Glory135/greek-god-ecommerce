@@ -13,14 +13,12 @@ import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-// import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from 'react'
 import { GoogleOAuthButton } from "@/components/Auth/GoogleOAuthButton";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useRouter } from "next/router";
 import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
-// import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
+import { useRouter } from "next/navigation";
 
 
 export default function RegisterPage() {
