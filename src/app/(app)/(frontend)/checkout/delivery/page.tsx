@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import useGetUser from "@/hooks/use-get-user";
 import { cn } from "@/lib/utils";
-import { trpc } from "@/trpc/server";
+import { useTRPC } from "@/trpc/client";
 import { PAGES_LINKS } from "@/utils/linksData";
 import { useCart } from "@/zustand/checkout/hooks/use-cart";
 import { useQuery } from "@tanstack/react-query";
@@ -29,6 +29,7 @@ export default function DeliveryPage() {
   const [saveData, setSaveData] = useState(false)
   const user = useGetUser()
   const { products } = useCart(user?.id || "")
+  const trpc = useTRPC()
 
 
   const handleChange = (name: string, value: string) => {

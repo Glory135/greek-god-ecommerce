@@ -355,6 +355,7 @@ export interface LayoutMedia {
 export interface Order {
   id: string;
   paymentReference: string;
+  paymentCompleted?: boolean | null;
   amount: string;
   amountPaid: string;
   paymentDate: string;
@@ -573,6 +574,7 @@ export interface ProductsSelect<T extends boolean = true> {
  */
 export interface OrdersSelect<T extends boolean = true> {
   paymentReference?: T;
+  paymentCompleted?: T;
   amount?: T;
   amountPaid?: T;
   paymentDate?: T;
