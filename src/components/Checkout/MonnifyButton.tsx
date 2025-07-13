@@ -6,7 +6,9 @@ import { cn } from '@/lib/utils'
 
 declare global {
   interface Window {
-    MonnifySDK?: any
+    MonnifySDK?: {
+      initialize: unknown
+    }
   }
 }
 
@@ -48,14 +50,15 @@ export default function MonnifyButton({ buttonText, amount, fullname, email, des
 
       const paymentData = await res.json()
 
+      // @ts-expect-error there is no type
       window.MonnifySDK.initialize({
         ...paymentData,
         onLoadStart: () => console.log('Loading Monnify...'),
         onLoadComplete: () => console.log('Monnify Ready'),
-        onComplete: (response: any) => {
+        onComplete: (response: unknown) => {
           console.log('Payment Complete:', response)
         },
-        onClose: (data: any) => {
+        onClose: (data: unknown) => {
           console.log('Payment Modal Closed:', data)
         },
       })
