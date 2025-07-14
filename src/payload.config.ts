@@ -31,6 +31,7 @@ import { resendAdapter } from "@payloadcms/email-resend"
 import { LayoutMedia } from './collections/LayoutMedia'
 import { Heros } from './collections/Heros'
 import { Orders } from './collections/Orders'
+import { DeliveryAddresses } from './collections/DeliveryAddresses'
 
 
 cloudinary.config({
@@ -115,6 +116,7 @@ export default buildConfig({
     Users,
     AppAccounts,
     AppUsers,
+    DeliveryAddresses,
 
     // product related collections
     Products,

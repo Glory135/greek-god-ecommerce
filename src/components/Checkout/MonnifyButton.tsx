@@ -12,7 +12,22 @@ declare global {
   }
 }
 
-export default function MonnifyButton({ buttonText, amount, fullname, email, description, className }: { buttonText?: string, amount: number, fullname?: string, email: string, description?: string, className?: string }) {
+interface Props {
+  buttonType?: string;
+  clickEffect?: () => void;
+  disabled?: boolean;
+  buttonText?: string;
+  amount: number;
+  fullname?: string;
+  email: string;
+  description?: string;
+  className?: string;
+  onSuccess?: (response: unknown) => void;
+  onCancel?: (response: unknown) => void;
+  onError?: (response: unknown) => void;
+}
+
+export default function MonnifyButton({ buttonType, clickEffect, disabled = false, buttonText, amount, fullname, email, description, className, onSuccess, onCancel, onError }: Props) {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -57,9 +72,24 @@ export default function MonnifyButton({ buttonText, amount, fullname, email, des
         onLoadComplete: () => console.log('Monnify Ready'),
         onComplete: (response: unknown) => {
           console.log('Payment Complete:', response)
+
+          // Handle different response types
+          const responseData = response as any;
+
+          if (responseData?.paymentStatus === 'SUCCESS' || responseData?.status === 'SUCCESS') {
+            if (onSuccess) onSuccess(response)
+          } else if (responseData?.paymentStatus === 'USER_CANCELLED' || responseData?.responseCode === 'USER_CANCELLED') {
+            console.log('Payment Cancelled by User:', response)
+            if (onCancel) onCancel(response)
+          } else {
+            console.log('Payment Error or Unknown Status:', response)
+            if (onError) onError(response)
+          }
         },
         onClose: (data: unknown) => {
           console.log('Payment Modal Closed:', data)
+          // Handle modal close as cancellation
+          if (onCancel) onCancel(data)
         },
       })
     } catch (err) {
@@ -71,8 +101,12 @@ export default function MonnifyButton({ buttonText, amount, fullname, email, des
 
   return (
     <Button
-      onClick={payWithMonnify}
-      disabled={!isSDKLoaded || isLoading}
+      type={buttonType as "button" | "submit" | "reset" || "button"}
+      onClick={() => {
+        clickEffect && clickEffect()
+        payWithMonnify()
+      }}
+      disabled={!isSDKLoaded || isLoading || disabled}
       className={cn(className)}
     >
       {isLoading ? 'Processing...' : buttonText || 'Pay'}

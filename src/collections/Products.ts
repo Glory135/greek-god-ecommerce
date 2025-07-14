@@ -83,13 +83,13 @@ export const Products: CollectionConfig = {
       relationTo: "collections",
       hasMany: true
     },
-    {
-      name: "return policy",
-      type: "text",
-      admin: {
-        description: "This is the valid time range the clothcan be returned eg: 30-days, 1-month etc."
-      }
-    },
+    // {
+    //   name: "return policy",
+    //   type: "text",
+    //   admin: {
+    //     description: "This is the valid time range the clothcan be returned eg: 30-days, 1-month etc."
+    //   }
+    // },
     {
       name: "in stock",
       type: "checkbox",
@@ -99,11 +99,11 @@ export const Products: CollectionConfig = {
     {
       name: "orderCount",
       type: "number",
-      required: true,
+      required: false,
       defaultValue: 0,
-      admin:{
-        disabled: true
-      }
+      // admin:{
+      //   disabled: true
+      // }
     }
   ],
   hooks: {

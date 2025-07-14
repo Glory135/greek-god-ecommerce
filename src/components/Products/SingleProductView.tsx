@@ -41,7 +41,7 @@ const SingleProductView = ({ productId }: { productId: string }) => {
               <p className='font-bold'>
                 Delivery:  {data.deliveryFee ? formatPrice(`${data.deliveryFee}`) : "Free"}
               </p>
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                 <b>Return:</b>
                 {
                   data['return policy'] ?
@@ -51,7 +51,7 @@ const SingleProductView = ({ productId }: { productId: string }) => {
                     :
                     <b>No Returns</b>
                 }
-              </div>
+              </div> */}
               <div className="flex flex-wrap gap-20 mt-5">
                 {
                   data?.category && data?.category.length > 0 && (

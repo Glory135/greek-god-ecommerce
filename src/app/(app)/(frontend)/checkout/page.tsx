@@ -13,7 +13,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 export default function CheckoutPage() {
-  const user = useGetUser()
+  const { user } = useGetUser()
   const { products, clearCart } = useCart(user?.id || "")
 
 

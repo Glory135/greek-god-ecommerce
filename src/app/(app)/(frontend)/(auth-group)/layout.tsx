@@ -12,7 +12,7 @@ import React from "react";
 export default function AuthGroupLayout({ children }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = useGetUser()
+  const { user } = useGetUser()
   const trpc = useTRPC();
   const { data, isPending } = useQuery(trpc.layout.getHero.queryOptions(
     {

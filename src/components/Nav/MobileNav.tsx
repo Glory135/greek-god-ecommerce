@@ -52,7 +52,7 @@ const MobileNavSkeleton = () => (
 )
 
 const MobileNav = () => {
-  const user = useGetUser()
+  const { user } = useGetUser()
 
   // Fetch navigation data dynamically
   const trpc = useTRPC();

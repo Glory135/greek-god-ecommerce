@@ -9,7 +9,7 @@ type Props = {
 }
 
 const NotLoggedInCatcher = ({ children }: Props) => {
-  const user = useGetUser()
+  const { user } = useGetUser()
   const { setLoginModalOpen } = useDashboardStore()
   const isLoggedIn = !!user
 

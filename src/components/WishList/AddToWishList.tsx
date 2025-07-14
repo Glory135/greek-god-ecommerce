@@ -17,7 +17,7 @@ interface Props {
 }
 
 const AddToWishListButton = ({ productId, disabled = false, small = false, className }: Props) => {
-  const user = useGetUser()
+  const { user } = useGetUser()
   const wishList = useWishlist(user?.id || "")
 
   const handleWishListToggle = (e: React.MouseEvent<HTMLButtonElement>) => {

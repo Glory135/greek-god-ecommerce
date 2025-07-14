@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { InboxIcon } from "lucide-react";
 
 export default function WishListPsge() {
-  const user = useGetUser()
+  const { user } = useGetUser()
   const { products, totalProductsInCart } = useWishlist(user?.id || "")
   const trpc = useTRPC()
 

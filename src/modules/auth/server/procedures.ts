@@ -10,6 +10,21 @@ export const authRouter = createTRPCRouter({
   session: baseProcedure.query(async ({ ctx }) => {
     const headers = await getHeaders();
     const session = await ctx.payload.auth({ headers });
+
+    // If the session user is from appUsers, look up the corresponding user in users
+    // @ts-expect-error just a check
+    if (session?.user?.collection === 'appUsers' && session.user.email !== undefined) {
+      const users = await ctx.payload.find({
+        collection: 'users',
+        where: { email: { equals: session.user.email } },
+        limit: 1,
+      });
+      if (users.docs.length) {
+        // Replace the session user with the one from the users collection
+        return { ...session, user: { ...users.docs[0], collection: 'users' } };
+      }
+    }
+    // Otherwise, return as is (already from users)
     return session;
   }),
 

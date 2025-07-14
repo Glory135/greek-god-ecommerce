@@ -305,5 +305,12 @@ export const Users: CollectionConfig = {
       defaultValue: false,
       admin: { position: 'sidebar' }
     },
+    // {
+    //   name: "deliveryInfo",
+    //   required: false,
+    //   type: "relationship",
+    //   relationTo: "deliveryAddresses",
+    //   hasMany: true
+    // }
   ],
 }

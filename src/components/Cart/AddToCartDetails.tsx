@@ -37,7 +37,7 @@ const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
   const [selectedSize, setSelectedSize] = useState(0);
   const [quantity, setQuantity] = useState(1)
 
-  const user = useGetUser()
+  const { user } = useGetUser()
   const cart = useCart(user?.id || "")
 
   const increaseQuantity = () => {

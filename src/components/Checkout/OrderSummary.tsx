@@ -10,8 +10,13 @@ import { useCart } from '@/zustand/checkout/hooks/use-cart';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-const OrderSummary = () => {
-  const user = useGetUser()
+interface OrderSummaryProps {
+  onTotalCalculated?: (total: number) => void;
+  onProductsCalculated?: (products: Array<{ id: string; name: string; price: number; quantity: number; image?: string }>) => void;
+}
+
+const OrderSummary = ({ onTotalCalculated, onProductsCalculated }: OrderSummaryProps) => {
+  const { user } = useGetUser()
   const { clearAllCarts, products, totalProductsInCart } = useCart(user?.id || "")
   const trpc = useTRPC()
 
@@ -25,7 +30,7 @@ const OrderSummary = () => {
       clearAllCarts()
       toast.warning("Invalid products found, your cart has been cleared!")
     }
-  }, [error, clearAllCarts])
+  }, [error])
 
   const calculateTotals = () => {
     const total = data?.docs && data?.docs.length > 0 ? data?.docs.reduce((accumulator, singleProd) => {
@@ -47,6 +52,29 @@ const OrderSummary = () => {
 
   const orderTotal = (calculateTotals() || 0) + (getDeliveryFee() || 0)
 
+  // Notify parent of orderTotal
+  useEffect(() => {
+    if (onTotalCalculated) {
+      onTotalCalculated(orderTotal)
+    }
+  }, [orderTotal, onTotalCalculated])
+
+  // Notify parent of products
+  useEffect(() => {
+    if (onProductsCalculated && data?.docs) {
+      const productDetails = data.docs.map((singleProd) => {
+        const quantity = products.find(i => i.productId === singleProd.id)?.quantity || 1;
+        return {
+          id: singleProd.id,
+          name: singleProd.name,
+          price: singleProd.price,
+          quantity,
+          image: singleProd.cover?.url || (singleProd.images?.[0]?.image?.url ?? undefined),
+        };
+      });
+      onProductsCalculated(productDetails);
+    }
+  }, [onProductsCalculated, data?.docs, products]);
 
   return (
     <div className='w-full '>

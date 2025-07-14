@@ -16,6 +16,14 @@ export const Orders: CollectionConfig = {
       }
     },
     {
+      name: "transactionReference",
+      type: "text",
+      required: false,
+      access: {
+        update: () => false
+      }
+    },
+    {
       name: "paymentCompleted",
       type: "checkbox",
       access: {
@@ -60,6 +68,32 @@ export const Orders: CollectionConfig = {
       }
     },
     {
+      name: "userEmail",
+      type: "text",
+      required: true,
+      access: {
+        update: () => false
+      }
+    },
+    {
+      name: "addressSnapshot",
+      type: "json",
+      required: true,
+      access: {
+        update: () => false
+      }
+    },
+    {
+      name: "productsSnapshot",
+      type: "relationship",
+      relationTo: "products",
+      hasMany: true,
+      required: false,
+      access: {
+        update: () => false
+      }
+    },
+    {
       name: "productsOrdered",
       type: "relationship",
       relationTo: "products",
@@ -69,20 +103,23 @@ export const Orders: CollectionConfig = {
       }
     },
     {
+      name: "status",
+      type: "select",
+      options: [
+        { label: "Pending", value: "pending" },
+        { label: "Paid", value: "paid" },
+        { label: "Delivered", value: "delivered" },
+        { label: "Cancelled", value: "cancelled" },
+      ],
+      defaultValue: "pending",
+    },
+    {
       name: "delivered",
       type: "checkbox",
-      access: {
-        create: ({ req: { user } }) => Boolean(user?.roles.includes("super-admin")),
-        update: ({ req: { user } }) => Boolean(user?.roles.includes("super-admin")),
-      }
     },
     {
       name: "dateDelivered",
       type: "date",
-      access: {
-        create: ({ req: { user } }) => Boolean(user?.roles.includes("super-admin")),
-        update: ({ req: { user } }) => Boolean(user?.roles.includes("super-admin")),
-      }
     }
   ]
 }

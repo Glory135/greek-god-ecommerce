@@ -13,7 +13,7 @@ import Link from 'next/link'
 import React from 'react'
 
 const ProductInCart = ({ product, lg = false, close }: { product: IProductInCart, lg?: boolean, close?: () => void }) => {
-  const user = useGetUser()
+  const { user } = useGetUser()
   const { increaseQuantity, decreaseQuantity, removeProduct } = useCart(user?.id || "")
   const trpc = useTRPC()
 

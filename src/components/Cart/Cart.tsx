@@ -22,7 +22,7 @@ import { useState } from 'react';
 
 export default function Cart() {
 	const [cartOpen, setCartOpen] = useState(false)
-	const user = useGetUser()
+	const { user } = useGetUser()
 	const cart = useCart(user?.id || "")
 
 	const itemCount = cart?.totalProductsInCart || 0;

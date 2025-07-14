@@ -153,4 +153,39 @@ export const productsRouter = createTRPCRouter({
         }))
       }
     }),
+
+  // Increment orderCount for products
+  incrementOrderCount: baseProcedure
+    .input(
+      z.object({
+        products: z.array(
+          z.object({
+            id: z.string(),
+            quantity: z.number().min(1)
+          })
+        )
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const results = [];
+      for (const { id, quantity } of input.products) {
+        // Fetch current product
+        const product = await ctx.payload.findByID({
+          collection: "products",
+          id,
+        });
+        if (!product) continue;
+        const currentCount = typeof product.orderCount === "number" ? product.orderCount : 0;
+        // Update orderCount
+        const updated = await ctx.payload.update({
+          collection: "products",
+          id,
+          data: {
+            orderCount: currentCount + quantity
+          }
+        });
+        results.push(updated);
+      }
+      return { success: true, updated: results };
+    }),
 })

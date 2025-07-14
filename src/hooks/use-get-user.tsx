@@ -8,7 +8,12 @@ const useGetUser = () => {
   const trpc = useTRPC()
   const session = useQuery(trpc.auth.session.queryOptions())
   
-  return session?.data?.user
+  return {
+    user: session?.data?.user,
+    isLoading: session?.isLoading,
+    isError: session?.isError,
+    error: session?.error
+  }
 }
 
 export default useGetUser

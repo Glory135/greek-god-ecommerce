@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     appAccounts: AppAccount;
     appUsers: AppUser;
+    deliveryAddresses: DeliveryAddress;
     products: Product;
     orders: Order;
     categories: Category;
@@ -92,6 +93,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     appAccounts: AppAccountsSelect<false> | AppAccountsSelect<true>;
     appUsers: AppUsersSelect<false> | AppUsersSelect<true>;
+    deliveryAddresses: DeliveryAddressesSelect<false> | DeliveryAddressesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
@@ -221,6 +223,22 @@ export interface AppAccount {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deliveryAddresses".
+ */
+export interface DeliveryAddress {
+  id: string;
+  customerId?: (string | null) | User;
+  firstname?: string | null;
+  lastname?: string | null;
+  address: string;
+  appartment?: string | null;
+  city: string;
+  phone: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
 export interface Product {
@@ -245,12 +263,8 @@ export interface Product {
    */
   cover: string | Media;
   collection?: (string | Collection)[] | null;
-  /**
-   * This is the valid time range the clothcan be returned eg: 30-days, 1-month etc.
-   */
-  'return policy'?: string | null;
   'in stock': boolean;
-  orderCount: number;
+  orderCount?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -355,13 +369,26 @@ export interface LayoutMedia {
 export interface Order {
   id: string;
   paymentReference: string;
+  transactionReference?: string | null;
   paymentCompleted?: boolean | null;
   amount: string;
   amountPaid: string;
   paymentDate: string;
   paymentDescription?: string | null;
   customerId?: (string | null) | User;
+  userEmail: string;
+  addressSnapshot:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  productsSnapshot?: (string | Product)[] | null;
   productsOrdered?: (string | Product)[] | null;
+  status?: ('pending' | 'paid' | 'delivered' | 'cancelled') | null;
   delivered?: boolean | null;
   dateDelivered?: string | null;
   updatedAt: string;
@@ -398,6 +425,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'appUsers';
         value: string | AppUser;
+      } | null)
+    | ({
+        relationTo: 'deliveryAddresses';
+        value: string | DeliveryAddress;
       } | null)
     | ({
         relationTo: 'products';
@@ -543,6 +574,21 @@ export interface AppUsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deliveryAddresses_select".
+ */
+export interface DeliveryAddressesSelect<T extends boolean = true> {
+  customerId?: T;
+  firstname?: T;
+  lastname?: T;
+  address?: T;
+  appartment?: T;
+  city?: T;
+  phone?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
@@ -562,7 +608,6 @@ export interface ProductsSelect<T extends boolean = true> {
       };
   cover?: T;
   collection?: T;
-  'return policy'?: T;
   'in stock'?: T;
   orderCount?: T;
   updatedAt?: T;
@@ -574,13 +619,18 @@ export interface ProductsSelect<T extends boolean = true> {
  */
 export interface OrdersSelect<T extends boolean = true> {
   paymentReference?: T;
+  transactionReference?: T;
   paymentCompleted?: T;
   amount?: T;
   amountPaid?: T;
   paymentDate?: T;
   paymentDescription?: T;
   customerId?: T;
+  userEmail?: T;
+  addressSnapshot?: T;
+  productsSnapshot?: T;
   productsOrdered?: T;
+  status?: T;
   delivered?: T;
   dateDelivered?: T;
   updatedAt?: T;

@@ -32,6 +32,9 @@ export const PAGES_LINKS = {
   "delivery": {
     link: "/checkout/delivery"
   },
+  "payment": {
+    link: "/checkout/payment"
+  },
   "admin": {
     link: "/admin"
   }

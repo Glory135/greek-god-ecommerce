@@ -21,7 +21,7 @@ interface Props {
 }
 
 const AddToCartButton = ({ productId, color, size, quantity = 1, disabled = false, small = false, className, price }: Props) => {
-  const user = useGetUser()
+  const { user } = useGetUser()
   const cart = useCart(user?.id || "")
 
   const handleCartToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
