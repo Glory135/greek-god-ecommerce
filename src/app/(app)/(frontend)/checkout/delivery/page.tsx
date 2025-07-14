@@ -118,9 +118,6 @@ export default function DeliveryPage() {
     setProducts(products);
   }, [setProducts]);
 
-  console.log(addressesLoading);
-  console.log(orderTotal);
-
   // User data validation and loading states
   if (userLoading) {
     return (
