@@ -43,7 +43,13 @@ export const orderOutputSchema = z.object({
   customerId: z.string(),
   userEmail: z.string(),
   addressSnapshot: z.any().optional(), // Now JSON
-  productsSnapshot: z.array(z.string()).optional(), // Now an array of product IDs
+  productsSnapshot: z.array(z.object({
+    id: z.string(),
+    name: z.string(),
+    price: z.number(),
+    quantity: z.number(),
+    image: z.string().optional(),
+  })).optional(), // Now an array of product snapshots
   productsOrdered: z.array(z.string()),
   status: z.enum(["pending", "paid", "delivered", "cancelled"]),
   delivered: z.boolean().optional(),

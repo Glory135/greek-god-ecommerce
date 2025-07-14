@@ -34,12 +34,7 @@ export default function DeliveryPage() {
   const router = useRouter()
 
   const trpc = useTRPC();
-  const { setAddressData, setOrderTotal, setProducts, orderTotal, clearCheckout } = useCheckoutStore();
-
-  // Clear checkout state on mount (optional, for fresh start)
-  useEffect(() => {
-    clearCheckout();
-  }, [clearCheckout]); // Empty dependency array - only run on mount
+  const { setAddressData, setOrderTotal, setProducts, orderTotal } = useCheckoutStore();
 
   // Handle authentication redirect
   useEffect(() => {

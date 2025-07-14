@@ -22,7 +22,7 @@ export const ordersRouter = createTRPCRouter({
           userEmail: input.userEmail,
           // @ts-expect-error its correct
           addressSnapshot: input.addressSnapshot,
-          productsSnapshot: input.productsSnapshot.map(p => p.id), // Store product IDs as relationships
+          productsSnapshot: input.productsSnapshot, // Store full product snapshot as JSON
           productsOrdered: input.productsOrdered,
           status: input.status || "pending",
         }

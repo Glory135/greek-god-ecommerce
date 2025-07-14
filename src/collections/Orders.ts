@@ -85,10 +85,8 @@ export const Orders: CollectionConfig = {
     },
     {
       name: "productsSnapshot",
-      type: "relationship",
-      relationTo: "products",
-      hasMany: true,
-      required: false,
+      type: "json",
+      required: true,
       access: {
         update: () => false
       }

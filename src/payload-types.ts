@@ -386,7 +386,15 @@ export interface Order {
     | number
     | boolean
     | null;
-  productsSnapshot?: (string | Product)[] | null;
+  productsSnapshot:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   productsOrdered?: (string | Product)[] | null;
   status?: ('pending' | 'paid' | 'delivered' | 'cancelled') | null;
   delivered?: boolean | null;

@@ -12,6 +12,7 @@ import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { PAGES_LINKS } from "@/utils/linksData"
 import { CheckoutProduct } from '@/zustand/checkout/store/use-checkout-store';
+import { formatPrice } from "@/lib/utils"
 
 // Define MonnifyResponse type
 export interface MonnifyResponse {
@@ -177,8 +178,8 @@ export default function PaymentPage() {
                       {prod.name}
                     </td>
                     <td className="px-2 py-1">{prod.quantity}</td>
-                    <td className="px-2 py-1">₦{prod.price.toLocaleString()}</td>
-                    <td className="px-2 py-1 font-semibold">₦{(prod.price * prod.quantity).toLocaleString()}</td>
+                    <td className="px-2 py-1">{formatPrice(prod.price.toLocaleString())}</td>
+                    <td className="px-2 py-1 font-semibold">{formatPrice((prod.price * prod.quantity).toLocaleString())}</td>
                   </tr>
                 ))}
               </tbody>
@@ -187,10 +188,10 @@ export default function PaymentPage() {
         </div>
         <div>
           <h2 className="text-xl font-bold mb-2">Order Total</h2>
-          <div className="text-lg text-primary font-semibold">₦{safeOrderTotal.toLocaleString()}</div>
+          <div className="text-lg text-primary font-semibold">{formatPrice(safeOrderTotal.toLocaleString())}</div>
         </div>
         <MonnifyButton
-          buttonText="Proceed To Pay"
+          buttonText={`Pay ${formatPrice(safeOrderTotal.toLocaleString())}`}
           amount={safeOrderTotal}
           email={user.email}
           description={`Order payment for ${addressData.firstname} ${addressData.lastname}`}
