@@ -104,7 +104,9 @@ export default function MonnifyButton({ buttonType, clickEffect, disabled = fals
     <Button
       type={buttonType as "button" | "submit" | "reset" || "button"}
       onClick={() => {
-        clickEffect && clickEffect()
+        if (clickEffect) {
+          clickEffect()
+        }
         payWithMonnify()
       }}
       disabled={!isSDKLoaded || isLoading || disabled}
