@@ -11,6 +11,20 @@ import { toast } from "sonner"
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { PAGES_LINKS } from "@/utils/linksData"
+import { CheckoutProduct } from '@/zustand/checkout/store/use-checkout-store';
+
+// Define MonnifyResponse type
+export interface MonnifyResponse {
+  paymentReference?: string;
+  transactionReference?: string;
+  status?: string;
+  paymentStatus?: string;
+  authorizedAmount?: number;
+  paidOn?: string;
+  message?: string;
+  responseMessage?: string;
+  responseCode?: string;
+}
 
 export default function PaymentPage() {
   const { user } = useGetUser()
@@ -50,7 +64,7 @@ export default function PaymentPage() {
 
 
   // on successful payment callback
-  const handlePaymentSuccess = (monnifyResponse?: any) => {
+  const handlePaymentSuccess = (monnifyResponse?: MonnifyResponse) => {
     if (!user || !user.email || !user.id || !addressData) return;
 
     console.log("Monnify Success Response:", monnifyResponse);
@@ -76,14 +90,14 @@ export default function PaymentPage() {
       userEmail: user.email || "",
       addressSnapshot: addressData,
       productsSnapshot: products,
-      productsOrdered: products.map(p => p.id),
+      productsOrdered: products.map((p: CheckoutProduct) => p.id),
       status: paymentCompleted ? "paid" : "pending",
     });
 
     // Increment product order counts
     if (products && products.length > 0) {
       incrementOrderCount.mutate({
-        products: products.map(p => ({ id: p.id, quantity: p.quantity }))
+        products: products.map((p: CheckoutProduct) => ({ id: p.id, quantity: p.quantity }))
       });
     }
     
@@ -96,7 +110,7 @@ export default function PaymentPage() {
   };
 
   // on payment cancellation callback
-  const handlePaymentCancel = (monnifyResponse?: any) => {
+  const handlePaymentCancel = (monnifyResponse?: MonnifyResponse) => {
     console.log("Monnify Cancellation Response:", monnifyResponse);
     
     const responseMessage = monnifyResponse?.responseMessage || "Payment was cancelled";
@@ -107,7 +121,7 @@ export default function PaymentPage() {
   };
 
   // on payment error callback
-  const handlePaymentError = (monnifyResponse?: any) => {
+  const handlePaymentError = (monnifyResponse?: MonnifyResponse) => {
     console.log("Monnify Error Response:", monnifyResponse);
     
     const errorMessage = monnifyResponse?.responseMessage || "Payment failed. Please try again.";

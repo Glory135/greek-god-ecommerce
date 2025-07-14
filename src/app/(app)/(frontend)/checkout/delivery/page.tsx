@@ -23,6 +23,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { useCheckoutStore } from "@/zustand/checkout/store/use-checkout-store";
+import { CheckoutProduct } from '@/zustand/checkout/store/use-checkout-store';
+import { DeliveryAddress } from "@/payload-types";
 
 
 export default function DeliveryPage() {
@@ -114,7 +116,7 @@ export default function DeliveryPage() {
   }, [setOrderTotal]);
 
   // Save products from OrderSummary (memoized)
-  const handleProductsCalculated = useCallback((products: any[]) => {
+  const handleProductsCalculated = useCallback((products: CheckoutProduct[]) => {
     setProducts(products);
   }, [setProducts]);
 
@@ -159,7 +161,7 @@ export default function DeliveryPage() {
     router.push(PAGES_LINKS.payment.link);
   }
 
-  const formatAddressForSelect = (address: any) => {
+  const formatAddressForSelect = (address: DeliveryAddress) => {
     const name = `${address.firstname || ""} ${address.lastname || ""}`.trim();
     const addressLine = `${address.address}${address.appartment ? `, ${address.appartment}` : ""}`;
     return `${name} - ${addressLine}, ${address.city}`;

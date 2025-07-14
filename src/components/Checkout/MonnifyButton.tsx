@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
+import { MonnifyResponse } from '@/app/(app)/(frontend)/checkout/payment/page';
 
 declare global {
   interface Window {
@@ -22,9 +23,9 @@ interface Props {
   email: string;
   description?: string;
   className?: string;
-  onSuccess?: (response: unknown) => void;
-  onCancel?: (response: unknown) => void;
-  onError?: (response: unknown) => void;
+  onSuccess?: (response: MonnifyResponse) => void;
+  onCancel?: (response: MonnifyResponse) => void;
+  onError?: (response: MonnifyResponse) => void;
 }
 
 export default function MonnifyButton({ buttonType, clickEffect, disabled = false, buttonText, amount, fullname, email, description, className, onSuccess, onCancel, onError }: Props) {
@@ -70,16 +71,14 @@ export default function MonnifyButton({ buttonType, clickEffect, disabled = fals
         ...paymentData,
         onLoadStart: () => console.log('Loading Monnify...'),
         onLoadComplete: () => console.log('Monnify Ready'),
-        onComplete: (response: unknown) => {
+        onComplete: (response: MonnifyResponse) => {
           console.log('Payment Complete:', response)
 
           // Handle different response types
           const responseData = response;
 
-          // @ts-expect-error just do it
           if (responseData?.paymentStatus === 'SUCCESS' || responseData?.status === 'SUCCESS') {
             if (onSuccess) onSuccess(response)
-            // @ts-expect-error just do it
           } else if (responseData?.paymentStatus === 'USER_CANCELLED' || responseData?.responseCode === 'USER_CANCELLED') {
             console.log('Payment Cancelled by User:', response)
             if (onCancel) onCancel(response)
@@ -88,7 +87,7 @@ export default function MonnifyButton({ buttonType, clickEffect, disabled = fals
             if (onError) onError(response)
           }
         },
-        onClose: (data: unknown) => {
+        onClose: (data: MonnifyResponse) => {
           console.log('Payment Modal Closed:', data)
           // Handle modal close as cancellation
           if (onCancel) onCancel(data)
