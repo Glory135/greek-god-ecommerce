@@ -5,7 +5,7 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper"
 import useGetUser from "@/hooks/use-get-user"
 import { useCheckoutStore } from "@/zustand/checkout/store/use-checkout-store"
 import { useCart } from "@/zustand/checkout/hooks/use-cart";
-import { useEffect, useRef, useMemo } from "react"
+import { useEffect, useRef, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { useTRPC } from "@/trpc/client";
@@ -34,6 +34,7 @@ export default function PaymentPage() {
   const router = useRouter()
   const trpc = useTRPC();
   const hasRedirected = useRef(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   // Defensive fallback: recalculate orderTotal from products if missing
   const fallbackOrderTotal = useMemo(() => {
@@ -43,14 +44,7 @@ export default function PaymentPage() {
   const safeOrderTotal = orderTotal && orderTotal > 0 ? orderTotal : fallbackOrderTotal;
 
   // increase order count for products ordered
-  const incrementOrderCount = useMutation(trpc.products.incrementOrderCount.mutationOptions({
-    onSuccess: () => {
-      toast.success("Order placed and product stats updated!");
-    },
-    onError: () => {
-      toast.error("Failed to update product order counts.");
-    }
-  }));
+  const incrementOrderCount = useMutation(trpc.products.incrementOrderCount.mutationOptions());
 
 
   // create the order record
@@ -58,7 +52,9 @@ export default function PaymentPage() {
     onSuccess: () => {
       toast.success("Order created successfully!");
     },
-    onError: () => {
+    onError: (error) => {
+      console.log(error);
+      
       toast.error("Failed to create order record.");
     }
   }));
@@ -67,8 +63,6 @@ export default function PaymentPage() {
   // on successful payment callback
   const handlePaymentSuccess = (monnifyResponse?: MonnifyResponse) => {
     if (!user || !user.email || !user.id || !addressData) return;
-
-    console.log("Monnify Success Response:", monnifyResponse);
 
     // Extract payment reference and details from Monnify response
     const paymentReference = monnifyResponse?.paymentReference || "";
@@ -104,6 +98,7 @@ export default function PaymentPage() {
     
     clearCheckout();
     clearCart();
+    setIsRedirecting(true);
     
     // Show success message and redirect
     toast.success(`Payment successful! Transaction: ${transactionReference}`);
@@ -112,34 +107,26 @@ export default function PaymentPage() {
 
   // on payment cancellation callback
   const handlePaymentCancel = (monnifyResponse?: MonnifyResponse) => {
-    console.log("Monnify Cancellation Response:", monnifyResponse);
-    
     const responseMessage = monnifyResponse?.responseMessage || "Payment was cancelled";
     toast.error(responseMessage);
-    
-    // Don't clear checkout or cart - let user try again
-    // Optionally redirect back to delivery page or stay on payment page
   };
 
   // on payment error callback
-  const handlePaymentError = (monnifyResponse?: MonnifyResponse) => {
-    console.log("Monnify Error Response:", monnifyResponse);
-    
+  const handlePaymentError = (monnifyResponse?: MonnifyResponse) => {    
     const errorMessage = monnifyResponse?.responseMessage || "Payment failed. Please try again.";
     toast.error(errorMessage);
-    
-    // Don't clear checkout or cart - let user try again
   };
 
   useEffect(() => {    
     // If any required data is missing, redirect back to delivery page
+    if (isRedirecting) return;
     if (!hasRedirected.current && (!user || !user.email || !addressData || !safeOrderTotal || safeOrderTotal <= 0 || !products || products.length === 0)) {
       hasRedirected.current = true;
       toast.error("Missing delivery, order, or product information. Please complete delivery details first.")
       clearCheckout()
       router.replace("/checkout/delivery")
     }
-  }, [user, addressData, safeOrderTotal, products, router])
+  }, [user, addressData, safeOrderTotal, products, router, isRedirecting])
 
   // If any required data is missing, don't render payment UI
   if (!user || !user.email || !addressData || !safeOrderTotal || safeOrderTotal <= 0 || !products || products.length === 0) {

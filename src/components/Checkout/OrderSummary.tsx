@@ -63,13 +63,28 @@ const OrderSummary = ({ onTotalCalculated, onProductsCalculated }: OrderSummaryP
   useEffect(() => {
     if (onProductsCalculated && data?.docs) {
       const productDetails = data.docs.map((singleProd) => {
-        const quantity = products.find(i => i.productId === singleProd.id)?.quantity || 1;
+        const cartProd = products.find(i => i.productId === singleProd.id);
+        const quantity = cartProd?.quantity || 1;
+        // Resolve color and size labels
+        let colorLabel = undefined;
+        let sizeLabel = undefined;
+        if (cartProd?.color && Array.isArray(singleProd["available colors"])) {
+          const colorObj = singleProd["available colors"].find((c: any) => c.id === cartProd.color);
+          colorLabel = colorObj?.label || cartProd.color;
+        }
+        if (cartProd?.size && Array.isArray(singleProd["available sizes"])) {
+          const sizeObj = singleProd["available sizes"].find((s: any) => s.id === cartProd.size);
+          sizeLabel = sizeObj?.label || cartProd.size;
+        }
         return {
           id: singleProd.id,
           name: singleProd.name,
           price: singleProd.price,
           quantity,
           image: singleProd.cover?.url || (singleProd.images?.[0]?.image?.url ?? undefined),
+          size: sizeLabel,
+          color: colorLabel,
+          deliveryFee: singleProd.deliveryFee ?? null,
         };
       });
       onProductsCalculated(productDetails);

@@ -7,7 +7,6 @@ export const ordersRouter = createTRPCRouter({
   createOrder: baseProcedure
     .input(createOrderInputSchema)
     .mutation(async ({ ctx, input }) => {
-      // No need to create delivery address record, just store the JSON
       const order = await ctx.payload.create({
         collection: "orders",
         data: {
@@ -27,6 +26,140 @@ export const ordersRouter = createTRPCRouter({
           status: input.status || "pending",
         }
       });
+
+      const APP_OWNER_EMAIL = 'adeyemiglr@gmail.com'; // TODO: Replace with real owner email
+      const SUPPORT_PHONE = '+234-800-000-0000';
+      const SUPPORT_EMAIL = 'support@greekgod.com';
+
+      // Send notification email to app owner
+      try {
+        const ownerSubject = `New Order Received: ${input.paymentReference || input.transactionReference}`;
+        // Calculate the delivery fee as the highest among the products
+        const deliveryFee = Array.isArray(input.productsSnapshot)
+          ? Math.max(...input.productsSnapshot.map(p => Number(p.deliveryFee) || 0))
+          : 0;
+
+        const ownerHtml = `
+          <h2>New Order Notification</h2>
+          <p><b>Order Reference:</b> ${input.paymentReference || input.transactionReference}</p>
+          <p><b>Status:</b> ${input.paymentCompleted ? 'Paid' : 'Pending'}</p>
+          <p><b>Amount:</b> ₦${input.amount}</p>
+          <p><b>Payment Date:</b> ${input.paymentDate}</p>
+          <h3>Customer Info</h3>
+          <ul>
+            <li><b>Name:</b> ${input.addressSnapshot?.firstname || ''} ${input.addressSnapshot?.lastname || ''}</li>
+            <li><b>Email:</b> ${input.userEmail}</li>
+            <li><b>Phone:</b> ${input.addressSnapshot?.phone || ''}</li>
+            <li><b>Address:</b> ${input.addressSnapshot?.address || ''}${input.addressSnapshot?.appartment ? ", " + input.addressSnapshot.appartment : ''}, ${input.addressSnapshot?.city || ''}</li>
+          </ul>
+          <h3>Order Items</h3>
+          <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; min-width:400px;">
+            <thead>
+              <tr style="background:#f3f3f3;">
+                <th>Image</th>
+                <th>Product</th>
+                <th>Size</th>
+                <th>Color</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${input.productsSnapshot.map(prod => `
+                <tr>
+                  <td style="text-align:center;">${prod.image ? `<img src="${prod.image}" alt="${prod.name}" width="50" height="50" style="object-fit:cover;border-radius:6px;" />` : ''}</td>
+                  <td>${prod.name}</td>
+                  <td>${prod.size || '-'}</td>
+                  <td>${prod.color || '-'}</td>
+                  <td>${prod.quantity}</td>
+                  <td>₦${prod.price}</td>
+                  <td>₦${prod.price * prod.quantity}</td>
+                </tr>
+              `).join('')}
+              <tr>
+                <td colspan="6" style="text-align:right;font-weight:bold;">Delivery Fee</td>
+                <td style="font-weight:bold;">₦${deliveryFee}</td>
+              </tr>
+              <tr>
+                <td colspan="6" style="text-align:right;font-weight:bold;">Total Order</td>
+                <td style="font-weight:bold;">₦${Number(input.amount)}</td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+        await ctx.payload.sendEmail({
+          to: APP_OWNER_EMAIL,
+          subject: ownerSubject,
+          html: ownerHtml,
+        });
+      } catch (err) {
+        console.error('Failed to send owner notification email:', err);
+      }
+
+      // Send receipt email to user (commented out for now)
+      try {
+        const userSubject = `Order Receipt - GreekGod`;
+        // Calculate the delivery fee as the highest among the products
+        const deliveryFee = Array.isArray(input.productsSnapshot)
+          ? Math.max(...input.productsSnapshot.map(p => Number(p.deliveryFee) || 0))
+          : 0;
+
+        const userHtml = `
+          <h2>Thank you for your order!</h2>
+          <p>Your order has been received and is being processed.</p>
+          <p><b>Order Reference:</b> ${input.paymentReference || input.transactionReference}</p>
+          <p><b>Status:</b> ${input.paymentCompleted ? 'Paid' : 'Pending'}</p>
+          <p><b>Amount:</b> ₦${input.amount}</p>
+          <p><b>Payment Date:</b> ${input.paymentDate}</p>
+          <h3>Order Items</h3>
+          <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; min-width:400px;">
+            <thead>
+              <tr style="background:#f3f3f3;">
+                <th>Image</th>
+                <th>Product</th>
+                <th>Size</th>
+                <th>Color</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${input.productsSnapshot.map(prod => `
+                <tr>
+                  <td style="text-align:center;">${prod.image ? `<img src="${prod.image}" alt="${prod.name}" width="50" height="50" style="object-fit:cover;border-radius:6px;" />` : ''}</td>
+                  <td>${prod.name}</td>
+                  <td>${prod.size || '-'}</td>
+                  <td>${prod.color || '-'}</td>
+                  <td>${prod.quantity}</td>
+                  <td>₦${prod.price}</td>
+                  <td>₦${prod.price * prod.quantity}</td>
+                </tr>
+              `).join('')}
+              <tr>
+                <td colspan="6" style="text-align:right;font-weight:bold;">Delivery Fee</td>
+                <td style="font-weight:bold;">₦${deliveryFee}</td>
+              </tr>
+              <tr>
+                <td colspan="6" style="text-align:right;font-weight:bold;">Total Order</td>
+                <td style="font-weight:bold;">₦${Number(input.amount)}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:16px;"><b>Total:</b> ₦${input.amount}</p>
+          <hr />
+          <p>If you have any questions or want to check your order status, contact us at <b>${SUPPORT_EMAIL}</b> or call <b>${SUPPORT_PHONE}</b>.</p>
+        `;
+        await ctx.payload.sendEmail({
+          to: input.userEmail,
+          subject: userSubject,
+          html: userHtml,
+        });
+      } catch (err) {
+        console.error('Failed to send user receipt email:', err);
+      }
+
       return { success: true, order };
     }),
 

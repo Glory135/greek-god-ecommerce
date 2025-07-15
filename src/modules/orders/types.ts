@@ -25,6 +25,9 @@ export const createOrderInputSchema = z.object({
     price: z.number(),
     quantity: z.number(),
     image: z.string().optional(),
+    size: z.string().optional(),
+    color: z.string().optional(),
+    deliveryFee: z.number().optional(),
   })),
   productsOrdered: z.array(z.string()),
   status: z.enum(["pending", "paid", "delivered", "cancelled"]).optional(),
@@ -49,6 +52,8 @@ export const orderOutputSchema = z.object({
     price: z.number(),
     quantity: z.number(),
     image: z.string().optional(),
+    size: z.string().optional(),
+    color: z.string().optional(),
   })).optional(), // Now an array of product snapshots
   productsOrdered: z.array(z.string()),
   status: z.enum(["pending", "paid", "delivered", "cancelled"]),
@@ -69,6 +74,8 @@ export interface ProductSnapshot {
   price: number;
   quantity: number;
   image?: string;
+  size?: string;
+  color?: string;
 }
 
 // Address snapshot type for the input

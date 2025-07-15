@@ -33,3 +33,29 @@ export function formatPrice(
 
   return formattedPrice;
 }
+
+// Utility to send email using Resend API
+export async function sendResendEmail({ to, subject, html }: { to: string, subject: string, html: string }) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const FROM_ADDRESS = process.env.RESEND_FROM_ADDRESS || 'no-reply@greekgod.com';
+  if (!RESEND_API_KEY) throw new Error('Missing RESEND_API_KEY');
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: FROM_ADDRESS,
+      to,
+      subject,
+      html,
+    }),
+  });
+  if (!res.ok) {
+    const error = await res.text();
+    throw new Error(`Failed to send email: ${error}`);
+  }
+  return res.json();
+}
