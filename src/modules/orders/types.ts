@@ -27,7 +27,7 @@ export const createOrderInputSchema = z.object({
     image: z.string().optional(),
     size: z.string().optional(),
     color: z.string().optional(),
-    deliveryFee: z.number().optional(),
+    deliveryFee: z.number().default(0).optional(),
   })),
   productsOrdered: z.array(z.string()),
   status: z.enum(["pending", "paid", "delivered", "cancelled"]).optional(),
@@ -54,6 +54,7 @@ export const orderOutputSchema = z.object({
     image: z.string().optional(),
     size: z.string().optional(),
     color: z.string().optional(),
+    deliveryFee: z.number().default(0).optional(),
   })).optional(), // Now an array of product snapshots
   productsOrdered: z.array(z.string()),
   status: z.enum(["pending", "paid", "delivered", "cancelled"]),

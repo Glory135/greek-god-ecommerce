@@ -11,10 +11,21 @@ import { PAGES_LINKS } from "@/utils/linksData"
 import { useCart } from "@/zustand/checkout/hooks/use-cart"
 import Image from "next/image"
 import Link from "next/link"
+import { useEffect } from "react"
+import { useCheckoutStore } from "@/zustand/checkout/store/use-checkout-store"
 
 export default function CheckoutPage() {
   const { user } = useGetUser()
   const { products, clearCart } = useCart(user?.id || "")
+  const { clearCheckout, orderTotal, addressData } = useCheckoutStore()
+
+  // Clear stale checkout data if cart is empty (prevents using old order data)
+  useEffect(() => {
+    if (products.length === 0 && (orderTotal || addressData)) {
+      console.log('Clearing stale checkout data on checkout page - cart is empty but checkout has data');
+      clearCheckout();
+    }
+  }, [products.length, orderTotal, addressData, clearCheckout]);
 
 
   return (

@@ -1,3 +1,4 @@
+import { CART_STORAGE_STRING } from "@/constants";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -93,18 +94,30 @@ export const useCartStore = create<CartState>()(
           }
         })),
       clearCart: (userSlug) =>
-        set((state) => ({
-          userCarts: {
-            ...state.userCarts,
-            [userSlug]: {
-              products: []
+        set((state) => {
+          const newState = {
+            userCarts: {
+              ...state.userCarts,
+              [userSlug]: {
+                products: []
+              }
             }
+          };
+          // Also manually clear localStorage to ensure persistence is cleared
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem(CART_STORAGE_STRING);
           }
-        })),
-      clearAllCarts: () =>
+          return newState;
+        }),
+      clearAllCarts: () => {
+        // Also manually clear localStorage to ensure persistence is cleared
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem(CART_STORAGE_STRING);
+        }
         set({
           userCarts: {}
-        }),
+        });
+      },
       getCartByUser: (userSlug) =>
         get().userCarts[userSlug]?.products || [],
 
@@ -112,7 +125,7 @@ export const useCartStore = create<CartState>()(
         get().userCarts[userSlug]?.products?.find(i => i.productId === productId) || null,
     }),
     {
-      name: "greekgod-cart",
+      name: CART_STORAGE_STRING,
       storage: createJSONStorage(() => localStorage)
     }
   )

@@ -9,10 +9,17 @@ import { useTRPC } from '@/trpc/client';
 import { useCart } from '@/zustand/checkout/hooks/use-cart';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { Color, Size } from '@/payload-types';
 
 interface OrderSummaryProps {
   onTotalCalculated?: (total: number) => void;
-  onProductsCalculated?: (products: Array<{ id: string; name: string; price: number; quantity: number; image?: string }>) => void;
+  onProductsCalculated?: (products: Array<{
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    image?: string
+  }>) => void;
 }
 
 const OrderSummary = ({ onTotalCalculated, onProductsCalculated }: OrderSummaryProps) => {
@@ -69,11 +76,11 @@ const OrderSummary = ({ onTotalCalculated, onProductsCalculated }: OrderSummaryP
         let colorLabel = undefined;
         let sizeLabel = undefined;
         if (cartProd?.color && Array.isArray(singleProd["available colors"])) {
-          const colorObj = singleProd["available colors"].find((c: any) => c.id === cartProd.color);
+          const colorObj = singleProd["available colors"].find((c: Color) => c.id === cartProd.color);
           colorLabel = colorObj?.label || cartProd.color;
         }
         if (cartProd?.size && Array.isArray(singleProd["available sizes"])) {
-          const sizeObj = singleProd["available sizes"].find((s: any) => s.id === cartProd.size);
+          const sizeObj = singleProd["available sizes"].find((s: Size) => s.id === cartProd.size);
           sizeLabel = sizeObj?.label || cartProd.size;
         }
         return {
@@ -84,7 +91,7 @@ const OrderSummary = ({ onTotalCalculated, onProductsCalculated }: OrderSummaryP
           image: singleProd.cover?.url || (singleProd.images?.[0]?.image?.url ?? undefined),
           size: sizeLabel,
           color: colorLabel,
-          deliveryFee: singleProd.deliveryFee ?? null,
+          deliveryFee: singleProd.deliveryFee ?? 0,
         };
       });
       onProductsCalculated(productDetails);

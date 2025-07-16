@@ -1,3 +1,4 @@
+import { CHECKOUT_STORAGE_STRING } from "@/constants";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -38,10 +39,16 @@ export const useCheckoutStore = create<CheckoutState>()(
       setAddressData: (data) => set({ addressData: data }),
       setOrderTotal: (total) => set({ orderTotal: total }),
       setProducts: (products) => set({ products }),
-      clearCheckout: () => set({ addressData: null, orderTotal: null, products: [] }),
+      clearCheckout: () => {
+        set({ addressData: null, orderTotal: null, products: [] });
+        // Also manually clear localStorage to ensure persistence is cleared
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem(CHECKOUT_STORAGE_STRING);
+        }
+      },
     }),
     {
-      name: "greekgod-checkout-storage",
+      name: CHECKOUT_STORAGE_STRING,
       partialize: (state) => ({
         addressData: state.addressData,
         orderTotal: state.orderTotal,

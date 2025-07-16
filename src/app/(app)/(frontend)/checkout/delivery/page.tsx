@@ -25,6 +25,7 @@ import { Loader2 } from "lucide-react";
 import { useCheckoutStore } from "@/zustand/checkout/store/use-checkout-store";
 import { CheckoutProduct } from '@/zustand/checkout/store/use-checkout-store';
 import { DeliveryAddress } from "@/payload-types";
+import { useCart } from "@/zustand/checkout/hooks/use-cart";
 
 
 export default function DeliveryPage() {
@@ -34,7 +35,16 @@ export default function DeliveryPage() {
   const router = useRouter()
 
   const trpc = useTRPC();
-  const { setAddressData, setOrderTotal, setProducts, orderTotal } = useCheckoutStore();
+  const { setAddressData, setOrderTotal, setProducts, orderTotal, clearCheckout } = useCheckoutStore();
+  const { products: cartProducts } = useCart(user?.id || "");
+
+  // Clear stale checkout data if cart is empty (prevents using old order data)
+  useEffect(() => {
+    if (cartProducts.length === 0 && orderTotal) {
+      console.log('Clearing stale checkout data on delivery page - cart is empty but orderTotal exists');
+      clearCheckout();
+    }
+  }, [cartProducts.length, orderTotal, clearCheckout]);
 
   // Handle authentication redirect
   useEffect(() => {
@@ -115,6 +125,29 @@ export default function DeliveryPage() {
     setProducts(products);
   }, [setProducts]);
 
+  const onSubmit = (values: z.infer<typeof addressFieldsSchema>) => {
+    if (!orderTotal || orderTotal <= 0) {
+      toast.error("Order total is missing or invalid. Please check your bag.");
+      return;
+    }
+    // Always save to Zustand store for payment page
+    setAddressData(values);
+    setOrderTotal(orderTotal);
+    // Save to database only if user checked "Save this information"
+    if (saveData) {
+      addAddress.mutate({ ...values, customerId: user?.id || "" });
+    }
+    router.push(PAGES_LINKS.payment.link);
+  }
+
+
+  const formatAddressForSelect = (address: DeliveryAddress) => {
+    const name = `${address.firstname || ""} ${address.lastname || ""}`.trim();
+    const addressLine = `${address.address}${address.appartment ? `, ${address.appartment}` : ""}`;
+    return `${name} - ${addressLine}, ${address.city}`;
+  };
+
+
   // User data validation and loading states
   if (userLoading) {
     return (
@@ -126,7 +159,6 @@ export default function DeliveryPage() {
       </div>
     );
   }
-
   // Redirect if user is not authenticated or there's an error
   if (userError || !user || !user.id || !user.email) {
     return (
@@ -137,31 +169,6 @@ export default function DeliveryPage() {
       </div>
     );
   }
-
-  const onSubmit = (values: z.infer<typeof addressFieldsSchema>) => {
-    if (!orderTotal || orderTotal <= 0) {
-      toast.error("Order total is missing or invalid. Please check your cart.");
-      return;
-    }
-
-    // Always save to Zustand store for payment page
-    setAddressData(values);
-    setOrderTotal(orderTotal);
-
-    // Save to database only if user checked "Save this information"
-    if (saveData) {
-      addAddress.mutate({ ...values, customerId: user.id || "" });
-    }
-
-    router.push(PAGES_LINKS.payment.link);
-  }
-
-  const formatAddressForSelect = (address: DeliveryAddress) => {
-    const name = `${address.firstname || ""} ${address.lastname || ""}`.trim();
-    const addressLine = `${address.address}${address.appartment ? `, ${address.appartment}` : ""}`;
-    return `${name} - ${addressLine}, ${address.city}`;
-  };
-
   return (
     <div className="w-full">
       <MaxWidthWrapper className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16 relative">

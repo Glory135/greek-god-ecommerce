@@ -13,6 +13,8 @@ import { useMutation } from "@tanstack/react-query";
 import { PAGES_LINKS } from "@/utils/linksData"
 import { CheckoutProduct } from '@/zustand/checkout/store/use-checkout-store';
 import { formatPrice } from "@/lib/utils"
+import { CART_STORAGE_STRING, CHECKOUT_STORAGE_STRING } from "@/constants"
+import Image from "next/image"
 
 // Define MonnifyResponse type
 export interface MonnifyResponse {
@@ -30,11 +32,20 @@ export interface MonnifyResponse {
 export default function PaymentPage() {
   const { user } = useGetUser()
   const { addressData, orderTotal, products, clearCheckout } = useCheckoutStore()
-  const { clearCart } = useCart(user?.id || "")
+  const { clearCart, products: cartProducts } = useCart(user?.id || "")
   const router = useRouter()
   const trpc = useTRPC();
   const hasRedirected = useRef(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+
+
+  // Clear stale checkout data if cart is empty (prevents using old order data)
+  useEffect(() => {
+    if (cartProducts.length === 0 && (products.length > 0 || addressData || orderTotal)) {
+      clearCheckout();
+    }
+  }, [cartProducts.length, products.length, addressData, orderTotal, clearCheckout]);
+
 
   // Defensive fallback: recalculate orderTotal from products if missing
   const fallbackOrderTotal = useMemo(() => {
@@ -51,10 +62,21 @@ export default function PaymentPage() {
   const createOrder = useMutation(trpc.orders.createOrder.mutationOptions({
     onSuccess: () => {
       toast.success("Order created successfully!");
+      clearCheckout();
+      clearCart();
+  
+      // Also manually clear localStorage to ensure persistence is cleared
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(CHECKOUT_STORAGE_STRING);
+        localStorage.removeItem(CART_STORAGE_STRING);
+      }
+
+      // Force a page refresh to ensure all state is completely reset
+      setTimeout(() => {
+        window.location.href = PAGES_LINKS.account.link;
+      }, 500);
     },
-    onError: (error) => {
-      console.log(error);
-      
+    onError: () => {
       toast.error("Failed to create order record.");
     }
   }));
@@ -64,6 +86,14 @@ export default function PaymentPage() {
   const handlePaymentSuccess = (monnifyResponse?: MonnifyResponse) => {
     if (!user || !user.email || !user.id || !addressData) return;
 
+    // Validate that we have fresh cart data (not stale checkout data)
+    if (cartProducts.length === 0) {
+      toast.error('Bag data is missing. Please try again.');
+      clearCheckout();
+      router.replace(PAGES_LINKS.checkout.link);
+      return;
+    }
+
     // Extract payment reference and details from Monnify response
     const paymentReference = monnifyResponse?.paymentReference || "";
     const transactionReference = monnifyResponse?.transactionReference || "";
@@ -72,7 +102,19 @@ export default function PaymentPage() {
     const paymentDate = monnifyResponse?.paidOn || new Date().toISOString();
     const paymentDescription = monnifyResponse?.message || `Order payment for ${addressData.firstname} ${addressData.lastname}`;
 
-    // Create order in DB
+    // Validate that checkout products match cart products
+    const cartProductIds = cartProducts.map(p => p.productId).sort();
+    const checkoutProductIds = products.map(p => p.id).sort();
+    const productsMatch = JSON.stringify(cartProductIds) === JSON.stringify(checkoutProductIds);
+    
+    if (!productsMatch) {
+      toast.error("Product data mismatch. Please try again.");
+      clearCheckout();
+      router.replace(PAGES_LINKS.checkout.link);
+      return;
+    }
+
+    // Create order in DB - use current cart products to ensure fresh data
     createOrder.mutate({
       paymentReference: paymentReference || transactionReference,
       transactionReference: transactionReference,
@@ -84,7 +126,7 @@ export default function PaymentPage() {
       customerId: user.id || "",
       userEmail: user.email || "",
       addressSnapshot: addressData,
-      productsSnapshot: products,
+      productsSnapshot: products, // This should be the current checkout products
       productsOrdered: products.map((p: CheckoutProduct) => p.id),
       status: paymentCompleted ? "paid" : "pending",
     });
@@ -95,34 +137,31 @@ export default function PaymentPage() {
         products: products.map((p: CheckoutProduct) => ({ id: p.id, quantity: p.quantity }))
       });
     }
-    
-    clearCheckout();
-    clearCart();
+
     setIsRedirecting(true);
-    
-    // Show success message and redirect
+
+    // Show success message
     toast.success(`Payment successful! Transaction: ${transactionReference}`);
-    router.replace(PAGES_LINKS.account.link) // Redirect to account page or order confirmation
   };
 
   // on payment cancellation callback
-  const handlePaymentCancel = (monnifyResponse?: MonnifyResponse) => {
-    const responseMessage = monnifyResponse?.responseMessage || "Payment was cancelled";
-    toast.error(responseMessage);
-  };
+  // const handlePaymentCancel = (monnifyResponse?: MonnifyResponse) => {
+  // const responseMessage = monnifyResponse?.responseMessage || "Payment was cancelled";
+  // toast.error(responseMessage);
+  // };
 
   // on payment error callback
-  const handlePaymentError = (monnifyResponse?: MonnifyResponse) => {    
+  const handlePaymentError = (monnifyResponse?: MonnifyResponse) => {
     const errorMessage = monnifyResponse?.responseMessage || "Payment failed. Please try again.";
     toast.error(errorMessage);
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     // If any required data is missing, redirect back to delivery page
     if (isRedirecting) return;
     if (!hasRedirected.current && (!user || !user.email || !addressData || !safeOrderTotal || safeOrderTotal <= 0 || !products || products.length === 0)) {
       hasRedirected.current = true;
-      toast.error("Missing delivery, order, or product information. Please complete delivery details first.")
+      // toast.error("Missing delivery, order, or product information. Please complete delivery details first.")
       clearCheckout()
       router.replace("/checkout/delivery")
     }
@@ -161,7 +200,7 @@ export default function PaymentPage() {
                 {products.map((prod) => (
                   <tr key={prod.id}>
                     <td className="px-2 py-1 flex items-center gap-2">
-                      {prod.image && <img src={prod.image} alt={prod.name} className="w-8 h-8 object-cover rounded" />}
+                      {prod.image && <Image width={50} height={50} src={prod.image} alt={prod.name} className="object-cover rounded" />}
                       {prod.name}
                     </td>
                     <td className="px-2 py-1">{prod.quantity}</td>
@@ -184,7 +223,7 @@ export default function PaymentPage() {
           description={`Order payment for ${addressData.firstname} ${addressData.lastname}`}
           fullname={`${addressData.firstname} ${addressData.lastname}`}
           onSuccess={handlePaymentSuccess}
-          onCancel={handlePaymentCancel}
+          // onCancel={handlePaymentCancel}
           onError={handlePaymentError}
         />
       </div>
