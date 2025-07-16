@@ -43,7 +43,7 @@ export const orderOutputSchema = z.object({
   amountPaid: z.string(),
   paymentDate: z.string(),
   paymentDescription: z.string().optional(),
-  customerId: z.string(),
+  customerId: z.union([z.string(), z.object({ id: z.string() })]),
   userEmail: z.string(),
   addressSnapshot: z.any().optional(), // Now JSON
   productsSnapshot: z.array(z.object({
@@ -56,7 +56,7 @@ export const orderOutputSchema = z.object({
     color: z.string().optional(),
     deliveryFee: z.number().default(0).optional(),
   })).optional(), // Now an array of product snapshots
-  productsOrdered: z.array(z.string()),
+  productsOrdered: z.array(z.union([z.string(), z.object({ id: z.string() })])),
   status: z.enum(["pending", "paid", "delivered", "cancelled"]),
   delivered: z.boolean().optional(),
   dateDelivered: z.string().optional(),

@@ -1,6 +1,7 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { createOrderInputSchema, orderOutputSchema } from "../types";
-import { z } from "zod";
+import { createOrderInputSchema, orderOutputSchema, ProductSnapshot } from "../types";
+import { infer, z } from "zod";
+import { DEFAULT_LIMIT } from "@/constants";
 
 export const ordersRouter = createTRPCRouter({
   // Create a new order
@@ -174,11 +175,16 @@ export const ordersRouter = createTRPCRouter({
       return orderOutputSchema.parse(order);
     }),
 
-  // Get all orders for a user
+
+  // Infinite/paginated query for user orders
   getOrdersByUser: baseProcedure
-    .input(z.object({ userId: z.string() }))
+    .input(z.object({
+      userId: z.string(),
+      cursor: z.number().default(1),
+      limit: z.number().default(DEFAULT_LIMIT),
+    }))
     .query(async ({ ctx, input }) => {
-      const orders = await ctx.payload.find({
+      const data = await ctx.payload.find({
         collection: "orders",
         where: {
           customerId: {
@@ -186,8 +192,11 @@ export const ordersRouter = createTRPCRouter({
           },
         },
         sort: "-createdAt",
+        page: input.cursor,
+        limit: input.limit
       });
-      return orders.docs.map(order => orderOutputSchema.parse(order));
+      
+      return data
     }),
 
   // Update order status

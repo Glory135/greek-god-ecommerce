@@ -1,12 +1,11 @@
 "use client"
 
-import React, { Fragment } from 'react'
+import React from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import { useTRPC } from '@/trpc/client'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { formatPrice } from '@/lib/utils'
-import { Plus, StarIcon } from 'lucide-react'
-import { Progress } from '../ui/progress'
+import { Plus } from 'lucide-react'
 import ProductImagesStack from './ProductImagesStack'
 import AddToCartDetails from '../Cart/AddToCartDetails'
 import { generateCategoryLink, generateCollectionLink } from '@/utils/commonFunctions'
@@ -21,7 +20,7 @@ const SingleProductView = ({ productId }: { productId: string }) => {
   return (
     <MaxWidthWrapper>
       <div className="relative w-full flex">
-        <div className="flex-col flex flex-1 gap-10">
+        <div className="flex-col flex flex-1 gap-10 py-10">
           <div className="flex-1">
             <ProductImagesStack images={data.images} />
           </div>
@@ -90,7 +89,7 @@ const SingleProductView = ({ productId }: { productId: string }) => {
             </div>
           </div>
 
-          <div className="w-full p-5 sm:p-10">
+          {/* <div className="w-full p-5 sm:p-10">
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-medium">Ratings</h3>
               <div className="flex items-center gap-x-1 font-medium">
@@ -116,7 +115,7 @@ const SingleProductView = ({ productId }: { productId: string }) => {
                 </Fragment>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="hidden md:flex flex-1 h-fit !sticky !top-20">

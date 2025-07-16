@@ -26,6 +26,9 @@ export const PAGES_LINKS = {
   "wishlist": {
     link: "/account/wishlist"
   },
+  "orders": {
+    link: "/account/orders"
+  },
   "checkout": {
     link: "/checkout"
   },

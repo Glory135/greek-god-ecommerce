@@ -9,7 +9,7 @@ import { Button } from '../ui/button'
 import dynamic from 'next/dynamic';
 import { useCart } from '@/zustand/checkout/hooks/use-cart';
 import useGetUser from '@/hooks/use-get-user';
-import StarRating from '../Rating/StarRating';
+// import StarRating from '../Rating/StarRating';
 
 // to solve hydration error
 const AddToCartButton = dynamic(
@@ -84,12 +84,12 @@ const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
           <p className="text-base font-medium">{formatPrice(`${product.price}`)}</p>
         </div>
 
-        <div className="px-2 py-1 w-fit">
+        {/* <div className="px-2 py-1 w-fit">
           <StarRating
             rating={3}
             iconClassName='size-4'
           />
-        </div>
+        </div> */}
       </div>
 
 

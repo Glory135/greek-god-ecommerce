@@ -163,6 +163,8 @@ export const authRouter = createTRPCRouter({
       }
     ),
 
+
+
   googleAuthCallback: baseProcedure.mutation(async ({ ctx }) => {
     const headers = await getHeaders();
     const session = await ctx.payload.auth({ headers });
