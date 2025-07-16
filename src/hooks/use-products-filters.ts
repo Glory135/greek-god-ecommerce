@@ -3,6 +3,10 @@ import { useQueryStates, parseAsString, parseAsArrayOf, parseAsStringLiteral } f
 const sortValues = ["newest", "oldest", "featured", "pricel", "priceh", "bestseller"] as const
 
 const params = {
+  search: parseAsString
+  .withOptions({
+    clearOnDefault: true,
+  }).withDefault(""),
   sort: parseAsStringLiteral(sortValues)
     .withDefault("featured"),
   category: parseAsString
@@ -30,5 +34,6 @@ const params = {
 }
 
 export const useProductFilters = () => {
-  return useQueryStates(params)
+  return useQueryStates(params
+  )
 }

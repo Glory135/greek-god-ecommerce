@@ -3,6 +3,10 @@ import { createLoader, parseAsString, parseAsArrayOf, parseAsStringLiteral } fro
 export const sortValues = ["newest", "oldest", "featured", "pricel", "priceh", "bestseller"] as const
 
 const params = {
+  search: parseAsString
+    .withOptions({
+      clearOnDefault: true,
+    }).withDefault(""),
   sort: parseAsStringLiteral(sortValues)
     .withDefault("featured"),
   category: parseAsString
@@ -22,6 +26,9 @@ const params = {
       clearOnDefault: true
     }).withDefault(""),
   colors: parseAsArrayOf(parseAsString).withOptions({
+    clearOnDefault: true
+  }).withDefault([]),
+  sizes: parseAsArrayOf(parseAsString).withOptions({
     clearOnDefault: true
   }).withDefault([])
 }

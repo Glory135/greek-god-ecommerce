@@ -16,7 +16,9 @@ const SearchComponent = () => {
             <div className="flex md:hidden">
               <CategoriesSidebar />
             </div>
-            <SearchForm />
+            <Suspense>
+              <SearchForm />
+            </Suspense>
             <CloseSearchBtn />
           </div>
         </MaxWidthWrapper>
