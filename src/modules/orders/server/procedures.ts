@@ -1,6 +1,6 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { createOrderInputSchema, orderOutputSchema, ProductSnapshot } from "../types";
-import { infer, z } from "zod";
+import { createOrderInputSchema, orderOutputSchema } from "../types";
+import { z } from "zod";
 import { DEFAULT_LIMIT } from "@/constants";
 
 export const ordersRouter = createTRPCRouter({

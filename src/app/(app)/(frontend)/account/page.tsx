@@ -151,7 +151,7 @@ export default function AccountPage() {
                       {Array.isArray(order.productsSnapshot) &&
                         (order.productsSnapshot as unknown[])
                           .filter((p): p is ProductSnapshot => typeof p === 'object' && p !== null && 'id' in p && 'name' in p)
-                          .map((prod, i) => (
+                          .map((prod) => (
                             <tr key={prod.id}>
                               <td className="px-2 py-1 flex items-center gap-2">
                                 {prod.image && <Image width={40} height={40} src={prod.image} alt={prod.name} className="object-cover rounded" />}
