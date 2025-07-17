@@ -39,6 +39,7 @@ export default function AccountPage() {
       await appAuthClient.signout({ returnTo: PAGES_LINKS.home.link })
       toast.success("Logged Out Succssfully!")
     } catch (error) {
+      console.error(error);
       toast.error("Error logging you out!")
     }
   };
