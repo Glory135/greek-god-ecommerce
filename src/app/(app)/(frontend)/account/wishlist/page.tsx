@@ -9,12 +9,22 @@ import { useTRPC } from "@/trpc/client";
 import { useWishlist } from "@/zustand/wishlist/hooks/use-wishlist";
 import { useQuery } from "@tanstack/react-query";
 import { InboxIcon } from "lucide-react";
+import { useRouter } from 'next/navigation';
+
 
 export default function WishListPsge() {
-  const { user } = useGetUser()
+  const { user, isLoading } = useGetUser()
+  const router = useRouter()
+
+  // Redirect to login if not logged in
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.replace('/login');
+    }
+  }, [isLoading, user, router]);
+
   const { products, totalProductsInCart } = useWishlist(user?.id || "")
   const trpc = useTRPC()
-
   const { data, isLoading } = useQuery(trpc.wishlist.getProducts.queryOptions({
     ids: products
   }))
