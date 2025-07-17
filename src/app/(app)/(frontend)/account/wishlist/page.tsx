@@ -6,6 +6,7 @@ import ProductCardSkeletonGrid from "@/components/Products/ProductCardSkeletonGr
 import SectionTitle from "@/components/Sections/SectionTitle";
 import useGetUser from "@/hooks/use-get-user";
 import { useTRPC } from "@/trpc/client";
+import { PAGES_LINKS } from "@/utils/linksData";
 import { useWishlist } from "@/zustand/wishlist/hooks/use-wishlist";
 import { useQuery } from "@tanstack/react-query";
 import { InboxIcon } from "lucide-react";
@@ -20,7 +21,7 @@ export default function WishListPsge() {
   // Redirect to login if not logged in
   useEffect(() => {
     if (!loadingUser && !user) {
-      router.replace('/login');
+      router.replace(PAGES_LINKS.login.link);
     }
   }, [loadingUser, user, router]);
 

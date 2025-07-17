@@ -9,6 +9,7 @@ import { RefreshCcw } from 'lucide-react';
 import { useEffect } from 'react';
 import { DEFAULT_LIMIT } from '@/constants';
 import OrderCard from '@/components/Orders/OrderCard';
+import { PAGES_LINKS } from '@/utils/linksData';
 
 function getInitials(name?: string, email?: string) {
   if (name && name.trim().length > 0) {
@@ -26,7 +27,7 @@ export default function AccountPage() {
   // Redirect to login if not logged in
   useEffect(() => {
     if (!isLoading && !user) {
-      router.replace('/login');
+      router.replace(PAGES_LINKS.login.link);
     }
   }, [isLoading, user, router]);
 
@@ -34,7 +35,7 @@ export default function AccountPage() {
   const handleLogout = () => {
     // TODO: Replace with real logout logic
     localStorage.clear();
-    router.replace('/login');
+    router.replace(PAGES_LINKS.login.link);
   };
 
 

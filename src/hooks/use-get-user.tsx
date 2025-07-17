@@ -1,6 +1,7 @@
 
 "use client"
 
+import { User } from "@/payload-types"
 import { useTRPC } from "@/trpc/client"
 import { useQuery } from "@tanstack/react-query"
 
@@ -9,9 +10,9 @@ const useGetUser = () => {
   const session = useQuery(trpc.auth.session.queryOptions())
   
   return {
-    user: session?.data?.user,
-    isLoading: session?.isLoading,
-    isError: session?.isError,
+    user: session?.data?.user as User,
+    isLoading: session?.isLoading as boolean,
+    isError: session?.isError as boolean,
     error: session?.error
   }
 }

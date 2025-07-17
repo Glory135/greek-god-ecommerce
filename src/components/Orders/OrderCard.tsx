@@ -88,10 +88,10 @@ const OrderCard = (
       {/* Delivery Address (optional) */}
       {order.addressSnapshot && !Array.isArray(order.addressSnapshot) && typeof order.addressSnapshot === 'object' && (
         <div className="mt-2 text-xs text-gray-600">
-          <span className="font-semibold">Delivery to: </span>
-          {address?.firstname} {address?.lastname},
-          {address?.address},
-          {address?.appartment ? `, ${address?.appartment}` : ''},
+          <span className="font-semibold">Delivery to:</span>{" "}
+          {address?.firstname} {address?.lastname},{" "}
+          {address?.address},{" "}
+          {address?.appartment ? `, ${address?.appartment}` : ''},{" "}
           {address?.city} ({address?.phone})
         </div>
       )}
