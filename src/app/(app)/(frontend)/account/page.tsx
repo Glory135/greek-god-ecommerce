@@ -11,6 +11,7 @@ import { DEFAULT_LIMIT } from '@/constants';
 import OrderCard from '@/components/Orders/OrderCard';
 import { PAGES_LINKS } from '@/utils/linksData';
 import { appAuthClient } from '@/lib/auth';
+import { toast } from 'sonner';
 
 function getInitials(name?: string, email?: string) {
   if (name && name.trim().length > 0) {
@@ -32,11 +33,14 @@ export default function AccountPage() {
     }
   }, [isLoading, user, router]);
 
-  console.log(user);
-  
   // Placeholder logout logic (replace with real one)
   const handleLogout = async () => {
-    await appAuthClient.signout({ returnTo: PAGES_LINKS.home.link })
+    try {
+      await appAuthClient.signout({ returnTo: PAGES_LINKS.home.link })
+      toast.success("Logged Out Succssfully!")
+    } catch (error) {
+      toast.error("Error logging you out!")
+    }
   };
 
 
