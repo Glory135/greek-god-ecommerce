@@ -10,18 +10,19 @@ import { useWishlist } from "@/zustand/wishlist/hooks/use-wishlist";
 import { useQuery } from "@tanstack/react-query";
 import { InboxIcon } from "lucide-react";
 import { useRouter } from 'next/navigation';
+import { useEffect } from "react";
 
 
 export default function WishListPsge() {
-  const { user, isLoading } = useGetUser()
+  const { user, isLoading: loadingUser } = useGetUser()
   const router = useRouter()
 
   // Redirect to login if not logged in
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!loadingUser && !user) {
       router.replace('/login');
     }
-  }, [isLoading, user, router]);
+  }, [loadingUser, user, router]);
 
   const { products, totalProductsInCart } = useWishlist(user?.id || "")
   const trpc = useTRPC()
