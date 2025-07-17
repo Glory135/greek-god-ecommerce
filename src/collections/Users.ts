@@ -24,7 +24,7 @@ export const Users: CollectionConfig = {
   // TODO
   // change this when resend is propery configured
   auth: {
-    tokenExpiration: ((60 * 60) * 24) * 30 // 30 days
+    tokenExpiration: ((60 * 60) * 24) * 30, // 30 days
   },
   // auth: {
   //   verify: {
