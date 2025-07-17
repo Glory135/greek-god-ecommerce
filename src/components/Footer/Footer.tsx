@@ -56,7 +56,7 @@ const Footer = () => {
               <h4 className='font-bold text-base'>Help & Support</h4>
               <ul className='flex flex-col gap-3'>
                 <li className='text-base'>
-                  <Link href={"#"}>Contact Us</Link>
+                  <Link href={PAGES_LINKS.contact.link}>Contact Us</Link>
                 </li>
               </ul>
             </div>
