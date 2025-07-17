@@ -25,6 +25,9 @@ export const Users: CollectionConfig = {
   // change this when resend is propery configured
   auth: {
     tokenExpiration: ((60 * 60) * 24) * 30, // 30 days
+    cookies: {
+      secure: process.env.NODE_ENV === 'production',
+    },
   },
   // auth: {
   //   verify: {
