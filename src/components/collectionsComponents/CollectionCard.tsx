@@ -24,12 +24,12 @@ const CollectionCard = ({ slug, title, description, heroimg }: Props) => {
             fill
             src={heroimg}
             alt={title}
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            className="object-contain transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600">
             <div className="text-center">
-              <h3 className="text-3xl font-bold text-white drop-shadow-lg">
+              <h3 className="text-3xl font-bold drop-shadow-lg text-white">
                 {title}
               </h3>
               <div className="mt-2 h-1 w-16 bg-background/30 rounded-full mx-auto"></div>
@@ -44,7 +44,7 @@ const CollectionCard = ({ slug, title, description, heroimg }: Props) => {
       {/* Content Container */}
       <div className="absolute bottom-0 left-0 right-0 p-6">
         {/* Title */}
-        <h3 className="text-2xl font-bold text-white drop-shadow-lg mb-2 transition-transform duration-500 group-hover:translate-y-[-8px]">
+        <h3 className="text-2xl font-bold text-greek  mb-2 transition-transform duration-500 group-hover:translate-y-[-8px]">
           {title}
         </h3>
 

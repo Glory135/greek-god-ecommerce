@@ -67,11 +67,8 @@ export default function LandingPage() {
           <CollectionsSection />
         </Suspense>
       </HydrationBoundary>
-
       <CTASection />
-
       <TrendingSection />
-
     </div>
   )
 }
