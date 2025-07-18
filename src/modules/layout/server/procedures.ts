@@ -139,20 +139,20 @@ export const layoutRouter = createTRPCRouter({
         id: 5,
         label: "Trending",
         value: "trending",
-        href: `${PAGES_LINKS.products.link}?sort=trending`
-      },
-      {
-        id: 6,
-        label: "Lookbook",
-        value: "lookbook",
-        href: `${PAGES_LINKS.lookbook.link}`
+        href: `${PAGES_LINKS.products.link}?sort=bestseller`
       },
       {
         id: 7,
         label: "About",
         value: "about",
         href: `${PAGES_LINKS.about.link}`
-      }
+      },
+      {
+        id: 6,
+        label: "Contact Us",
+        value: "contact",
+        href: `${PAGES_LINKS.contact.link}`
+      },
     ];
 
     return [categoriesForNav, collectionsForNav, ...staticNavItems] as INavItem[];

@@ -2,6 +2,7 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { createOrderInputSchema, orderOutputSchema } from "../types";
 import { z } from "zod";
 import { DEFAULT_LIMIT } from "@/constants";
+import { CONTACT_DETAILS } from "../../../constants";
 
 export const ordersRouter = createTRPCRouter({
   // Create a new order
@@ -28,9 +29,8 @@ export const ordersRouter = createTRPCRouter({
         }
       });
 
-      const APP_OWNER_EMAIL = 'adeyemiglr@gmail.com'; // TODO: Replace with real owner email
-      const SUPPORT_PHONE = '+234-800-000-0000';
-      const SUPPORT_EMAIL = 'support@greekgod.com';
+      const SUPPORT_PHONE = CONTACT_DETAILS.support_phone;
+      const SUPPORT_EMAIL = CONTACT_DETAILS.support_email;
 
       // Send notification email to app owner
       try {
@@ -90,12 +90,12 @@ export const ordersRouter = createTRPCRouter({
           </table>
         `;
         await ctx.payload.sendEmail({
-          to: APP_OWNER_EMAIL,
+          to: CONTACT_DETAILS.order_email,
           subject: ownerSubject,
           html: ownerHtml,
         });
       } catch (err) {
-        console.error('Failed to send owner notification email:', err);
+        console.error('Failed to send order notification email:', err);
       }
 
       // Send receipt email to user (commented out for now)

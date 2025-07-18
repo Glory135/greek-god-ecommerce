@@ -10,6 +10,7 @@ import { productsRouter } from '@/modules/products/server/procedures';
 import { sizesRouter } from '@/modules/sizes/server/procedures';
 import { wishListRouter } from '@/modules/wishlist/server/procedures';
 import { ordersRouter } from '@/modules/orders/server/procedures';
+import { contactRouter } from '@/modules/contact/server/procedures';
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
@@ -23,6 +24,7 @@ export const appRouter = createTRPCRouter({
   colors: colorsRouter,
   sizes: sizesRouter,
   orders: ordersRouter,
+  contact: contactRouter,
 });
 
 // export type definition of API

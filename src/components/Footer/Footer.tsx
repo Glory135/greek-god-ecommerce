@@ -6,6 +6,7 @@ import { FaInstagram, FaFacebook, FaPinterest, FaTiktok } from "react-icons/fa";
 import Link from 'next/link';
 import Image from 'next/image';
 import { PAGES_LINKS } from '@/utils/linksData';
+import { CONTACT_DETAILS, SOCIAL_LINKS } from '@/constants';
 
 const Footer = () => {
   return (
@@ -24,10 +25,18 @@ const Footer = () => {
             </div>
             <div className="flex flex-col gap-8">
               <div className="flex gap-3">
-                <FaInstagram size={25} />
-                <FaFacebook size={25} />
-                <FaPinterest size={25} />
-                <FaTiktok size={25} />
+                <Link href={SOCIAL_LINKS.instagram} target='__blank' className='w-fit' >
+                  <FaInstagram size={25} />
+                </Link>
+                <Link href={SOCIAL_LINKS.facebook} target='__blank' className='w-fit' >
+                  <FaFacebook size={25} />
+                </Link>
+                <Link href={SOCIAL_LINKS.pinterest} target='__blank' className='w-fit' >
+                  <FaPinterest size={25} />
+                </Link>
+                <Link href={SOCIAL_LINKS.tiktok} target='__blank' className='w-fit' >
+                  <FaTiktok size={25} />
+                </Link>
               </div>
               <p className="text-sm">
                 &copy; 2025 GreekGod. All Rights Reserved.
@@ -48,7 +57,7 @@ const Footer = () => {
                   <Link href={PAGES_LINKS.collections.link}>Collections</Link>
                 </li>
                 <li className='text-base'>
-                  <Link href={"#"}>Trending</Link>
+                  <Link href={`${PAGES_LINKS.products.link}?sort=bestseller`}>Trending</Link>
                 </li>
               </ul>
             </div>
@@ -62,7 +71,8 @@ const Footer = () => {
             </div>
           </div>
         </>
-        <Image className='absolute bottom-5 right-5 md:right-10 object-contain cursor-pointer hover:scale-105' width={50} height={50} alt='help' src="/icons/help.svg" />
+        <Link target="__blank" href={`https://wa.me/${CONTACT_DETAILS.support_phone.split("+")[1]}?text=Hello%20GreekGod%20`} className='absolute bottom-5 right-5 md:right-10'>
+          <Image className='object-contain cursor-pointer hover:scale-105' width={50} height={50} alt='help' src="/icons/help.svg" /></Link>
       </MaxWidthWrapper>
     </footer>
   )

@@ -53,14 +53,14 @@ export const productsRouter = createTRPCRouter({
       if (input.sort === "featured") {
         sort = "-createdAt"
       }
+      if (input.sort === "bestseller") {
+        sort = "+orderCount"
+      }
       if (input.sort === "oldest") {
         sort = "+createdAt"
       }
       if (input.sort === "newest") {
         sort = "-createdAt"
-      }
-      if (input.sort === "bestseller") {
-        sort = "name"
       }
       if (input.sort === "pricel") {
         sort = "price"
