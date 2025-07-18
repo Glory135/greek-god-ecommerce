@@ -1,5 +1,4 @@
 import Collectionproducts from "@/components/collectionsComponents/Collectionproducts"
-import MaxWidthWrapper from "@/components/MaxWidthWrapper"
 // import { getQueryClient, trpc } from "@/trpc/server"
 // import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 
