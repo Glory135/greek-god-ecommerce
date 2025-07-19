@@ -1,7 +1,7 @@
 "use client"
 
 import { formatPrice } from '@/lib/utils';
-import { Collection, Color } from '@/payload-types';
+import { Color, ProductCollection } from '@/payload-types';
 import { generateCollectionLink, shortenText } from '@/utils/commonFunctions';
 import { PAGES_LINKS } from '@/utils/linksData';
 import Image from 'next/image';
@@ -39,7 +39,7 @@ interface Props {
   reviewRating?: number;
   reviewCount?: number;
   price: number;
-  collection?: Collection;
+  collection?: ProductCollection;
   colors?: Color[];
   description?: string | null;
 }

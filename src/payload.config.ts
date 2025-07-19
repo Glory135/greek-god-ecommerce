@@ -10,7 +10,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Categories } from './collections/Categories'
-import { Collections } from './collections/Collections'
+import { ProductCollection } from './collections/Collections'
 import { Products } from './collections/Products'
 import { Colors } from './collections/Colors'
 import { Sizes } from './collections/Sizes'
@@ -123,7 +123,7 @@ export default buildConfig({
     Products,
     Orders,
     Categories,
-    Collections,
+    ProductCollection,
     Colors,
     Sizes,
 

@@ -1,7 +1,7 @@
 // import { AlignFeature, BlockquoteFeature, BoldFeature, FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical';
 import type { CollectionConfig } from 'payload';
 
-export const Collections: CollectionConfig = {
+export const ProductCollection: CollectionConfig = {
   slug: "productCollections",
   admin: {
     useAsTitle: "title"
