@@ -2,7 +2,7 @@ import React from 'react'
 import { Input } from '../ui/input'
 import { Checkbox } from '../ui/checkbox'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-import { FaInstagram, FaFacebook, FaPinterest, FaTiktok, FaSnapchat } from "react-icons/fa";
+import { FaInstagram, FaTiktok, FaSnapchat } from "react-icons/fa";
 import Link from 'next/link';
 import Image from 'next/image';
 import { PAGES_LINKS } from '@/utils/linksData';
