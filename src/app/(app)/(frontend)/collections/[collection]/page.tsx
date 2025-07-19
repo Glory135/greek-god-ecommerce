@@ -1,6 +1,4 @@
 import Collectionproducts from "@/components/collectionsComponents/Collectionproducts"
-// import { getQueryClient, trpc } from "@/trpc/server"
-// import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 
 interface Props {
   params: Promise<{

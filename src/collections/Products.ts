@@ -80,7 +80,7 @@ export const Products: CollectionConfig = {
     {
       name: "collection",
       type: "relationship",
-      relationTo: "collections",
+      relationTo: "productCollections",
       hasMany: true
     },
     // {

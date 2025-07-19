@@ -1,4 +1,4 @@
-import { Collection, Color, Media, Size } from "@/payload-types";
+import { Color, Media, ProductCollection, Size } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -32,7 +32,7 @@ export const wishListRouter = createTRPCRouter({
           ...doc,
           ["available sizes"]: doc["available sizes"] as Size[],
           ["available colors"]: doc["available colors"] as Color[],
-          collection: doc.collection as Collection[],
+          collection: doc.collection as ProductCollection[],
           images: doc.images as Array<{ image: Media }> | null,
           cover: doc.cover as Media | null,
         }))

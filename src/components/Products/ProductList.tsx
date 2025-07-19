@@ -9,8 +9,9 @@ import ProductCardSkeletonGrid from './ProductCardSkeletonGrid';
 import { DEFAULT_LIMIT } from '@/constants';
 import { Button } from '../ui/button';
 import { InboxIcon, RefreshCcw } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-const ProductList = () => {
+const ProductList = ({ customLimit, className, noLoadMore= false }: { customLimit?: number, className?: string, noLoadMore?: boolean }) => {
   const [filters] = useProductFilters();
 
   const trpc = useTRPC();
@@ -18,7 +19,7 @@ const ProductList = () => {
     {
       ...filters,
       category: !!filters?.subcategory ? filters?.subcategory : filters?.category,
-      limit: DEFAULT_LIMIT
+      limit: customLimit || DEFAULT_LIMIT
     },
     {
       getNextPageParam: (lastPage) => {
@@ -37,7 +38,7 @@ const ProductList = () => {
   }
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div className={cn("grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5", className)}>
         {
           data?.pages.flatMap((page) => page.docs).map((product) => {
             return (
@@ -59,7 +60,7 @@ const ProductList = () => {
       </div>
       <div className="w-full flex justify-center pt-8">
         {
-          hasNextPage && (
+          !noLoadMore && hasNextPage && (
             <Button
               disabled={isFetchingNextPage}
               // className=''
@@ -79,8 +80,8 @@ const ProductList = () => {
 
 export default ProductList
 
-export const ProductListSkeleton = () => {
+export const ProductListSkeleton = ({ customLimit, className }: { customLimit?: number, className?: string }) => {
   return (
-    <ProductCardSkeletonGrid count={DEFAULT_LIMIT} />
+    <ProductCardSkeletonGrid count={customLimit || DEFAULT_LIMIT} className={className} />
   )
 }

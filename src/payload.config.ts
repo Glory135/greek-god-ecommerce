@@ -32,6 +32,7 @@ import { LayoutMedia } from './collections/LayoutMedia'
 import { Heros } from './collections/Heros'
 import { Orders } from './collections/Orders'
 import { DeliveryAddresses } from './collections/DeliveryAddresses'
+import { LookBook } from './collections/LookBook'
 
 
 cloudinary.config({
@@ -128,6 +129,7 @@ export default buildConfig({
 
     // layout collections
     Heros,
+    LookBook,
     
     // media collections
     Media,

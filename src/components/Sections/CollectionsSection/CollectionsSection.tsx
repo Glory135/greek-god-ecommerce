@@ -28,11 +28,7 @@ const CollectionsSection = () => {
           <SectionTitle title='Collections' className='!m-0 !w-fit' />
           <Link className={cn(buttonVariants({ variant: "link" }))} href={PAGES_LINKS.collections.link} >See All {">"} </Link>
         </div>
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {[...Array(6)].map((_, i) => (
-            <CollectionsListSkeleton key={i} number={6} />
-          ))}
-        </div>
+        <CollectionsListSkeleton number={6} />
       </MaxWidthWrapper>
     )
   }

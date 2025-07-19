@@ -1,6 +1,6 @@
 import { DEFAULT_LIMIT } from "@/constants";
 import { sortValues } from "@/hooks/search-params";
-import { Category, Collection, Color, Media, Size } from "@/payload-types";
+import { Category, Color, Media, ProductCollection, Size } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Sort, Where } from "payload";
 import { z } from "zod";
@@ -25,7 +25,7 @@ export const productsRouter = createTRPCRouter({
         cover: product.cover as Media | null,
         ["available colors"]: product["available colors"] as Color[],
         ["available sizes"]: product["available sizes"] as Size[],
-        collection: product.collection as Collection[],
+        collection: product.collection as ProductCollection[],
         category: product.category as Category[],
       }
     }),
@@ -156,7 +156,7 @@ export const productsRouter = createTRPCRouter({
         docs: data.docs.map((doc) => ({
           ...doc,
           ["available colors"]: doc["available colors"] as Color[],
-          collection: doc.collection as Collection[],
+          collection: doc.collection as ProductCollection[],
           images: doc.images as Array<{image: Media}> | null,
           cover: doc.cover as Media | null,
         }))

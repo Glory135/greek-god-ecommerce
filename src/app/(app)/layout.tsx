@@ -6,6 +6,7 @@ import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "sonner";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import LoginModal from "@/components/Auth/LoginModal";
+import 'react-photo-view/dist/react-photo-view.css';
 
 
 const montserrat = Montserrat({

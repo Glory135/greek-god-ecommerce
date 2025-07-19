@@ -74,10 +74,11 @@ export interface Config {
     products: Product;
     orders: Order;
     categories: Category;
-    collections: Collection;
+    productCollections: ProductCollection;
     colors: Color;
     sizes: Size;
     heros: Hero;
+    lookBook: LookBook;
     media: Media;
     layoutMedia: LayoutMedia;
     'payload-locked-documents': PayloadLockedDocument;
@@ -97,10 +98,11 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    collections: CollectionsSelect<false> | CollectionsSelect<true>;
+    productCollections: ProductCollectionsSelect<false> | ProductCollectionsSelect<true>;
     colors: ColorsSelect<false> | ColorsSelect<true>;
     sizes: SizesSelect<false> | SizesSelect<true>;
     heros: HerosSelect<false> | HerosSelect<true>;
+    lookBook: LookBookSelect<false> | LookBookSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     layoutMedia: LayoutMediaSelect<false> | LayoutMediaSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -262,7 +264,7 @@ export interface Product {
    * please select one of the images you have picked in the images field for the cover image
    */
   cover: string | Media;
-  collection?: (string | Collection)[] | null;
+  collection?: (string | ProductCollection)[] | null;
   'in stock': boolean;
   orderCount?: number | null;
   updatedAt: string;
@@ -330,9 +332,9 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "collections".
+ * via the `definition` "productCollections".
  */
-export interface Collection {
+export interface ProductCollection {
   id: string;
   hero?: (string | null) | LayoutMedia;
   title: string;
@@ -417,6 +419,17 @@ export interface Hero {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lookBook".
+ */
+export interface LookBook {
+  id: string;
+  image: string | LayoutMedia;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -451,8 +464,8 @@ export interface PayloadLockedDocument {
         value: string | Category;
       } | null)
     | ({
-        relationTo: 'collections';
-        value: string | Collection;
+        relationTo: 'productCollections';
+        value: string | ProductCollection;
       } | null)
     | ({
         relationTo: 'colors';
@@ -465,6 +478,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'heros';
         value: string | Hero;
+      } | null)
+    | ({
+        relationTo: 'lookBook';
+        value: string | LookBook;
       } | null)
     | ({
         relationTo: 'media';
@@ -658,9 +675,9 @@ export interface CategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "collections_select".
+ * via the `definition` "productCollections_select".
  */
-export interface CollectionsSelect<T extends boolean = true> {
+export interface ProductCollectionsSelect<T extends boolean = true> {
   hero?: T;
   title?: T;
   slug?: T;
@@ -697,6 +714,16 @@ export interface HerosSelect<T extends boolean = true> {
   hero?: T;
   title?: T;
   description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lookBook_select".
+ */
+export interface LookBookSelect<T extends boolean = true> {
+  image?: T;
+  title?: T;
   updatedAt?: T;
   createdAt?: T;
 }

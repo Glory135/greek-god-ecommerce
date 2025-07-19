@@ -2,7 +2,7 @@ import React from 'react'
 import { Input } from '../ui/input'
 import { Checkbox } from '../ui/checkbox'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-import { FaInstagram, FaFacebook, FaPinterest, FaTiktok } from "react-icons/fa";
+import { FaInstagram, FaFacebook, FaPinterest, FaTiktok, FaSnapchat } from "react-icons/fa";
 import Link from 'next/link';
 import Image from 'next/image';
 import { PAGES_LINKS } from '@/utils/linksData';
@@ -28,12 +28,15 @@ const Footer = () => {
                 <Link href={SOCIAL_LINKS.instagram} target='__blank' className='w-fit' >
                   <FaInstagram size={25} />
                 </Link>
-                <Link href={SOCIAL_LINKS.facebook} target='__blank' className='w-fit' >
+                {/* <Link href={SOCIAL_LINKS.facebook} target='__blank' className='w-fit' >
                   <FaFacebook size={25} />
+                </Link> */}
+                <Link href={SOCIAL_LINKS.snapchat} target='__blank' className='w-fit' >
+                  <FaSnapchat size={25} />
                 </Link>
-                <Link href={SOCIAL_LINKS.pinterest} target='__blank' className='w-fit' >
+                {/* <Link href={SOCIAL_LINKS.pinterest} target='__blank' className='w-fit' >
                   <FaPinterest size={25} />
-                </Link>
+                </Link> */}
                 <Link href={SOCIAL_LINKS.tiktok} target='__blank' className='w-fit' >
                   <FaTiktok size={25} />
                 </Link>

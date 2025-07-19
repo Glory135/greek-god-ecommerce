@@ -17,8 +17,9 @@ export const CONTACT_DETAILS = {
 } 
 
 export const SOCIAL_LINKS = {
-  instagram: "#",
+  instagram: "https://www.instagram.com/greekgod_clothing2",
   facebook: "#",
   pinterest: "#",
-  tiktok: "#",
+  tiktok: "https://www.tiktok.com/@greekgod_clothing",
+  snapchat: "https://www.snapchat.com/add/greek_clothing2"
 }

@@ -1,7 +1,21 @@
-export default function LookbookPage(){
-  return(
-    <div className="w-full">
-      Look Book
+import LookBookList from "@/components/lookbook/LookBookList";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Suspense } from "react";
+
+export default function LookbookPage() {
+  const queryClient = getQueryClient();
+
+  void queryClient.prefetchInfiniteQuery(trpc.lookbook.getMany.infiniteQueryOptions({
+    limit: 16
+  }))
+  return (
+    <div className="w-full px-2 flex justify-center items-center flex-col">
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={"loading"}>
+          <LookBookList />
+        </Suspense>
+      </HydrationBoundary>
     </div>
   )
 }

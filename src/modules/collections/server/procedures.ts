@@ -1,5 +1,5 @@
 import { DEFAULT_LIMIT } from "@/constants";
-import { Collection, Color, LayoutMedia, Media, Size } from "@/payload-types";
+import { ProductCollection, Color, LayoutMedia, Media, Size } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { z } from "zod";
 
@@ -12,7 +12,7 @@ export const collectionsRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const data = await ctx.payload.find({
-        collection: "collections",
+        collection: "productCollections",
         where: {
           slug: {
             equals: input.slug
@@ -39,7 +39,7 @@ export const collectionsRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const data = await ctx.payload.find({
-        collection: "collections",
+        collection: "productCollections",
         depth: 1,  // populate category collection and image
         pagination: true,
         page: input.cursor,
@@ -65,7 +65,7 @@ export const collectionsRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
 
       const collectionData = await ctx.payload.find({
-        collection: "collections",
+        collection: "productCollections",
         where: {
           slug: {
             equals: input.collectionSlug
@@ -92,7 +92,7 @@ export const collectionsRouter = createTRPCRouter({
           ...doc,
           ["available sizes"]: doc["available sizes"] as Size[],
           ["available colors"]: doc["available colors"] as Color[],
-          collection: doc.collection as Collection[],
+          collection: doc.collection as ProductCollection[],
           images: doc.images as Array<{ image: Media }> | null,
           cover: doc.cover as Media | null,
         }))

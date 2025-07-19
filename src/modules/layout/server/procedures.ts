@@ -1,5 +1,5 @@
 import { INavItem } from "@/components/Nav/types";
-import { Category, Collection, LayoutMedia } from "@/payload-types";
+import { Category, LayoutMedia, ProductCollection } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { generateCategoryLink, generateCollectionLink } from "@/utils/commonFunctions";
 import { PAGES_LINKS } from "@/utils/linksData";
@@ -23,7 +23,7 @@ export const layoutRouter = createTRPCRouter({
 
     // Get collections
     const collectionsData = await ctx.payload.find({
-      collection: "collections",
+      collection: "productCollections",
       pagination: false,
     });
 
@@ -61,8 +61,8 @@ export const layoutRouter = createTRPCRouter({
             }))],
           "trending": (trendingCollections ?? []).map((col, index) => ({
             id: (index + 1) * 100,
-            label: (col as Collection).title,
-            value: (col as Collection).slug,
+            label: (col as ProductCollection).title,
+            value: (col as ProductCollection).slug,
             href: generateCollectionLink(col.slug)
           }))
         },
@@ -105,14 +105,14 @@ export const layoutRouter = createTRPCRouter({
             },
             ...(featuredCollections ?? []).map((col, index) => ({
               id: (index + 1) * 1000,
-              label: (col as Collection).title as string,
-              value: (col as Collection).slug as string,
+              label: (col as ProductCollection).title as string,
+              value: (col as ProductCollection).slug as string,
               href: generateCollectionLink(col.slug)
             }))],
           "more": (moreCollections ?? []).map((col, index) => ({
             id: (index + 1) * 10000,
-            label: (col as Collection).title as string,
-            value: (col as Collection).slug as string,
+            label: (col as ProductCollection).title as string,
+            value: (col as ProductCollection).slug as string,
             href: generateCollectionLink(col.slug)
           })),
         },
@@ -137,9 +137,9 @@ export const layoutRouter = createTRPCRouter({
     const staticNavItems = [
       {
         id: 5,
-        label: "Trending",
-        value: "trending",
-        href: `${PAGES_LINKS.products.link}?sort=bestseller`
+        label: "Look Book",
+        value: "lookbook",
+        href: `${PAGES_LINKS.lookbook.link}`
       },
       {
         id: 7,
