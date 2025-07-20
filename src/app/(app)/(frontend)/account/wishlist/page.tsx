@@ -66,7 +66,7 @@ export default function WishListPsge() {
                             imageUrl={product?.cover?.url}
                             reviewCount={2}
                             reviewRating={10}
-                            collection={(product?.collection.length > 0) ? product?.collection[0] : undefined}
+                            collection={product?.collection}
                             colors={product['available colors']}
                             description={product?.description}
                           />

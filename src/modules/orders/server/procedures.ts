@@ -29,7 +29,7 @@ export const ordersRouter = createTRPCRouter({
         }
       });
 
-      const SUPPORT_PHONE = CONTACT_DETAILS.support_phone;
+      // const SUPPORT_PHONE = CONTACT_DETAILS.support_phone;
       const SUPPORT_EMAIL = CONTACT_DETAILS.support_email;
 
       // Send notification email to app owner
@@ -150,7 +150,7 @@ export const ordersRouter = createTRPCRouter({
           </table>
           <p style="margin-top:16px;"><b>Total:</b> ₦${input.amount}</p>
           <hr />
-          <p>If you have any questions or want to check your order status, contact us at <b>${SUPPORT_EMAIL}</b> or call <b>${SUPPORT_PHONE}</b>.</p>
+          <p>If you have any questions or want to check your order status, contact us at <b>${SUPPORT_EMAIL}</b>.</p>
         `;
         await ctx.payload.sendEmail({
           to: input.userEmail,

@@ -90,7 +90,7 @@ export default function ContactPage() {
         </div>
 
         <div className="w-full flex gap-5 flex-wrap justify-center">
-          <div className="flex-1 min-w-[400px] p-5 bg-secondary text-secondary-foreground flex flex-col items-center gap-5">
+          {/* <div className="flex-1 min-w-[400px] p-5 bg-secondary text-secondary-foreground flex flex-col items-center gap-5">
             <Text />
             <h3 className="text-lg font-bold capitalize">Chat with us</h3>
             <p className="text-base">We are here and ready to chat</p>
@@ -105,7 +105,7 @@ export default function ContactPage() {
             <Link target="__blank" href={`tel:${CONTACT_DETAILS.support_phone.split("+")[1]}`} className={cn(buttonVariants({
               variant: "outline"
             }), "px-30")}>{CONTACT_DETAILS.support_phone}</Link>
-          </div>
+          </div> */}
           <div className="flex-1 min-w-[400px] p-5 bg-secondary text-secondary-foreground flex flex-col items-center gap-5">
             <Mail />
             <h3 className="text-lg font-bold capitalize">Email us</h3>

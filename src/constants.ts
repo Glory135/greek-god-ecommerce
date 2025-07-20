@@ -11,9 +11,9 @@ export const HERO_SLUGS = {
 }
 
 export const CONTACT_DETAILS = {
-  order_email: 'adeyemiglr@gmail.com',
-  support_email: 'adeyemiglr@gmail.com',
-  support_phone: '+2347069652601',
+  order_email: 'anyibuezealex@gmail.com',
+  support_email: 'anyibuezealex@gmail.com',
+  // support_phone: '+2349123303221',
 } 
 
 export const SOCIAL_LINKS = {

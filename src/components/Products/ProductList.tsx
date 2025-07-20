@@ -44,7 +44,6 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
       <div className={cn("grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5", className)}>
         {
           pages.flatMap((page) => page.docs || []).map((product) => {
-            const col =  product?.collection || []
             return (
               <ProductCard
                 key={product.id}
@@ -54,7 +53,7 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
                 imageUrl={product?.cover?.url}
                 reviewCount={2}
                 reviewRating={10}
-                collection={(col?.length > 0) ? col[0] : undefined}
+                collection={product?.collection}
                 colors={product['available colors']}
                 description={product?.description}
               />

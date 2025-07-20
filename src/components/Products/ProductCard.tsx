@@ -39,7 +39,7 @@ interface Props {
   reviewRating?: number;
   reviewCount?: number;
   price: number;
-  collection?: ProductCollection;
+  collection?: ProductCollection[];
   colors?: Color[];
   description?: string | null;
 }
@@ -53,6 +53,7 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
 
     router.push(to)
   }
+  const selectedCollection = (collection && collection.length > 0) && collection[Math.floor(Math.random() * ((collection.length - 1) - 0 + 1)) + 0]
 
   return (
     <Link href={`${PAGES_LINKS.products.link}/${id}`} className='hover:opacity-90 '>
@@ -86,14 +87,14 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
                   {shortenText(description, 25)}
                 </p>
               )
-                : collection ? (
+                : selectedCollection ? (
                   <p
                     onClick={(e) =>
-                      linkClick(e, generateCollectionLink(collection.slug))
+                      linkClick(e, generateCollectionLink(selectedCollection.slug))
                     }
                     className="capitalize hover:underline"
                   >
-                    {shortenText(collection.title, 25)}
+                    {shortenText(selectedCollection.title, 25)}
                   </p>
                 ) : null
             }

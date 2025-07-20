@@ -45,12 +45,12 @@ const ProductsCarousel = ({ data }: { data: Array<ProductType> }) => {
       >
         <CarouselContent>
           {data?.map((singleProduct, index) => (
-            <CarouselItem key={index} className="sm:basis-1/2 md:basis-1/3 xl:basis-1/4">
+            <CarouselItem key={index} className="basis-1/2 sm:basis-1/3 md:basis-1/4 xl:basis-1/5">
               <ProductCard
                 id={singleProduct.id}
                 name={singleProduct.name}
                 price={singleProduct.price}
-                collection={(singleProduct?.collection.length > 0) ? singleProduct?.collection[0] : undefined}
+                collection={singleProduct?.collection}
                 colors={singleProduct['available colors']}
                 imageUrl={singleProduct?.cover?.url}
                 description={singleProduct?.description}

@@ -74,7 +74,7 @@ const Footer = () => {
             </div>
           </div>
         </>
-        <Link target="__blank" href={`https://wa.me/${CONTACT_DETAILS.support_phone.split("+")[1]}?text=Hello%20GreekGod%20`} className='absolute bottom-5 right-5 md:right-10'>
+        <Link target="__blank" href={`mailto:${CONTACT_DETAILS.support_email}`} className='absolute bottom-5 right-5 md:right-10'>
           <Image className='object-contain cursor-pointer hover:scale-105' width={50} height={50} alt='help' src="/icons/help.svg" /></Link>
       </MaxWidthWrapper>
     </footer>
