@@ -31,7 +31,7 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
   // Ensure pages exist before checking length - this prevents SSR errors
   const pages = data?.pages || [];
   
-  if ((pages.length > 0) && (pages[0]?.docs.length === 0)) {
+  if ((pages?.length > 0) && (pages[0]?.docs.length === 0)) {
     return (
       <div className="border border-greek border-dashed flex items-center justify-center p-8 flex-col gap-y-5 bg-muted text-primary w-full h-[50vh] rounded-lg">
         <InboxIcon />
@@ -44,6 +44,7 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
       <div className={cn("grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5", className)}>
         {
           pages.flatMap((page) => page.docs || []).map((product) => {
+            const col =  product?.collection || []
             return (
               <ProductCard
                 key={product.id}
@@ -53,7 +54,7 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
                 imageUrl={product?.cover?.url}
                 reviewCount={2}
                 reviewRating={10}
-                collection={(product?.collection?.length > 0) ? product?.collection[0] : undefined}
+                collection={(col?.length > 0) ? col[0] : undefined}
                 colors={product['available colors']}
                 description={product?.description}
               />
