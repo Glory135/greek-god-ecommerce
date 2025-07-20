@@ -9,12 +9,13 @@ import { cn } from '@/lib/utils'
 import { useTRPC } from '@/trpc/client'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import HeroSkeleton from './HeroSkeleton'
+import { HERO_SLUGS } from '@/constants'
 
 const LandingHero = () => {
   const trpc = useTRPC();
   const { data, isPending } = useSuspenseQuery(trpc.layout.getHero.queryOptions(
     {
-      slug: "home-page-hero"
+      slug: HERO_SLUGS.home
     },
   ))
   // Pending state (skeleton)

@@ -24,7 +24,7 @@ const LookBookSection = () => {
     <div className="w-full min-h-[700px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 grid-rows-6">
       <div
         style={{
-          backgroundImage: `linear-gradient(to bottom, #456d4533, rgba(0, 0, 0, 0.218)), url(${docs[2]?.image?.url || '/images/trending1.jpg'})`
+          backgroundImage: `linear-gradient(to bottom, #456d4533, rgba(0, 0, 0, 0.218)), url(${docs[0]?.image?.url || '/images/trending1.jpg'})`
         }}
         className=" bg-center bg-cover bg-no-repeat col-start-1 col-end-2 sm:col-span-2 lg:col-start-1 lg:col-end-4 row-start-1 row-end-7 min-h-[500px]"></div>
       <div
