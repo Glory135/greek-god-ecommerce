@@ -6,7 +6,7 @@ import { Minus, Plus, X } from 'lucide-react'
 import React, { useState } from 'react'
 import PriceFilter from './PriceFilter'
 import { useProductFilters } from '@/hooks/use-products-filters'
-import ColorsFilter from './ColorsFilter'
+// import ColorsFilter from './ColorsFilter'
 import ProductSort from './ProductSort'
 import SizesFilter from './SizesFilter'
 import { TbMathEqualGreater, TbMathEqualLower } from "react-icons/tb";
@@ -183,9 +183,9 @@ const ProductsFilterComponent = (
           />
         </ProductFilters>
 
-        <ProductFilters title='Colors'>
+        {/* <ProductFilters title='Colors'>
           <ColorsFilter value={filters.colors} onChange={(value) => onChange("colors", value)} />
-        </ProductFilters>
+        </ProductFilters> */}
 
         <ProductFilters title='Sizes'>
           <SizesFilter value={filters.sizes} onChange={(value) => onChange("sizes", value)} />

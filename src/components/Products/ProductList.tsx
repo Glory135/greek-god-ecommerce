@@ -28,7 +28,7 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
     }
   ))
 
-  if (data.pages.length > 0 && data.pages[0]?.docs.length === 0) {
+  if ((data?.pages?.length > 0) && (data.pages[0]?.docs.length === 0)) {
     return (
       <div className="border border-greek border-dashed flex items-center justify-center p-8 flex-col gap-y-5 bg-muted text-primary w-full h-[50vh] rounded-lg">
         <InboxIcon />
@@ -50,7 +50,7 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
                 imageUrl={product?.cover?.url}
                 reviewCount={2}
                 reviewRating={10}
-                collection={(product?.collection.length > 0) ? product?.collection[0] : undefined}
+                collection={(product?.collection?.length > 0) ? product?.collection[0] : undefined}
                 colors={product['available colors']}
                 description={product?.description}
               />
