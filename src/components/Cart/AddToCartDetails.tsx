@@ -9,6 +9,7 @@ import { Button } from '../ui/button'
 import dynamic from 'next/dynamic';
 import { useCart } from '@/zustand/checkout/hooks/use-cart';
 import useGetUser from '@/hooks/use-get-user';
+import { toast } from 'sonner';
 // import StarRating from '../Rating/StarRating';
 
 // to solve hydration error
@@ -30,6 +31,30 @@ const AddToWishListButton = dynamic(
     loading: () => <Button disabled variant={"greek"}><LoaderIcon className='animate-spin w-10' /> Wiash List</Button>
   }
 )
+
+const handleCopy = async () => {
+  const link = window.location.href
+
+  try {
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(link)
+    } else {
+      // fallback for older browsers
+      const textArea = document.createElement("textarea")
+      textArea.value = link
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand("copy")
+      document.body.removeChild(textArea)
+    }
+    toast.success("Copied to clipboard!!")
+  } catch (err) {
+    console.error('Failed to copy: ', err)
+    toast.error("Failed to copy!!")
+  }
+
+}
+
 
 
 const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
@@ -156,7 +181,7 @@ const AddToCartDetails = ({ product }: { product: ProductsGetOneOutput }) => {
         />
         <Button
           variant={"secondary"}
-          onClick={() => { }}
+          onClick={() => {handleCopy()}}
           disabled={false}
           className='size-12'>
           <LinkIcon />

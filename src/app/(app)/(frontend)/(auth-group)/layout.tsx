@@ -44,23 +44,23 @@ export default function AuthGroupLayout({ children }: Readonly<{
               <Image
                 fill
                 alt="Authentication background"
-                src={data?.docs[0]?.hero?.url || "/images/auth_img.jpg"}
+                src={data?.docs?.hero?.url || "/images/auth_img.jpg"}
                 className="object-center object-cover"
               />
               {/* Animated overlay with title and description */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-8">
                 <div className="text-white space-y-4">
                   {
-                    data?.docs[0] && data?.docs[0]?.title && (
+                    data?.docs?.title && (
                       <h1 className="text-2xl md:text-4xl font-bold animate-in slide-in-from-bottom-4 fade-in duration-700 ease-out">
-                        {data?.docs[0]?.title}
+                        {data?.docs?.title}
                       </h1>
                     )
                   }
                   {
-                    data?.docs[0] && data?.docs[0]?.description && (
+                    data?.docs?.description && (
                       <p className="text-sm md:text-lg max-w-md animate-in slide-in-from-bottom-4 fade-in duration-700 ease-out delay-200">
-                        {data?.docs[0]?.description}
+                        {data?.docs?.description}
                       </p>
                     )
                   }
