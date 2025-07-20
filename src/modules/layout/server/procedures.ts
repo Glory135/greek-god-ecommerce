@@ -180,7 +180,7 @@ export const layoutRouter = createTRPCRouter({
         docs: data.docs.map((doc) => ({
           ...doc,
           hero: doc.hero as LayoutMedia | null,
-        }))[0]
+        }))
       }
     })
 })
