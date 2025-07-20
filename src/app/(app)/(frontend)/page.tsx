@@ -14,7 +14,6 @@ import SectionTitle from "@/components/Sections/SectionTitle";
 import { cn } from "@/lib/utils";
 import { PAGES_LINKS } from "@/utils/linksData";
 import { buttonVariants } from "@/components/ui/button";
-import LookBookSectionSkeleton from "@/components/Sections/LookBookSection/LookBookSectionSkeleton";
 
 
 export default function LandingPage() {
