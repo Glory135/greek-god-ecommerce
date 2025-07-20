@@ -174,13 +174,16 @@ export const layoutRouter = createTRPCRouter({
           }
         }
       })
+      const docs = data.docs.map((doc) => ({
+        ...doc,
+        hero: doc.hero as LayoutMedia | null,
+      }))
+      const resDoc = docs.length > 0 ? docs[0] : null
+
 
       return {
         ...data,
-        docs: data.docs.map((doc) => ({
-          ...doc,
-          hero: doc.hero as LayoutMedia | null,
-        }))[0] || null
+        docs: resDoc
       }
     })
 })
