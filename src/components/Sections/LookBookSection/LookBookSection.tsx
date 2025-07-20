@@ -2,11 +2,12 @@
 
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import LookBookSectionSkeleton from "./LookBookSectionSkeleton";
 
 const LookBookSection = () => {
 
   const trpc = useTRPC();
-  const { data } = useSuspenseQuery(trpc.lookbook.getMany.queryOptions(
+  const { data, isPending } = useSuspenseQuery(trpc.lookbook.getMany.queryOptions(
     {
       limit: 5
     },
@@ -14,7 +15,11 @@ const LookBookSection = () => {
 
   // Ensure data and docs exist before accessing
   const docs = data?.docs || [];
-  
+  if (isPending) {
+    return (
+      <LookBookSectionSkeleton />
+    )
+  }
   return (
     <div className="w-full min-h-[700px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 grid-rows-6">
       <div
