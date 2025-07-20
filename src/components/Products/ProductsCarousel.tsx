@@ -50,7 +50,7 @@ const ProductsCarousel = ({ data }: { data: Array<ProductType> }) => {
                 id={singleProduct.id}
                 name={singleProduct.name}
                 price={singleProduct.price}
-                collection={singleProduct.collection[0]}
+                collection={(singleProduct?.collection.length > 0) ? singleProduct?.collection[0] : undefined}
                 colors={singleProduct['available colors']}
                 imageUrl={singleProduct?.cover?.url}
                 description={singleProduct?.description}

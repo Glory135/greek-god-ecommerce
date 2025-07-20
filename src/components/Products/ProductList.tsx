@@ -11,7 +11,7 @@ import { Button } from '../ui/button';
 import { InboxIcon, RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const ProductList = ({ customLimit, className, noLoadMore= false }: { customLimit?: number, className?: string, noLoadMore?: boolean }) => {
+const ProductList = ({ customLimit, className, noLoadMore = false }: { customLimit?: number, className?: string, noLoadMore?: boolean }) => {
   const [filters] = useProductFilters();
 
   const trpc = useTRPC();
@@ -28,7 +28,7 @@ const ProductList = ({ customLimit, className, noLoadMore= false }: { customLimi
     }
   ))
 
-  if (data.pages?.[0]?.docs.length === 0) {
+  if (data.pages.length > 0 && data.pages[0]?.docs.length === 0) {
     return (
       <div className="border border-greek border-dashed flex items-center justify-center p-8 flex-col gap-y-5 bg-muted text-primary w-full h-[50vh] rounded-lg">
         <InboxIcon />
@@ -50,7 +50,7 @@ const ProductList = ({ customLimit, className, noLoadMore= false }: { customLimi
                 imageUrl={product?.cover?.url}
                 reviewCount={2}
                 reviewRating={10}
-                collection={product?.collection[0]}
+                collection={(product?.collection.length > 0) ? product?.collection[0] : undefined}
                 colors={product['available colors']}
                 description={product?.description}
               />
