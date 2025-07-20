@@ -253,7 +253,8 @@ export interface Product {
   price: number;
   deliveryFee?: number | null;
   totalPrice?: number | null;
-  category: (string | Category)[];
+  category?: (string | Category)[] | null;
+  collection?: (string | ProductCollection)[] | null;
   'available colors'?: (string | Color)[] | null;
   'available sizes'?: (string | Size)[] | null;
   images: {
@@ -264,7 +265,6 @@ export interface Product {
    * please select one of the images you have picked in the images field for the cover image
    */
   cover: string | Media;
-  collection?: (string | ProductCollection)[] | null;
   'in stock': boolean;
   orderCount?: number | null;
   updatedAt: string;
@@ -286,6 +286,40 @@ export interface Category {
   };
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productCollections".
+ */
+export interface ProductCollection {
+  id: string;
+  hero?: (string | null) | LayoutMedia;
+  title: string;
+  slug: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Images uploaded should not be above 10MB
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "layoutMedia".
+ */
+export interface LayoutMedia {
+  id: string;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -316,40 +350,6 @@ export interface Size {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productCollections".
- */
-export interface ProductCollection {
-  id: string;
-  hero?: (string | null) | LayoutMedia;
-  title: string;
-  slug: string;
-  description?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Images uploaded should not be above 10MB
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "layoutMedia".
- */
-export interface LayoutMedia {
   id: string;
   alt: string;
   updatedAt: string;
@@ -623,6 +623,7 @@ export interface ProductsSelect<T extends boolean = true> {
   deliveryFee?: T;
   totalPrice?: T;
   category?: T;
+  collection?: T;
   'available colors'?: T;
   'available sizes'?: T;
   images?:
@@ -632,7 +633,6 @@ export interface ProductsSelect<T extends boolean = true> {
         id?: T;
       };
   cover?: T;
-  collection?: T;
   'in stock'?: T;
   orderCount?: T;
   updatedAt?: T;

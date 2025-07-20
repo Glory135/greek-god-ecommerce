@@ -39,7 +39,12 @@ export const Products: CollectionConfig = {
       type: "relationship",
       relationTo: "categories",
       hasMany: true,
-      required: true
+    },
+    {
+      name: "collection",
+      type: "relationship",
+      relationTo: "productCollections",
+      hasMany: true
     },
     {
       name: "available colors",
@@ -76,12 +81,6 @@ export const Products: CollectionConfig = {
       admin: {
         description: "please select one of the images you have picked in the images field for the cover image"
       }
-    },
-    {
-      name: "collection",
-      type: "relationship",
-      relationTo: "productCollections",
-      hasMany: true
     },
     // {
     //   name: "return policy",

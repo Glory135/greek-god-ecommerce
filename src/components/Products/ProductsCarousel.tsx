@@ -53,6 +53,7 @@ const ProductsCarousel = ({ data }: { data: Array<ProductType> }) => {
                 collection={singleProduct.collection[0]}
                 colors={singleProduct['available colors']}
                 imageUrl={singleProduct?.cover?.url}
+                description={singleProduct?.description}
               />
             </CarouselItem>
           ))}
