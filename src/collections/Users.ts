@@ -1,9 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
-  // access: {
-  //   admin: ({ req: { user } }) => Boolean(user?.roles.includes("super-admin")),
-  // },
+  access: {
+    admin: ({ req: { user } }) => Boolean(user?.roles.includes("super-admin")),
+  },
   slug: 'users',
   admin: {
     useAsTitle: 'email',
