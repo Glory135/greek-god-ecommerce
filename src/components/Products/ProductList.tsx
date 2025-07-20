@@ -28,7 +28,10 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
     }
   ))
 
-  if ((data?.pages?.length > 0) && (data.pages[0]?.docs.length === 0)) {
+  // Ensure pages exist before checking length - this prevents SSR errors
+  const pages = data?.pages || [];
+  
+  if ((pages.length > 0) && (pages[0]?.docs.length === 0)) {
     return (
       <div className="border border-greek border-dashed flex items-center justify-center p-8 flex-col gap-y-5 bg-muted text-primary w-full h-[50vh] rounded-lg">
         <InboxIcon />
@@ -40,7 +43,7 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
     <>
       <div className={cn("grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5", className)}>
         {
-          data?.pages.flatMap((page) => page.docs).map((product) => {
+          pages.flatMap((page) => page.docs || []).map((product) => {
             return (
               <ProductCard
                 key={product.id}
