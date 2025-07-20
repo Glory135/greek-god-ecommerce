@@ -6,11 +6,12 @@ import React from 'react'
 import { Button } from '../ui/button';
 import Image from 'next/image';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
+import LookBookListSkeleton from './LookBookListSkeleton';
 
 
 const LookBookList = () => {
   const trpc = useTRPC();
-  const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = useSuspenseInfiniteQuery(trpc.lookbook.getMany.infiniteQueryOptions(
+  const { data, isPending, hasNextPage, isFetchingNextPage, fetchNextPage } = useSuspenseInfiniteQuery(trpc.lookbook.getMany.infiniteQueryOptions(
     {
       limit: 16
     },
@@ -21,6 +22,9 @@ const LookBookList = () => {
     }
   ))
 
+  if (isPending) {
+    return (<LookBookListSkeleton />)
+  }
   if (data.pages?.[0]?.docs.length === 0) {
     return (
       <div className="border border-greek border-dashed flex items-center justify-center p-8 flex-col gap-y-5 bg-muted text-primary w-full h-[50vh] rounded-lg">

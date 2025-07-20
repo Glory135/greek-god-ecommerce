@@ -1,4 +1,5 @@
 import LookBookList from "@/components/lookbook/LookBookList";
+import LookBookListSkeleton from "@/components/lookbook/LookBookListSkeleton";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
@@ -12,7 +13,7 @@ export default function LookbookPage() {
   return (
     <div className="w-full px-2 flex justify-center items-center flex-col">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={"loading"}>
+        <Suspense fallback={<LookBookListSkeleton />}>
           <LookBookList />
         </Suspense>
       </HydrationBoundary>

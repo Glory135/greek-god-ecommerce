@@ -36,12 +36,6 @@ export default function LandingPage() {
     limit: 20
   }))
 
-  void queryClient.prefetchQuery(trpc.lookbook.getMany.queryOptions(
-    {
-      limit: 5,
-    }
-  ))
-
   // void queryClient.prefetchQuery(trpc.collections.getMany.queryOptions({
   //   limit: 6
   // }))
@@ -93,11 +87,7 @@ export default function LandingPage() {
           <SectionTitle title='Look Book' className='!m-0 !w-fit' />
           <Link className={cn(buttonVariants({ variant: "link" }))} href={PAGES_LINKS.lookbook.link} >See More {">"} </Link>
         </div>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <Suspense fallback={<LookBookSectionSkeleton />}>
-            <LookBookSection />
-          </Suspense>
-        </HydrationBoundary>
+        <LookBookSection />
       </MaxWidthWrapper>
     </div>
   )
