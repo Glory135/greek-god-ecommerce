@@ -9,7 +9,7 @@ import { CONTACT_DETAILS } from "@/constants";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
-import { Loader2, Mail, Phone, Text } from "lucide-react";
+import { Loader2, Mail } from "lucide-react";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
