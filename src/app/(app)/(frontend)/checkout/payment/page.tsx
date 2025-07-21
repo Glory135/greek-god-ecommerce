@@ -64,7 +64,7 @@ export default function PaymentPage() {
       toast.success("Order created successfully!");
       clearCheckout();
       clearCart();
-  
+
       // Also manually clear localStorage to ensure persistence is cleared
       if (typeof window !== 'undefined') {
         localStorage.removeItem(CHECKOUT_STORAGE_STRING);
@@ -106,7 +106,7 @@ export default function PaymentPage() {
     const cartProductIds = cartProducts.map(p => p.productId).sort();
     const checkoutProductIds = products.map(p => p.id).sort();
     const productsMatch = JSON.stringify(cartProductIds) === JSON.stringify(checkoutProductIds);
-    
+
     if (!productsMatch) {
       toast.error("Product data mismatch. Please try again.");
       clearCheckout();
@@ -145,10 +145,11 @@ export default function PaymentPage() {
   };
 
   // on payment cancellation callback
-  // const handlePaymentCancel = (monnifyResponse?: MonnifyResponse) => {
-  // const responseMessage = monnifyResponse?.responseMessage || "Payment was cancelled";
-  // toast.error(responseMessage);
-  // };
+  const handlePaymentCancel = (monnifyResponse?: MonnifyResponse) => {
+    const responseMessage = monnifyResponse?.responseMessage || "Payment was cancelled";
+    console.log(responseMessage);
+    // toast.error(responseMessage);
+  };
 
   // on payment error callback
   const handlePaymentError = (monnifyResponse?: MonnifyResponse) => {
@@ -223,7 +224,7 @@ export default function PaymentPage() {
           description={`Order payment for ${addressData.firstname} ${addressData.lastname}`}
           fullname={`${addressData.firstname} ${addressData.lastname}`}
           onSuccess={handlePaymentSuccess}
-          // onCancel={handlePaymentCancel}
+          onCancel={handlePaymentCancel}
           onError={handlePaymentError}
         />
       </div>
