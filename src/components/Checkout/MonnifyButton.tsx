@@ -59,7 +59,7 @@ export default function MonnifyButton({ buttonType, clickEffect, disabled = fals
           customerEmail: email,
           paymentDescription: description,
           metadata: {
-            form: 'Monnify Demo Form',
+            form: 'Monnify Payment Form',
           },
         }),
       })
@@ -72,23 +72,18 @@ export default function MonnifyButton({ buttonType, clickEffect, disabled = fals
         onLoadStart: () => console.log('Loading Monnify...'),
         onLoadComplete: () => console.log('Monnify Ready'),
         onComplete: (response: MonnifyResponse) => {
-          console.log('Payment Complete:', response)
-
           // Handle different response types
           const responseData = response;
 
           if (responseData?.paymentStatus === 'SUCCESS' || responseData?.status === 'SUCCESS') {
             if (onSuccess) onSuccess(response)
           } else if (responseData?.paymentStatus === 'USER_CANCELLED' || responseData?.responseCode === 'USER_CANCELLED') {
-            console.log('Payment Cancelled by User:', response)
             if (onCancel) onCancel(response)
           } else {
-            console.log('Payment Error or Unknown Status:', response)
             if (onError) onError(response)
           }
         },
         onClose: (data: MonnifyResponse) => {
-          console.log('Payment Modal Closed:', data)
           // Handle modal close as cancellation
           if (onCancel) onCancel(data)
         },
