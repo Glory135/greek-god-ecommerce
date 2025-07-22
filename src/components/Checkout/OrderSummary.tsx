@@ -20,9 +20,11 @@ interface OrderSummaryProps {
     quantity: number;
     image?: string
   }>) => void;
+  calculatingDeliveryFee?:boolean;
+  deliveryFee?: number;
 }
 
-const OrderSummary = ({ onTotalCalculated, onProductsCalculated }: OrderSummaryProps) => {
+const OrderSummary = ({ onTotalCalculated, onProductsCalculated, deliveryFee = 0, calculatingDeliveryFee = false }: OrderSummaryProps) => {
   const { user } = useGetUser()
   const { clearAllCarts, products, totalProductsInCart } = useCart(user?.id || "")
   const trpc = useTRPC()
@@ -49,17 +51,18 @@ const OrderSummary = ({ onTotalCalculated, onProductsCalculated }: OrderSummaryP
     return total
   }
 
-  const getDeliveryFee = () => {
-    const highest = data?.docs && data?.docs.length > 0 ? data?.docs.reduce((prev, current) =>
-      current?.deliveryFee && prev?.deliveryFee &&
-        current?.deliveryFee > prev?.deliveryFee ? current : prev
-    ) : null
-    return highest?.deliveryFee
-  }
+  // const getDeliveryFee = () => {
+  //   const highest = data?.docs && data?.docs.length > 0 ? data?.docs.reduce((prev, current) =>
+  //     current?.deliveryFee && prev?.deliveryFee &&
+  //       current?.deliveryFee > prev?.deliveryFee ? current : prev
+  //   ) : null
+  //   return highest?.deliveryFee
+  // }
 
-  const orderTotal = (calculateTotals() || 0) + (getDeliveryFee() || 0)
+  const orderTotal = calculateTotals() || 0;
+  const totalWithDelivery = orderTotal + (deliveryFee || 0);
 
-  // Notify parent of orderTotal
+  // Notify parent of orderTotal (now includes deliveryFee)
   useEffect(() => {
     if (onTotalCalculated) {
       onTotalCalculated(orderTotal)
@@ -91,7 +94,7 @@ const OrderSummary = ({ onTotalCalculated, onProductsCalculated }: OrderSummaryP
           image: singleProd.cover?.url || (singleProd.images?.[0]?.image?.url ?? undefined),
           size: sizeLabel,
           color: colorLabel,
-          deliveryFee: singleProd.deliveryFee ?? 0,
+          // deliveryFee: singleProd.deliveryFee ?? 0,
         };
       });
       onProductsCalculated(productDetails);
@@ -135,23 +138,33 @@ const OrderSummary = ({ onTotalCalculated, onProductsCalculated }: OrderSummaryP
             })
           }
         </ScrollArea>
-        <div className="w-full border-t border-primary flex flex-col gap-5 py-5">
-          <div className="flex items-center justify-between">
-            <h4 className="text-base font-bold">Subtotal ({totalProductsInCart})</h4>
-            <p className="text-base">{formatPrice(`${calculateTotals()}`)}</p>
+        <div className="flex items-center justify-between">
+          <h4 className="text-base font-bold">Subtotal ({totalProductsInCart})</h4>
+          <p className="text-base">{formatPrice(`${calculateTotals()}`)}</p>
+        </div>
+        <div className="flex items-center justify-between">
+          <h4 className="text-base font-bold">Delivery</h4>
+          <p className="text-base">{
+            calculatingDeliveryFee ?
+            "Calculating..."
+            : !calculatingDeliveryFee && deliveryFee && deliveryFee !== 0
+              ? formatPrice(`${deliveryFee}`)
+              : "Not Yet Calculated"
+          }</p>
+        </div>
+        <div className="flex items-center justify-between">
+          <h4 className="text-base font-bold">Total Order</h4>
+          <div className="flex gap-1">
+            <p className="text-base">{formatPrice(`${totalWithDelivery}`)}</p>
+            {
+              !deliveryFee && (
+                <p className="text-sm text-primary/50">
+                  + delivery
+                </p>
+              )
+            }
           </div>
-          <div className="flex items-center justify-between">
-            <h4 className="text-base font-bold">Delivey</h4>
-            <p className="text-base">{
-              getDeliveryFee() && getDeliveryFee() !== 0
-                ? formatPrice(`${getDeliveryFee() || 0}`)
-                : "Free"
-            }</p>
-          </div>
-          <div className="flex items-center justify-between">
-            <h4 className="text-base font-bold">Total Order</h4>
-            <p className="text-base">{formatPrice(`${orderTotal}`)}</p>
-          </div>
+
         </div>
       </div>
     </div>

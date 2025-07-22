@@ -69,6 +69,13 @@ export default function Navbar() {
 							<SearchBtn />
 							<span className='h-6 w-px bg-gray-200' />
 							<Link
+							title={
+								user && user?.roles?.includes("super-admin")
+										? "admin" :
+										user && !user?.roles?.includes("super-admin")
+											? user.email :
+											"log in"
+							}
 								href={
 									user && user?.roles?.includes("super-admin")
 										? PAGES_LINKS.admin.link :

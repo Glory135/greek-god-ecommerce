@@ -71,6 +71,7 @@ export interface Config {
     appAccounts: AppAccount;
     appUsers: AppUser;
     deliveryAddresses: DeliveryAddress;
+    deliveryFees: DeliveryFee;
     products: Product;
     orders: Order;
     categories: Category;
@@ -95,6 +96,7 @@ export interface Config {
     appAccounts: AppAccountsSelect<false> | AppAccountsSelect<true>;
     appUsers: AppUsersSelect<false> | AppUsersSelect<true>;
     deliveryAddresses: DeliveryAddressesSelect<false> | DeliveryAddressesSelect<true>;
+    deliveryFees: DeliveryFeesSelect<false> | DeliveryFeesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
@@ -242,6 +244,54 @@ export interface DeliveryAddress {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deliveryFees".
+ */
+export interface DeliveryFee {
+  id: string;
+  state:
+    | 'abia'
+    | 'adamawa'
+    | 'akwa-ibom'
+    | 'anambra'
+    | 'bauchi'
+    | 'bayelsa'
+    | 'benue'
+    | 'borno'
+    | 'cross-river'
+    | 'delta'
+    | 'ebonyi'
+    | 'edo'
+    | 'ekiti'
+    | 'enugu'
+    | 'fct-abuja'
+    | 'gombe'
+    | 'imo'
+    | 'jigawa'
+    | 'kaduna'
+    | 'kano'
+    | 'katsina'
+    | 'kebbi'
+    | 'kogi'
+    | 'kwara'
+    | 'lagos'
+    | 'nasarawa'
+    | 'niger'
+    | 'ogun'
+    | 'ondo'
+    | 'osun'
+    | 'oyo'
+    | 'plateau'
+    | 'rivers'
+    | 'sokoto'
+    | 'taraba'
+    | 'yobe'
+    | 'zamfara';
+  deliveryFee?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
 export interface Product {
@@ -252,8 +302,6 @@ export interface Product {
    * Price In Naira
    */
   price: number;
-  deliveryFee?: number | null;
-  totalPrice?: number | null;
   category?: (string | Category)[] | null;
   collection?: (string | ProductCollection)[] | null;
   'available colors'?: (string | Color)[] | null;
@@ -453,6 +501,10 @@ export interface PayloadLockedDocument {
         value: string | DeliveryAddress;
       } | null)
     | ({
+        relationTo: 'deliveryFees';
+        value: string | DeliveryFee;
+      } | null)
+    | ({
         relationTo: 'products';
         value: string | Product;
       } | null)
@@ -616,14 +668,22 @@ export interface DeliveryAddressesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deliveryFees_select".
+ */
+export interface DeliveryFeesSelect<T extends boolean = true> {
+  state?: T;
+  deliveryFee?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   price?: T;
-  deliveryFee?: T;
-  totalPrice?: T;
   category?: T;
   collection?: T;
   'available colors'?: T;

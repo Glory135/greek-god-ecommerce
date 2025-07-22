@@ -12,12 +12,14 @@ import { wishListRouter } from '@/modules/wishlist/server/procedures';
 import { ordersRouter } from '@/modules/orders/server/procedures';
 import { contactRouter } from '@/modules/contact/server/procedures';
 import { lookBookRouter } from '@/modules/lookbook/server/procedures';
+import { deliveryFeesRouter } from '@/modules/DeliveryFees/server/procedures';
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
   categories: categoriesRouter,
   collections: collectionsRouter,
   delivery: deliveryRouter,
+  deliveryFees: deliveryFeesRouter,
   layout: layoutRouter,
   lookbook: lookBookRouter,
   products: productsRouter,

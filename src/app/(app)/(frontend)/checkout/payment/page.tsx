@@ -31,7 +31,7 @@ export interface MonnifyResponse {
 
 export default function PaymentPage() {
   const { user } = useGetUser()
-  const { addressData, orderTotal, products, clearCheckout } = useCheckoutStore()
+  const { addressData, orderTotal, products, deliveryFee, clearCheckout } = useCheckoutStore()
   const { clearCart, products: cartProducts } = useCart(user?.id || "")
   const router = useRouter()
   const trpc = useTRPC();
@@ -53,6 +53,8 @@ export default function PaymentPage() {
     return products.reduce((acc, prod) => acc + (prod.price * prod.quantity), 0);
   }, [products]);
   const safeOrderTotal = orderTotal && orderTotal > 0 ? orderTotal : fallbackOrderTotal;
+  const safeDeliveryFee = typeof deliveryFee === 'number' && deliveryFee > 0 ? deliveryFee : 0;
+  const grandTotal = safeOrderTotal + safeDeliveryFee;
 
   // increase order count for products ordered
   const incrementOrderCount = useMutation(trpc.products.incrementOrderCount.mutationOptions());
@@ -98,7 +100,7 @@ export default function PaymentPage() {
     const paymentReference = monnifyResponse?.paymentReference || "";
     const transactionReference = monnifyResponse?.transactionReference || "";
     const paymentCompleted = monnifyResponse?.status === "SUCCESS";
-    const amountPaid = monnifyResponse?.authorizedAmount ? String(monnifyResponse.authorizedAmount) : String(safeOrderTotal);
+    const amountPaid = monnifyResponse?.authorizedAmount ? String(monnifyResponse.authorizedAmount) : String(grandTotal);
     const paymentDate = monnifyResponse?.paidOn || new Date().toISOString();
     const paymentDescription = monnifyResponse?.message || `Order payment for ${addressData.firstname} ${addressData.lastname}`;
 
@@ -119,7 +121,8 @@ export default function PaymentPage() {
       paymentReference: paymentReference || transactionReference,
       transactionReference: transactionReference,
       paymentCompleted,
-      amount: String(safeOrderTotal),
+      amount: String(grandTotal),
+      deliveryFee: safeDeliveryFee,
       amountPaid,
       paymentDate,
       paymentDescription,
@@ -215,11 +218,24 @@ export default function PaymentPage() {
         </div>
         <div>
           <h2 className="text-xl font-bold mb-2">Order Total</h2>
-          <div className="text-lg text-primary font-semibold">{formatPrice(safeOrderTotal.toLocaleString())}</div>
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center justify-between">
+              <span>Subtotal:</span>
+              <span>{formatPrice(safeOrderTotal.toLocaleString())}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Delivery Fee:</span>
+              <span>{safeDeliveryFee > 0 ? formatPrice(safeDeliveryFee.toLocaleString()) : "Free"}</span>
+            </div>
+            <div className="flex items-center justify-between font-bold text-primary">
+              <span>Grand Total:</span>
+              <span>{formatPrice(grandTotal.toLocaleString())}</span>
+            </div>
+          </div>
         </div>
         <MonnifyButton
-          buttonText={`Pay ${formatPrice(safeOrderTotal.toLocaleString())}`}
-          amount={safeOrderTotal}
+          buttonText={`Pay ${formatPrice(grandTotal.toLocaleString())}`}
+          amount={grandTotal}
           email={user.email}
           description={`Order payment for ${addressData.firstname} ${addressData.lastname}`}
           fullname={`${addressData.firstname} ${addressData.lastname}`}

@@ -62,7 +62,7 @@ const ProductCard = ({ id, name, imageUrl, price, collection, colors, descriptio
           <Image
             alt={name}
             fill
-            className='object-cover object-center'
+            className='object-contain object-center'
             src={imageUrl || "/images/placeholder.png"}
           />
           <AddToWishListButton

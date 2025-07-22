@@ -33,6 +33,7 @@ import { Heros } from './collections/Heros'
 import { Orders } from './collections/Orders'
 import { DeliveryAddresses } from './collections/DeliveryAddresses'
 import { LookBook } from './collections/LookBook'
+import { DeliveryFees } from './collections/DeleveryFees'
 
 
 cloudinary.config({
@@ -118,6 +119,7 @@ export default buildConfig({
     AppAccounts,
     AppUsers,
     DeliveryAddresses,
+    DeliveryFees,
 
     // product related collections
     Products,

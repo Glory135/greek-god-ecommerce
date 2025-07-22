@@ -23,17 +23,17 @@ export const Products: CollectionConfig = {
         description: "Price In Naira"
       }
     },
-    {
-      name: 'deliveryFee',
-      type: 'number',
-    },
-    {
-      name: 'totalPrice',
-      type: 'number',
-      admin: {
-        readOnly: true,
-      },
-    },
+    // {
+    //   name: 'deliveryFee',
+    //   type: 'number',
+    // },
+    // {
+    //   name: 'totalPrice',
+    //   type: 'number',
+    //   admin: {
+    //     readOnly: true,
+    //   },
+    // },
     {
       name: "category",
       type: "relationship",
@@ -105,14 +105,14 @@ export const Products: CollectionConfig = {
       // }
     }
   ],
-  hooks: {
-    beforeValidate: [
-      ({ data }) => {
-        if (typeof data?.price === 'number' && typeof data?.deliveryFee === 'number') {
-          data.totalPrice = data?.price + data?.deliveryFee
-        }
-        return data
-      },
-    ],
-  },
+  // hooks: {
+  //   beforeValidate: [
+  //     ({ data }) => {
+  //       if (typeof data?.price === 'number' && typeof data?.deliveryFee === 'number') {
+  //         data.totalPrice = data?.price + data?.deliveryFee
+  //       }
+  //       return data
+  //     },
+  //   ],
+  // },
 }

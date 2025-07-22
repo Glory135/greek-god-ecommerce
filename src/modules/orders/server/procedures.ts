@@ -1,8 +1,9 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { createOrderInputSchema, orderOutputSchema } from "../types";
+import { createOrderInputSchema, orderOutputSchema, ProductSnapshot } from "../types";
 import { z } from "zod";
 import { DEFAULT_LIMIT } from "@/constants";
 import { CONTACT_DETAILS } from "../../../constants";
+import { formatPrice } from "@/lib/utils";
 
 export const ordersRouter = createTRPCRouter({
   // Create a new order
@@ -16,6 +17,7 @@ export const ordersRouter = createTRPCRouter({
           transactionReference: input.transactionReference,
           paymentCompleted: input.paymentCompleted,
           amount: input.amount,
+          deliveryFee: input.deliveryFee,
           amountPaid: input.amountPaid,
           paymentDate: input.paymentDate,
           paymentDescription: input.paymentDescription,
@@ -36,15 +38,12 @@ export const ordersRouter = createTRPCRouter({
       try {
         const ownerSubject = `New Order Received: ${input.paymentReference || input.transactionReference}`;
         // Calculate the delivery fee as the highest among the products
-        const deliveryFee = Array.isArray(input.productsSnapshot)
-          ? Math.max(...input.productsSnapshot.map(p => Number(p.deliveryFee) || 0))
-          : 0;
 
         const ownerHtml = `
           <h2>New Order Notification</h2>
           <p><b>Order Reference:</b> ${input.paymentReference || input.transactionReference}</p>
           <p><b>Status:</b> ${input.paymentCompleted ? 'Paid' : 'Pending'}</p>
-          <p><b>Amount:</b> ₦${input.amount}</p>
+          <p><b>Amount:</b> ${formatPrice(input.amount)}</p>
           <p><b>Payment Date:</b> ${input.paymentDate}</p>
           <h3>Customer Info</h3>
           <ul>
@@ -67,24 +66,24 @@ export const ordersRouter = createTRPCRouter({
               </tr>
             </thead>
             <tbody>
-              ${input.productsSnapshot.map(prod => `
+              ${input.productsSnapshot.map((prod: ProductSnapshot) => `
                 <tr>
                   <td style="text-align:center;">${prod.image ? `<img src="${prod.image}" alt="${prod.name}" width="50" height="50" style="object-fit:cover;border-radius:6px;" />` : ''}</td>
                   <td>${prod.name}</td>
                   <td>${prod.size || '-'}</td>
                   <td>${prod.color || '-'}</td>
                   <td>${prod.quantity}</td>
-                  <td>₦${prod.price}</td>
-                  <td>₦${prod.price * prod.quantity}</td>
+                  <td>${formatPrice(prod.price.toLocaleString())}</td>
+                  <td>${formatPrice((prod.price * prod.quantity).toLocaleString())}</td>
                 </tr>
               `).join('')}
               <tr>
                 <td colspan="6" style="text-align:right;font-weight:bold;">Delivery Fee</td>
-                <td style="font-weight:bold;">₦${deliveryFee}</td>
+                <td style="font-weight:bold;">${formatPrice(input?.deliveryFee?.toLocaleString() || "0")}</td>
               </tr>
               <tr>
                 <td colspan="6" style="text-align:right;font-weight:bold;">Total Order</td>
-                <td style="font-weight:bold;">₦${Number(input.amount)}</td>
+                <td style="font-weight:bold;">${formatPrice(input.amount)}</td>
               </tr>
             </tbody>
           </table>
@@ -102,16 +101,13 @@ export const ordersRouter = createTRPCRouter({
       try {
         const userSubject = `Order Receipt - GreekGod`;
         // Calculate the delivery fee as the highest among the products
-        const deliveryFee = Array.isArray(input.productsSnapshot)
-          ? Math.max(...input.productsSnapshot.map(p => Number(p.deliveryFee) || 0))
-          : 0;
 
         const userHtml = `
           <h2>Thank you for your order!</h2>
           <p>Your order has been received and is being processed.</p>
           <p><b>Order Reference:</b> ${input.paymentReference || input.transactionReference}</p>
           <p><b>Status:</b> ${input.paymentCompleted ? 'Paid' : 'Pending'}</p>
-          <p><b>Amount:</b> ₦${input.amount}</p>
+          <p><b>Amount:</b> ${formatPrice(input.amount)}</p>
           <p><b>Payment Date:</b> ${input.paymentDate}</p>
           <h3>Order Items</h3>
           <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; min-width:400px;">
@@ -134,21 +130,21 @@ export const ordersRouter = createTRPCRouter({
                   <td>${prod.size || '-'}</td>
                   <td>${prod.color || '-'}</td>
                   <td>${prod.quantity}</td>
-                  <td>₦${prod.price}</td>
-                  <td>₦${prod.price * prod.quantity}</td>
+                  <td>${formatPrice(prod.price.toLocaleString())}</td>
+                  <td>${formatPrice((prod.price * prod.quantity).toLocaleString())}</td>
                 </tr>
               `).join('')}
               <tr>
                 <td colspan="6" style="text-align:right;font-weight:bold;">Delivery Fee</td>
-                <td style="font-weight:bold;">₦${deliveryFee}</td>
+                <td style="font-weight:bold;">${formatPrice(input?.deliveryFee?.toLocaleString() || "0")}</td>
               </tr>
               <tr>
                 <td colspan="6" style="text-align:right;font-weight:bold;">Total Order</td>
-                <td style="font-weight:bold;">₦${Number(input.amount)}</td>
+                <td style="font-weight:bold;">${formatPrice(input.amount)}</td>
               </tr>
             </tbody>
           </table>
-          <p style="margin-top:16px;"><b>Total:</b> ₦${input.amount}</p>
+          <p style="margin-top:16px;"><b>Total:</b>${formatPrice(input.amount)}</p>
           <hr />
           <p>If you have any questions or want to check your order status, contact us at <b>${SUPPORT_EMAIL}</b>.</p>
         `;
@@ -195,7 +191,7 @@ export const ordersRouter = createTRPCRouter({
         page: input.cursor,
         limit: input.limit
       });
-      
+
       return data
     }),
 

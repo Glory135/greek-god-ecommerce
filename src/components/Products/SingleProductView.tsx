@@ -4,7 +4,6 @@ import React from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import { useTRPC } from '@/trpc/client'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { formatPrice } from '@/lib/utils'
 import { Plus } from 'lucide-react'
 import ProductImagesStack from './ProductImagesStack'
 import AddToCartDetails from '../Cart/AddToCartDetails'
@@ -28,19 +27,20 @@ const SingleProductView = ({ productId }: { productId: string }) => {
           <div className="flex md:hidden flex-1 h-fit">
             <AddToCartDetails product={data} />
           </div>
-
-          <div className="w-full bg-greek/15">
-            <div className="w-full p-5 flex items-center justify-between">
-              <h4 className="font-bold">
-                Product Details
-              </h4>
-              <Plus />
-            </div>
-            <div className="w-full p-5 border-t border-black">
-              <p className='font-bold'>
+          {
+            data?.category.length && data?.collection.length && (
+              <div className="w-full bg-greek/15">
+                <div className="w-full p-5 flex items-center justify-between">
+                  <h4 className="font-bold">
+                    Product Details
+                  </h4>
+                  <Plus />
+                </div>
+                <div className="w-full p-5 border-t border-black">
+                  {/* <p className='font-bold'>
                 Delivery:  {data.deliveryFee ? formatPrice(`${data.deliveryFee}`) : "Free"}
-              </p>
-              {/* <div className="flex flex-col">
+              </p> */}
+                  {/* <div className="flex flex-col">
                 <b>Return:</b>
                 {
                   data['return policy'] ?
@@ -51,43 +51,45 @@ const SingleProductView = ({ productId }: { productId: string }) => {
                     <b>No Returns</b>
                 }
               </div> */}
-              <div className="flex flex-wrap gap-20 mt-5">
-                {
-                  data?.category && data?.category.length > 0 && (
-                    <div className='flex flex-col gap-3'>
-                      <h4 className='font-bold'>Categories</h4>
-                      <ul className='flex flex-col gap-2'>
-                        {
-                          data?.category.map((singleCat) => (
-                            <li className='hover:underline w-fit' key={singleCat.id}>
-                              <Link href={generateCategoryLink(singleCat.slug)}> {singleCat.name}</Link>
-                            </li>
-                          ))
-                        }
-                      </ul>
-                    </div>
-                  )
-                }
+                  <div className="flex flex-wrap gap-20 mt-5">
+                    {
+                      data?.category && data?.category.length > 0 && (
+                        <div className='flex flex-col gap-3'>
+                          <h4 className='font-bold'>Categories</h4>
+                          <ul className='flex flex-col gap-2'>
+                            {
+                              data?.category.map((singleCat) => (
+                                <li className='hover:underline w-fit' key={singleCat.id}>
+                                  <Link href={generateCategoryLink(singleCat.slug)}> {singleCat.name}</Link>
+                                </li>
+                              ))
+                            }
+                          </ul>
+                        </div>
+                      )
+                    }
 
-                {
-                  data?.collection && data?.collection.length > 0 && (
-                    <div className='flex flex-col gap-3'>
-                      <h4 className='font-bold'>Collections</h4>
-                      <ul className='flex flex-col gap-2'>
-                        {
-                          data?.collection.map((singleCollectoin) => (
-                            <li className='hover:underline w-fit' key={singleCollectoin.id}>
-                              <Link href={generateCollectionLink(singleCollectoin.slug)}> {singleCollectoin.title}</Link>
-                            </li>
-                          ))
-                        }
-                      </ul>
-                    </div>
-                  )
-                }
+                    {
+                      data?.collection && data?.collection.length > 0 && (
+                        <div className='flex flex-col gap-3'>
+                          <h4 className='font-bold'>Collections</h4>
+                          <ul className='flex flex-col gap-2'>
+                            {
+                              data?.collection.map((singleCollectoin) => (
+                                <li className='hover:underline w-fit' key={singleCollectoin.id}>
+                                  <Link href={generateCollectionLink(singleCollectoin.slug)}> {singleCollectoin.title}</Link>
+                                </li>
+                              ))
+                            }
+                          </ul>
+                        </div>
+                      )
+                    }
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            )
+          }
 
           {/* <div className="w-full p-5 sm:p-10">
             <div className="flex items-center justify-between">

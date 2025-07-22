@@ -23,9 +23,11 @@ export interface CheckoutProduct {
 interface CheckoutState {
   addressData: AddressData | null;
   orderTotal: number | null;
+  deliveryFee: number | null;
   products: CheckoutProduct[];
   setAddressData: (data: AddressData) => void;
   setOrderTotal: (total: number) => void;
+  setDeliveryFee: (fee: number) => void;
   setProducts: (products: CheckoutProduct[]) => void;
   clearCheckout: () => void;
 }
@@ -35,12 +37,14 @@ export const useCheckoutStore = create<CheckoutState>()(
     (set) => ({
       addressData: null,
       orderTotal: null,
+      deliveryFee: null,
       products: [],
       setAddressData: (data) => set({ addressData: data }),
       setOrderTotal: (total) => set({ orderTotal: total }),
+      setDeliveryFee: (fee) => set({ deliveryFee: fee }),
       setProducts: (products) => set({ products }),
       clearCheckout: () => {
-        set({ addressData: null, orderTotal: null, products: [] });
+        set({ addressData: null, orderTotal: null, deliveryFee: null, products: [] });
         // Also manually clear localStorage to ensure persistence is cleared
         if (typeof window !== 'undefined') {
           localStorage.removeItem(CHECKOUT_STORAGE_STRING);
@@ -52,6 +56,7 @@ export const useCheckoutStore = create<CheckoutState>()(
       partialize: (state) => ({
         addressData: state.addressData,
         orderTotal: state.orderTotal,
+        deliveryFee: state.deliveryFee,
         products: state.products,
       }),
     }

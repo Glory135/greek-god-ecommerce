@@ -7,7 +7,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import useGetUser from "@/hooks/use-get-user";
 import { cn } from "@/lib/utils";
 import { addressFieldsSchema } from "@/modules/DeliveryAddresses/schema";
@@ -16,7 +16,7 @@ import { PAGES_LINKS } from "@/utils/linksData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -26,16 +26,21 @@ import { useCheckoutStore } from "@/zustand/checkout/store/use-checkout-store";
 import { CheckoutProduct } from '@/zustand/checkout/store/use-checkout-store';
 import { DeliveryAddress } from "@/payload-types";
 import { useCart } from "@/zustand/checkout/hooks/use-cart";
+import { STATES } from "@/utils/data";
+import { AUTH_CALLBACK_STORE_STRING } from "@/constants";
 
 
 export default function DeliveryPage() {
   const [saveData, setSaveData] = useState(false)
   const [selectedAddressId, setSelectedAddressId] = useState<string>("")
+  const [selectedState, setSelectedState] = useState<string>("");
+  const [localDeliveryFee, setLocalDeliveryFee] = useState<number>(0);
   const { user, isLoading: userLoading, isError: userError } = useGetUser()
   const router = useRouter()
+  const pathname = usePathname()
 
   const trpc = useTRPC();
-  const { setAddressData, setOrderTotal, setProducts, orderTotal, clearCheckout } = useCheckoutStore();
+  const { setAddressData, setOrderTotal, setProducts, setDeliveryFee, orderTotal, clearCheckout } = useCheckoutStore();
   const { products: cartProducts } = useCart(user?.id || "");
 
   // Clear stale checkout data if cart is empty (prevents using old order data)
@@ -50,9 +55,10 @@ export default function DeliveryPage() {
   useEffect(() => {
     if (userError || (!userLoading && (!user || !user.id || !user.email))) {
       toast.error("Please log in to continue with checkout");
+      localStorage.setItem(AUTH_CALLBACK_STORE_STRING, pathname);
       router.replace("/login");
     }
-  }, [userError, userLoading, user, router]);
+  }, [userError, userLoading, user, router, pathname]);
 
   // Fetch user addresses
   const { data: addressesData, isLoading: addressesLoading } = useQuery(
@@ -64,6 +70,33 @@ export default function DeliveryPage() {
       }
     )
   );
+
+  // Fetch delivery fee when selectedState changes
+  const { data: statesDeliveryFee, isFetching: isFetchingDeliveryFee, error: errorDeliveryFee, isError: isErorDeliveryFee, isSuccess: isSuccessDeliveryFee } = useQuery(
+    trpc.deliveryFees.getDeliveryFee.queryOptions(
+      { state: selectedState },
+      {
+        enabled: !!selectedState,
+      }
+    )
+  );
+
+  useEffect(() => {
+    if (isErorDeliveryFee) {
+      console.error("Failed to fetch delivery fee", errorDeliveryFee);
+      setLocalDeliveryFee(0);
+      setDeliveryFee(0);
+      return;
+    }
+    if (statesDeliveryFee && isSuccessDeliveryFee) {
+      console.log(statesDeliveryFee);
+      
+      const fee = statesDeliveryFee?.deliveryFee || 0;
+      setLocalDeliveryFee(fee);
+      setDeliveryFee(fee);
+      return;
+    }
+  }, [statesDeliveryFee, isFetchingDeliveryFee, isSuccessDeliveryFee, isErorDeliveryFee, selectedState])
 
   const addAddress = useMutation(trpc.delivery.addInfo.mutationOptions({
     onError: (error) => {
@@ -110,6 +143,7 @@ export default function DeliveryPage() {
             city: selectedAddress.city,
             phone: selectedAddress.phone,
           });
+          setSelectedState(selectedAddress.city?.toLowerCase() || "");
         }
       }
     }
@@ -146,6 +180,8 @@ export default function DeliveryPage() {
     const addressLine = `${address.address}${address.appartment ? `, ${address.appartment}` : ""}`;
     return `${name} - ${addressLine}, ${address.city}`;
   };
+
+  const isWorking = addressesLoading || isFetchingDeliveryFee;
 
 
   // User data validation and loading states
@@ -227,7 +263,7 @@ export default function DeliveryPage() {
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="w-full flex flex-col gap-5"
-              aria-busy={addressesLoading}
+              aria-busy={isWorking}
             >
               <div className="flex gap-5 w-full flex-wrap">
                 <FormField
@@ -235,7 +271,7 @@ export default function DeliveryPage() {
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormControl>
-                        <Input {...field} type="text" placeholder="First Name" className="flex-1" disabled={addressesLoading} />
+                        <Input {...field} type="text" placeholder="First Name" className="flex-1" disabled={isWorking} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -246,7 +282,7 @@ export default function DeliveryPage() {
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormControl>
-                        <Input {...field} type="text" placeholder="Last Name" className="flex-1" disabled={addressesLoading} />
+                        <Input {...field} type="text" placeholder="Last Name" className="flex-1" disabled={isWorking} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -258,7 +294,7 @@ export default function DeliveryPage() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Address" disabled={addressesLoading} />
+                      <Input {...field} type="text" placeholder="Address" disabled={isWorking} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -269,7 +305,7 @@ export default function DeliveryPage() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Apartment,suite,etc.(optional)" disabled={addressesLoading} />
+                      <Input {...field} type="text" placeholder="Apartment,suite,etc.(optional)" disabled={isWorking} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -280,7 +316,30 @@ export default function DeliveryPage() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormControl>
-                      <Input {...field} type="text" placeholder="City / State" disabled={addressesLoading} />
+                      <Select
+                        {...field}
+                        disabled={isWorking}
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          setSelectedState(value);
+                        }}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="City / State" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>States In Nigeria</SelectLabel>
+                            {
+                              STATES.map((state) => (
+                                <SelectItem value={state.toLowerCase()} key={state}>{state}</SelectItem>
+                              ))
+                            }
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      {/* <Input {...field} type="text" placeholder="City / State" disabled={addressesLoading} /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -291,7 +350,7 @@ export default function DeliveryPage() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Phone" disabled={addressesLoading} />
+                      <Input {...field} type="text" placeholder="Phone" disabled={isWorking} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -300,7 +359,7 @@ export default function DeliveryPage() {
               {/* Show checkbox only for new addresses */}
               {(!selectedAddressId || selectedAddressId === "new") && (
                 <div className="flex gap-2 items-center">
-                  <Checkbox checked={saveData} onClick={() => setSaveData(prev => !prev)} disabled={addressesLoading} /> <p>Save this information for next time</p>
+                  <Checkbox checked={saveData} onClick={() => setSaveData(prev => !prev)} disabled={isWorking} /> <p>Save this information for next time</p>
                 </div>
               )}
               <div className="w-full flex gap-5 justify-between my-5">
@@ -312,7 +371,7 @@ export default function DeliveryPage() {
                     }))}
                 >Back to Checkout
                 </Link>
-                <Button type="submit" disabled={addressesLoading}>
+                <Button type="submit" disabled={isWorking}>
                   Proceed To Pay
                 </Button>
               </div>
@@ -320,7 +379,12 @@ export default function DeliveryPage() {
           </Form>
         </div>
         <div className="lg:col-span-3 h-fit lg:sticky top-24">
-          <OrderSummary onTotalCalculated={handleTotalCalculated} onProductsCalculated={handleProductsCalculated} />
+          <OrderSummary 
+          onTotalCalculated={handleTotalCalculated}
+          onProductsCalculated={handleProductsCalculated} 
+          deliveryFee={localDeliveryFee} 
+          calculatingDeliveryFee={isFetchingDeliveryFee}
+          />
         </div>
       </MaxWidthWrapper>
     </div>
