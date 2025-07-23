@@ -8,9 +8,10 @@ interface Props {
   }>
 }
 
-export async function generateMetadata({ params }: { params: { collection: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { collection: collectionParam } = await params;
   // Fetch collection data using trpc
-  const collectionSlug = decodeURIComponent(params.collection);
+  const collectionSlug = decodeURIComponent(collectionParam);
   // Use dynamic import to avoid breaking SSR
   const { getQueryClient, trpc } = await import("@/trpc/server");
   const queryClient = getQueryClient();

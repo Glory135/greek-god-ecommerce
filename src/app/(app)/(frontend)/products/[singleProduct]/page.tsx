@@ -10,13 +10,13 @@ interface Props {
   params: Promise<{ singleProduct: string }>
 }
 
-export async function generateMetadata({ params }: { params: { singleProduct: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Fetch product data using trpc
-  const productId = params.singleProduct;
+  const { singleProduct } = await params;
   // Use dynamic import to avoid breaking SSR
   const { getQueryClient, trpc } = await import("@/trpc/server");
   const queryClient = getQueryClient();
-  const product = await queryClient.fetchQuery(trpc.products.getOne.queryOptions({ id: productId }));
+  const product = await queryClient.fetchQuery(trpc.products.getOne.queryOptions({ id: singleProduct }));
   const data = product;
   if (!data?.name) {
     return {
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: { singleProduct: st
     };
   }
   const imageUrl = data.cover?.url || (data.images?.[0]?.image?.url ?? "/images/products-hero.jpg");
-  const canonical = `${process.env.NEXT_PUBLIC_APP_URL || "https://www.greekgod.clothing"}/products/${productId}`;
+  const canonical = `${process.env.NEXT_PUBLIC_APP_URL || "https://www.greekgod.clothing"}/products/${singleProduct}`;
   return {
     title: `${data.name} | Greek God`,
     description: data.description || "Shop this product at Greek God.",
