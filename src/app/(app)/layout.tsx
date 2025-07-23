@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "Greek God",
     images: [
       {
-        url: "/images/hero1.jpg",
+        url: "/logo/logo-icon.png",
         width: 1200,
         height: 630,
         alt: "Greek God - Enduring style, unwavering confidence."
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     description: "Crafted for every journey, designed for every man. Enduring style, unwavering confidence.",
     images: [
       {
-        url: "/images/hero1.jpg",
+        url: "/logo/logo-full.png",
         alt: "Greek God - Enduring style, unwavering confidence."
       }
     ],
@@ -86,7 +86,7 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "Greek God",
               "url": process.env.NEXT_PUBLIC_APP_URL || "https://www.greekgod.clothing",
-              "logo": "/logo/logo-full.png",
+              "logo": "/logo/logo-icon.png",
               "sameAs": [
                 SOCIAL_LINKS.instagram,
                 SOCIAL_LINKS.tiktok

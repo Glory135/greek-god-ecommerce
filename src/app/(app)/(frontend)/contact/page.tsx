@@ -17,7 +17,7 @@ export const metadata = {
     description: "Contact Greek God for questions about our products, sizing, or your order. We're here to help you on your journey.",
     images: [
       {
-        url: "/images/auth_img.jpg",
+        url: "/logo/logo-icon.png",
         width: 1200,
         height: 630,
         alt: "Contact Greek God"
@@ -30,7 +30,7 @@ export const metadata = {
     description: "Contact Greek God for questions about our products, sizing, or your order. We're here to help you on your journey.",
     images: [
       {
-        url: "/images/auth_img.jpg",
+        url: "/logo/logo-full.png",
         alt: "Contact Greek God"
       }
     ]

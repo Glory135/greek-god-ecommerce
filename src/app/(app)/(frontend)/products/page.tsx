@@ -68,7 +68,7 @@ export const metadata = {
     description: "Shop the latest Greek God products. Crafted for every journey, designed for every man.",
     images: [
       {
-        url: "/images/products-hero.jpg",
+        url: "/logo/logo-icon.png",
         width: 1200,
         height: 630,
         alt: "Greek God Products"
@@ -81,7 +81,7 @@ export const metadata = {
     description: "Shop the latest Greek God products. Crafted for every journey, designed for every man.",
     images: [
       {
-        url: "/images/products-hero.jpg",
+        url: "/logo/logo-full.png",
         alt: "Greek God Products"
       }
     ]

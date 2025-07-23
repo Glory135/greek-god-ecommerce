@@ -12,7 +12,7 @@ export const metadata = {
     description: "Browse the Greek God lookbook for style inspiration and discover our latest fashion trends.",
     images: [
       {
-        url: "/images/lookbook/trending1.jpg",
+        url: "/logo/logo-icon.png",
         width: 1200,
         height: 630,
         alt: "Greek God Lookbook"
@@ -25,7 +25,7 @@ export const metadata = {
     description: "Browse the Greek God lookbook for style inspiration and discover our latest fashion trends.",
     images: [
       {
-        url: "/images/lookbook/trending1.jpg",
+        url: "/logo/logo-full.png",
         alt: "Greek God Lookbook"
       }
     ]

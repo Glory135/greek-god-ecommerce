@@ -13,7 +13,7 @@ export const metadata = {
     description: "The page you are looking for does not exist. Let us guide you back to civilization.",
     images: [
       {
-        url: "/images/hero1.jpg",
+        url: "/logo/logo-icon.png",
         width: 1200,
         height: 630,
         alt: "Greek God 404 Not Found"
@@ -26,7 +26,7 @@ export const metadata = {
     description: "The page you are looking for does not exist. Let us guide you back to civilization.",
     images: [
       {
-        url: "/images/hero1.jpg",
+        url: "/logo/logo-full.png",
         alt: "Greek God 404 Not Found"
       }
     ]

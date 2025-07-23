@@ -16,7 +16,7 @@ export const metadata = {
     description: "Explore our curated collections of Greek God clothing, designed for every journey and every man.",
     images: [
       {
-        url: "/images/collection1.jpg",
+        url: "/logo/logo-icon.png",
         width: 1200,
         height: 630,
         alt: "Greek God Collections"
@@ -29,7 +29,7 @@ export const metadata = {
     description: "Explore our curated collections of Greek God clothing, designed for every journey and every man.",
     images: [
       {
-        url: "/images/collection1.jpg",
+        url: "/logo/logo-full.png",
         alt: "Greek God Collections"
       }
     ]
