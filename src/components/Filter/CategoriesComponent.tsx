@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import CategoryDropdown from './CategoryDropdown'
-import CategoriesSidebar from './CategoriesSidebar'
+// import CategoriesSidebar from './CategoriesSidebar'
 import { useTRPC } from '@/trpc/client'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
@@ -77,7 +77,8 @@ const CategoriesComponent = () => {
         ref={containerRef}
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}
-        className="flex flex-nowrap items-center gap-3">
+        className="flex flex-nowrap items-center gap-3"
+      >
         {data?.slice(0, visibleCount).map((category) => (
           <div key={category.id} className="">
             <CategoryDropdown
@@ -87,9 +88,9 @@ const CategoriesComponent = () => {
             />
           </div>
         ))}
-        <div ref={viewAllRef} className="shrink-0">
+        {/* <div ref={viewAllRef} className="shrink-0">
           <CategoriesSidebar />
-        </div>
+        </div> */}
       </div>
     </div>
   )

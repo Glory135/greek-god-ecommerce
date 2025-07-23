@@ -16,6 +16,9 @@ const SingleProductView = ({ productId }: { productId: string }) => {
     id: productId
   }))
 
+  const category = data?.category || []
+  const collections = data?.collection || []
+  
   return (
     <MaxWidthWrapper>
       <div className="relative w-full flex">
@@ -28,7 +31,7 @@ const SingleProductView = ({ productId }: { productId: string }) => {
             <AddToCartDetails product={data} />
           </div>
           {
-            data?.category.length && data?.collection.length && (
+            (category?.length > 0 && collections?.length > 0) && (
               <div className="w-full bg-greek/15">
                 <div className="w-full p-5 flex items-center justify-between">
                   <h4 className="font-bold">
@@ -53,12 +56,12 @@ const SingleProductView = ({ productId }: { productId: string }) => {
               </div> */}
                   <div className="flex flex-wrap gap-20 mt-5">
                     {
-                      data?.category && data?.category.length > 0 && (
+                      category && category?.length > 0 && (
                         <div className='flex flex-col gap-3'>
                           <h4 className='font-bold'>Categories</h4>
                           <ul className='flex flex-col gap-2'>
                             {
-                              data?.category.map((singleCat) => (
+                              category.map((singleCat) => (
                                 <li className='hover:underline w-fit' key={singleCat.id}>
                                   <Link href={generateCategoryLink(singleCat.slug)}> {singleCat.name}</Link>
                                 </li>
@@ -70,12 +73,12 @@ const SingleProductView = ({ productId }: { productId: string }) => {
                     }
 
                     {
-                      data?.collection && data?.collection.length > 0 && (
+                      collections && collections.length > 0 && (
                         <div className='flex flex-col gap-3'>
                           <h4 className='font-bold'>Collections</h4>
                           <ul className='flex flex-col gap-2'>
                             {
-                              data?.collection.map((singleCollectoin) => (
+                              collections.map((singleCollectoin) => (
                                 <li className='hover:underline w-fit' key={singleCollectoin.id}>
                                   <Link href={generateCollectionLink(singleCollectoin.slug)}> {singleCollectoin.title}</Link>
                                 </li>
