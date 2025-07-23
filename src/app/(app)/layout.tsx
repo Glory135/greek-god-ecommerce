@@ -8,6 +8,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import LoginModal from "@/components/Auth/LoginModal";
 import 'react-photo-view/dist/react-photo-view.css';
 import { SOCIAL_LINKS } from "@/constants";
+import { Analytics } from "@vercel/analytics/next"
 
 
 const montserrat = Montserrat({
@@ -101,6 +102,7 @@ export default function RootLayout({
           montserrat.variable
         )}
       >
+        <Analytics />
         <NuqsAdapter>
           <TRPCReactProvider >
             <main className='relative flex flex-col min-h-screen'>
