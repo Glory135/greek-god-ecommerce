@@ -22,6 +22,34 @@ const initialState = {
   message: ""
 }
 
+export const metadata = {
+  title: "Contact Us | Greek God",
+  description: "Contact Greek God for questions about our products, sizing, or your order. We're here to help you on your journey.",
+  openGraph: {
+    title: "Contact Us | Greek God",
+    description: "Contact Greek God for questions about our products, sizing, or your order. We're here to help you on your journey.",
+    images: [
+      {
+        url: "/images/auth_img.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Contact Greek God"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Us | Greek God",
+    description: "Contact Greek God for questions about our products, sizing, or your order. We're here to help you on your journey.",
+    images: [
+      {
+        url: "/images/auth_img.jpg",
+        alt: "Contact Greek God"
+      }
+    ]
+  }
+};
+
 export default function ContactPage() {
   const [contact, setContact] = useState(initialState)
   const trpc = useTRPC()

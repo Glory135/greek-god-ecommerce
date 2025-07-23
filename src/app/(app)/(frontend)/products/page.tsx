@@ -59,3 +59,31 @@ export default async function ProductsPage({ searchParams }: Props) {
     </div>
   )
 }
+
+export const metadata = {
+  title: "Products | Greek God",
+  description: "Shop the latest Greek God products. Crafted for every journey, designed for every man.",
+  openGraph: {
+    title: "Products | Greek God",
+    description: "Shop the latest Greek God products. Crafted for every journey, designed for every man.",
+    images: [
+      {
+        url: "/images/products-hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Greek God Products"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Products | Greek God",
+    description: "Shop the latest Greek God products. Crafted for every journey, designed for every man.",
+    images: [
+      {
+        url: "/images/products-hero.jpg",
+        alt: "Greek God Products"
+      }
+    ]
+  }
+};

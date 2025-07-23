@@ -2,6 +2,34 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import SectionTitle from "@/components/Sections/SectionTitle";
 import Image from "next/image";
 
+export const metadata = {
+  title: "About Us | Greek God",
+  description: "Learn about Greek God, a clothing brand empowering you to express your authentic self with enduring style and confidence.",
+  openGraph: {
+    title: "About Us | Greek God",
+    description: "Learn about Greek God, a clothing brand empowering you to express your authentic self with enduring style and confidence.",
+    images: [
+      {
+        url: "/images/about1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Greek God About Us"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us | Greek God",
+    description: "Learn about Greek God, a clothing brand empowering you to express your authentic self with enduring style and confidence.",
+    images: [
+      {
+        url: "/images/about1.jpg",
+        alt: "Greek God About Us"
+      }
+    ]
+  }
+};
+
 export default function AboutPage() {
   return (
     <MaxWidthWrapper className="flex flex-col gap-5 md:gap-0">

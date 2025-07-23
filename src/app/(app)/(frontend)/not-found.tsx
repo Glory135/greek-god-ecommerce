@@ -5,6 +5,38 @@ import { LogoFull } from '@/components/Logo';
 import { Home, Search, Compass, Shield } from 'lucide-react';
 import { PAGES_LINKS } from '@/utils/linksData';
 
+export const metadata = {
+  title: "404 Not Found | Greek God",
+  description: "The page you are looking for does not exist. Let us guide you back to civilization.",
+  openGraph: {
+    title: "404 Not Found | Greek God",
+    description: "The page you are looking for does not exist. Let us guide you back to civilization.",
+    images: [
+      {
+        url: "/images/hero1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Greek God 404 Not Found"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "404 Not Found | Greek God",
+    description: "The page you are looking for does not exist. Let us guide you back to civilization.",
+    images: [
+      {
+        url: "/images/hero1.jpg",
+        alt: "Greek God 404 Not Found"
+      }
+    ]
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
+};
+
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-greek/5 flex flex-col relative overflow-hidden">

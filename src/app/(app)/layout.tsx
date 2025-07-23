@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import LoginModal from "@/components/Auth/LoginModal";
 import 'react-photo-view/dist/react-photo-view.css';
+import { SOCIAL_LINKS } from "@/constants";
 
 
 const montserrat = Montserrat({
@@ -15,8 +16,57 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Greek God",
-  description: "Crafted for every journey, designed for every man. Enduring style, unwavering confidence",
+  title: {
+    default: "Greek God",
+    template: "%s | Greek God"
+  },
+  description: "Crafted for every journey, designed for every man. Enduring style, unwavering confidence.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.greekgod.clothing"),
+  openGraph: {
+    title: "Greek God",
+    description: "Crafted for every journey, designed for every man. Enduring style, unwavering confidence.",
+    url: process.env.NEXT_PUBLIC_APP_URL || "https://www.greekgod.clothing",
+    siteName: "Greek God",
+    images: [
+      {
+        url: "/images/hero1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Greek God - Enduring style, unwavering confidence."
+      }
+    ],
+    locale: "en_US",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Greek God",
+    description: "Crafted for every journey, designed for every man. Enduring style, unwavering confidence.",
+    images: [
+      {
+        url: "/images/hero1.jpg",
+        alt: "Greek God - Enduring style, unwavering confidence."
+      }
+    ],
+    creator: "@greekgodbrand"
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico"
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_APP_URL || "https://www.greekgod.clothing"
+  }
+};
+
+export const viewport = {
+  themeColor: "#456d45",
 };
 
 export default function RootLayout({
@@ -26,6 +76,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Organization JSON-LD structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Greek God",
+              "url": process.env.NEXT_PUBLIC_APP_URL || "https://www.greekgod.clothing",
+              "logo": "/logo/logo-full.png",
+              "sameAs": [
+                SOCIAL_LINKS.instagram,
+                SOCIAL_LINKS.tiktok
+              ]
+            })
+          }}
+        />
+      </head>
       <body
         className={cn(
           'relative h-full antialiased ',

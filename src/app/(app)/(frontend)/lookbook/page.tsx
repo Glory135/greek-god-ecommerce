@@ -4,6 +4,34 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 
+export const metadata = {
+  title: "Lookbook | Greek God",
+  description: "Browse the Greek God lookbook for style inspiration and discover our latest fashion trends.",
+  openGraph: {
+    title: "Lookbook | Greek God",
+    description: "Browse the Greek God lookbook for style inspiration and discover our latest fashion trends.",
+    images: [
+      {
+        url: "/images/lookbook/trending1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Greek God Lookbook"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lookbook | Greek God",
+    description: "Browse the Greek God lookbook for style inspiration and discover our latest fashion trends.",
+    images: [
+      {
+        url: "/images/lookbook/trending1.jpg",
+        alt: "Greek God Lookbook"
+      }
+    ]
+  }
+};
+
 export default function LookbookPage() {
   const queryClient = getQueryClient();
 

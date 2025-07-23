@@ -8,6 +8,34 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 
+export const metadata = {
+  title: "Collections | Greek God",
+  description: "Explore our curated collections of Greek God clothing, designed for every journey and every man.",
+  openGraph: {
+    title: "Collections | Greek God",
+    description: "Explore our curated collections of Greek God clothing, designed for every journey and every man.",
+    images: [
+      {
+        url: "/images/collection1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Greek God Collections"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Collections | Greek God",
+    description: "Explore our curated collections of Greek God clothing, designed for every journey and every man.",
+    images: [
+      {
+        url: "/images/collection1.jpg",
+        alt: "Greek God Collections"
+      }
+    ]
+  }
+};
+
 export default function CollectionsPage() {
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(trpc.collections.getMany.infiniteQueryOptions({
