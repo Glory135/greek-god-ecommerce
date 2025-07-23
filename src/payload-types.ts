@@ -423,6 +423,8 @@ export interface Order {
   transactionReference?: string | null;
   paymentCompleted?: boolean | null;
   amount: string;
+  deliveryFee?: number | null;
+  grandTotal: string;
   amountPaid: string;
   paymentDate: string;
   paymentDescription?: string | null;
@@ -709,6 +711,8 @@ export interface OrdersSelect<T extends boolean = true> {
   transactionReference?: T;
   paymentCompleted?: T;
   amount?: T;
+  deliveryFee?: T;
+  grandTotal?: T;
   amountPaid?: T;
   paymentDate?: T;
   paymentDescription?: T;

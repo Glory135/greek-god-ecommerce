@@ -39,6 +39,22 @@ export const Orders: CollectionConfig = {
       }
     },
     {
+      name: "deliveryFee",
+      type: "number",
+      required: false,
+      access: {
+        update: () => false
+      }
+    },
+    {
+      name: "grandTotal",
+      type: "text",
+      required: true,
+      access: {
+        update: () => false
+      }
+    },
+    {
       name: "amountPaid",
       type: "text",
       required: true,

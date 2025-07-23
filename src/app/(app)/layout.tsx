@@ -24,6 +24,53 @@ export const metadata: Metadata = {
   },
   description: "Crafted for every journey, designed for every man. Enduring style, unwavering confidence.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.greekgod.clothing"),
+  keywords: [
+    // Original keywords
+    'greekgod',
+    'GreekGod',
+    'greek god',
+    'Greek God',
+    'clothing',
+    'e-commerce',
+    'ecommerce',
+    'clothing brand',
+    'greekgod clothing',
+    'Greek god clothing brand',
+    'buy clothes',
+
+    // Branded & Niche Keywords
+    'greekgod apparel',
+    'greekgod fashion',
+    'greekgod store',
+    'greekgod streetwear',
+    'greekgod clothing line',
+    'greekgod lifestyle',
+
+    // Product-Specific Keywords
+    'unisex streetwear',
+    'urban fashion',
+    'bold graphic tees',
+    'modern greek fashion',
+    'gods and goddesses clothing',
+    'luxury streetwear',
+    'greek god t-shirts',
+    'aesthetic clothing brand',
+
+    // Shopping Intent Keywords
+    'shop greek god clothing',
+    'where to buy streetwear',
+    'affordable greek god apparel',
+    'trendy clothes online',
+    'shop bold statement fashion',
+    'unique graphic t-shirts',
+
+    // Audience Targeting Keywords
+    'empowering clothing brand',
+    'clothing for confident people',
+    'streetwear for creatives',
+    'express yourself fashion',
+    'motivational streetwear',
+  ],
   openGraph: {
     title: "Greek God",
     description: "Crafted for every journey, designed for every man. Enduring style, unwavering confidence.",

@@ -6,6 +6,7 @@ export const createOrderInputSchema = z.object({
   transactionReference: z.string().optional(),
   paymentCompleted: z.boolean(),
   amount: z.string(),
+  grandTotal: z.string(),
   deliveryFee: z.number().default(0).optional(),
   amountPaid: z.string(),
   paymentDate: z.string(),
