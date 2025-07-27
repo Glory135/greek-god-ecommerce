@@ -3,10 +3,10 @@
  */
 
 export const createCacheInvalidationHook = (collectionName: string) => {
-  return async ({ doc, operation }: { doc: any; operation: string; req: any }) => {
+  return async ({ doc, operation }: { doc: Record<string, string>; operation: string }) => {
     try {
       console.log(`🔄 Invalidating cache for ${collectionName} (${operation})`);
-      
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/webhooks/payload`, {
         method: 'POST',
         headers: {
@@ -18,7 +18,7 @@ export const createCacheInvalidationHook = (collectionName: string) => {
           docId: doc.id,
         }),
       });
-      
+
       if (!response.ok) {
         console.error(`❌ Failed to invalidate cache for ${collectionName}`);
       } else {
