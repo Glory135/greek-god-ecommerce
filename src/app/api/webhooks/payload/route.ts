@@ -3,6 +3,12 @@ import { getQueryClient } from '@/trpc/server';
 import { invalidateProductCache, invalidateCollectionCache, invalidateLayoutCache } from '@/lib/cache-utils';
 
 export async function POST(request: NextRequest) {
+  // Add cache headers to prevent caching
+  const response = NextResponse.json({ success: true });
+  response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  response.headers.set('Pragma', 'no-cache');
+  response.headers.set('Expires', '0');
+
   try {
     const body = await request.json();
     const { collection, operation } = body;
@@ -55,6 +61,12 @@ export async function POST(request: NextRequest) {
       success: true, 
       message: `Cache invalidated for ${collection}`,
       timestamp: new Date().toISOString()
+    }, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
     });
   } catch (error) {
     console.error('❌ Webhook error:', error);

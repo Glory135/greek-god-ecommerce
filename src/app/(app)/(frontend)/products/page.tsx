@@ -14,6 +14,8 @@ import HeroSkeleton from "@/components/Hero/HeroSkeleton";
 interface Props {
   searchParams: Promise<SearchParams>;
 }
+export const revalidate = 0; // Disable static generation
+
 export default async function ProductsPage({ searchParams }: Props) {
   const filters = await loadProductsFilters(searchParams)
   const queryClient = getQueryClient();

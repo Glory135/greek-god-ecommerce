@@ -9,4 +9,20 @@ const handler = (req: Request) =>
     router: appRouter,
     createContext: createTRPCContext,
   });
-export { handler as GET, handler as POST };
+
+// Add cache headers to prevent caching of API responses
+const createHandler = (method: 'GET' | 'POST') => async (req: Request) => {
+  const response = await handler(req);
+  console.log(method);
+  
+  
+  // Add headers to prevent caching
+  response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  response.headers.set('Pragma', 'no-cache');
+  response.headers.set('Expires', '0');
+  
+  return response;
+};
+
+export const GET = createHandler('GET');
+export const POST = createHandler('POST');

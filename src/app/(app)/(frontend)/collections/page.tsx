@@ -36,6 +36,8 @@ export const metadata = {
   }
 };
 
+export const revalidate = 0; // Disable static generation
+
 export default function CollectionsPage() {
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(trpc.collections.getMany.infiniteQueryOptions({

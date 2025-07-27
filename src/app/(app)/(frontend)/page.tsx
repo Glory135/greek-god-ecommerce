@@ -16,6 +16,8 @@ import { PAGES_LINKS } from "@/utils/linksData";
 import { buttonVariants } from "@/components/ui/button";
 
 
+export const revalidate = 0; // Disable static generation
+
 export default function LandingPage() {
   const queryClient = getQueryClient();
 
