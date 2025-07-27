@@ -1,5 +1,6 @@
 // import { AlignFeature, BlockquoteFeature, BoldFeature, FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical';
 import type { CollectionConfig } from 'payload';
+import { cacheInvalidationHooks } from '@/lib/payload-hooks';
 
 export const ProductCollection: CollectionConfig = {
   slug: "productCollections",
@@ -36,5 +37,8 @@ export const ProductCollection: CollectionConfig = {
     //   relationTo: "products",
     //   hasMany: true
     // },
-  ]
+  ],
+  hooks: {
+    afterChange: [cacheInvalidationHooks.collections],
+  },
 }

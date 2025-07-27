@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload';
+import { cacheInvalidationHooks } from '@/lib/payload-hooks';
 
 export const Heros: CollectionConfig = {
   slug: "heros",
@@ -32,5 +33,8 @@ export const Heros: CollectionConfig = {
       type: "text",
       required: false,
     },
-  ]
+  ],
+  hooks: {
+    afterChange: [cacheInvalidationHooks.heros],
+  },
 }

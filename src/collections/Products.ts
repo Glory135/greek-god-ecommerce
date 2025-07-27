@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { cacheInvalidationHooks } from '@/lib/payload-hooks'
 
 export const Products: CollectionConfig = {
   slug: "products",
@@ -108,14 +109,7 @@ export const Products: CollectionConfig = {
       // }
     }
   ],
-  // hooks: {
-  //   beforeValidate: [
-  //     ({ data }) => {
-  //       if (typeof data?.price === 'number' && typeof data?.deliveryFee === 'number') {
-  //         data.totalPrice = data?.price + data?.deliveryFee
-  //       }
-  //       return data
-  //     },
-  //   ],
-  // },
+  hooks: {
+    afterChange: [cacheInvalidationHooks.products],
+  },
 }

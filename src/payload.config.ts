@@ -152,6 +152,7 @@ export default buildConfig({
     defaultFromName: 'GreekGod',
     apiKey: process.env.RESEND_API_KEY || '',
   }),
+
   plugins: [
     payloadCloudPlugin(),
     // auth plugin

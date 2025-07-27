@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload';
+import { cacheInvalidationHooks } from '@/lib/payload-hooks';
 
 export const Categories: CollectionConfig = {
   slug: "categories",
@@ -32,5 +33,8 @@ export const Categories: CollectionConfig = {
       on: "parent",
       hasMany: true
     }
-  ]
+  ],
+  hooks: {
+    afterChange: [cacheInvalidationHooks.categories],
+  },
 }

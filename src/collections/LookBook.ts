@@ -1,4 +1,5 @@
 import { CollectionConfig } from "payload";
+import { cacheInvalidationHooks } from '@/lib/payload-hooks';
 
 export const LookBook: CollectionConfig = {
   slug: 'lookBook',
@@ -15,4 +16,7 @@ export const LookBook: CollectionConfig = {
       required: true
     }
   ],
+  hooks: {
+    afterChange: [cacheInvalidationHooks.lookbook],
+  },
 }
