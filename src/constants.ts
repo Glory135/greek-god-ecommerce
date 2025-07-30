@@ -8,6 +8,8 @@ export const HERO_SLUGS = {
   collections: "collections-page-hero",
   products: "products-page-hero",
   auth: "login-signup-pages-hero",
+  aboutFirst: "about-page-first-image",
+  aboutSecond: "about-page-second-image",
 }
 
 export const CONTACT_DETAILS = {

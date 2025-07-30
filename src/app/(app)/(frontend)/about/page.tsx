@@ -1,43 +1,41 @@
+"use client"
+
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import SectionTitle from "@/components/Sections/SectionTitle";
 import Image from "next/image";
-
-export const metadata = {
-  title: "About Us | Greek God",
-  description: "Learn about Greek God, a clothing brand empowering you to express your authentic self with enduring style and confidence.",
-  openGraph: {
-    title: "About Us | Greek God",
-    description: "Learn about Greek God, a clothing brand empowering you to express your authentic self with enduring style and confidence.",
-    images: [
-      {
-        url: "/logo/logo-icon.png",
-        width: 1200,
-        height: 630,
-        alt: "Greek God About Us"
-      }
-    ]
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "About Us | Greek God",
-    description: "Learn about Greek God, a clothing brand empowering you to express your authentic self with enduring style and confidence.",
-    images: [
-      {
-        url: "/logo/logo-full.png",
-        alt: "Greek God About Us"
-      }
-    ]
-  }
-};
+import { useTRPC } from "@/trpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { HERO_SLUGS } from "@/constants";
 
 export default function AboutPage() {
+  const trpc = useTRPC();
+  
+  // Fetch first about image
+  const { data: firstImageData } = useSuspenseQuery(
+    trpc.layout.getHero.queryOptions({
+      slug: HERO_SLUGS.aboutFirst
+    })
+  );
+
+  // Fetch second about image
+  const { data: secondImageData } = useSuspenseQuery(
+    trpc.layout.getHero.queryOptions({
+      slug: HERO_SLUGS.aboutSecond
+    })
+  );
+
   return (
     <MaxWidthWrapper className="flex flex-col gap-5 md:gap-0">
       <>
         <SectionTitle title="About Us" />
         <div className="w-full flex flex-col-reverse gap-10 md:gap-0 md:flex-row">
           <div className="flex-1 relative aspect-square">
-            <Image className="object-cover" src={"/images/about1.jpg"} fill alt="about" />
+            <Image 
+              className="object-cover" 
+              src={firstImageData?.docs?.hero?.url || "/images/about1.jpg"} 
+              fill 
+              alt={firstImageData?.docs?.hero?.alt || "about"} 
+            />
           </div>
           <div className="flex-1 flex flex-col gap-5 md:p-10 justify-center text-start">
             <p className="text-xl font-bold">Unleash Your Inner Deity with GreekGod.</p>
@@ -58,8 +56,14 @@ export default function AboutPage() {
               designs are created to make you feel confident,
               strong, and undeniably divine.</p>
             <p className="text-xl font-bold">Step into your greatness with GreekGod.</p>
-          </div>          <div className="flex-1 relative aspect-square">
-            <Image className="object-cover" src={"/images/about2.jpg"} fill alt="" />
+          </div>          
+          <div className="flex-1 relative aspect-square">
+            <Image 
+              className="object-cover" 
+              src={secondImageData?.docs?.hero?.url || "/images/about2.jpg"} 
+              fill 
+              alt={secondImageData?.docs?.hero?.alt || "about"} 
+            />
           </div>
         </div>
       </>
