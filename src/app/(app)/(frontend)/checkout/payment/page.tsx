@@ -1,6 +1,7 @@
 "use client"
 
 import MonnifyButton from "@/components/Checkout/MonnifyButton"
+import PaystackButton from "@/components/Checkout/PaystackButton"
 import MaxWidthWrapper from "@/components/MaxWidthWrapper"
 import useGetUser from "@/hooks/use-get-user"
 import { useCheckoutStore } from "@/zustand/checkout/store/use-checkout-store"
@@ -37,6 +38,8 @@ export default function PaymentPage() {
   const trpc = useTRPC();
   const hasRedirected = useRef(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const paymentProvider = (process.env.NEXT_PUBLIC_PAYMENT_PROVIDER || 'paystack') as 'paystack' | 'monnify'
+  const isPaystack = paymentProvider === 'paystack'
 
 
   // Clear stale checkout data if cart is empty (prevents using old order data)
@@ -85,7 +88,7 @@ export default function PaymentPage() {
 
 
   // on successful payment callback
-  const handlePaymentSuccess = (monnifyResponse?: MonnifyResponse) => {
+  const handlePaymentSuccess = async (monnifyResponse?: MonnifyResponse) => {
     if (!user || !user.email || !user.id || !addressData) return;
 
     // Validate that we have fresh cart data (not stale checkout data)
@@ -96,13 +99,37 @@ export default function PaymentPage() {
       return;
     }
 
-    // Extract payment reference and details from Monnify response
-    const paymentReference = monnifyResponse?.paymentReference || "";
-    const transactionReference = monnifyResponse?.transactionReference || "";
-    const paymentCompleted = monnifyResponse?.status === "SUCCESS";
-    const amountPaid = monnifyResponse?.authorizedAmount ? String(monnifyResponse.authorizedAmount) : String(grandTotal);
-    const paymentDate = monnifyResponse?.paidOn || new Date().toISOString();
-    const paymentDescription = monnifyResponse?.message || `Order payment for ${addressData.firstname} ${addressData.lastname}`;
+    // If Paystack is active, verify transaction server-side before proceeding
+    let effectiveResponse: MonnifyResponse | undefined = monnifyResponse
+    if (isPaystack) {
+      try {
+        const ref = monnifyResponse?.paymentReference || monnifyResponse?.transactionReference || ""
+        const verificationRes = await fetch('/api/paystack/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reference: ref, expectedAmount: grandTotal }),
+        })
+        const verificationJson = await verificationRes.json() as { verified: boolean; details?: MonnifyResponse; error?: string }
+        if (!verificationRes.ok || !verificationJson.verified) {
+          toast.error('Payment verification failed. Please contact support if you were charged.')
+          return
+        }
+        if (verificationJson.details) {
+          effectiveResponse = verificationJson.details
+        }
+      } catch (err) {
+        toast.error('Unable to verify payment at the moment. Please try again.')
+        return
+      }
+    }
+
+    // Extract payment reference and details from response
+    const paymentReference = effectiveResponse?.paymentReference || "";
+    const transactionReference = effectiveResponse?.transactionReference || "";
+    const paymentCompleted = effectiveResponse?.status === "SUCCESS";
+    const amountPaid = effectiveResponse?.authorizedAmount ? String(effectiveResponse.authorizedAmount) : String(grandTotal);
+    const paymentDate = effectiveResponse?.paidOn || new Date().toISOString();
+    const paymentDescription = effectiveResponse?.message || `Order payment for ${addressData.firstname} ${addressData.lastname}`;
 
     // Validate that checkout products match cart products
     const cartProductIds = cartProducts.map(p => p.productId).sort();
@@ -234,16 +261,29 @@ export default function PaymentPage() {
             </div>
           </div>
         </div>
-        <MonnifyButton
-          buttonText={`Pay ${formatPrice(grandTotal.toLocaleString())}`}
-          amount={grandTotal}
-          email={user.email}
-          description={`Order payment for ${addressData.firstname} ${addressData.lastname}`}
-          fullname={`${addressData.firstname} ${addressData.lastname}`}
-          onSuccess={handlePaymentSuccess}
-          onCancel={handlePaymentCancel}
-          onError={handlePaymentError}
-        />
+        { (process.env.NEXT_PUBLIC_PAYMENT_PROVIDER || 'paystack') === 'paystack' ? (
+          <PaystackButton
+            buttonText={`Pay ${formatPrice(grandTotal.toLocaleString())}`}
+            amount={grandTotal}
+            email={user.email}
+            description={`Order payment for ${addressData.firstname} ${addressData.lastname}`}
+            fullname={`${addressData.firstname} ${addressData.lastname}`}
+            onSuccess={handlePaymentSuccess}
+            onCancel={handlePaymentCancel}
+            onError={handlePaymentError}
+          />
+        ) : (
+          <MonnifyButton
+            buttonText={`Pay ${formatPrice(grandTotal.toLocaleString())}`}
+            amount={grandTotal}
+            email={user.email}
+            description={`Order payment for ${addressData.firstname} ${addressData.lastname}`}
+            fullname={`${addressData.firstname} ${addressData.lastname}`}
+            onSuccess={handlePaymentSuccess}
+            onCancel={handlePaymentCancel}
+            onError={handlePaymentError}
+          />
+        )}
       </div>
     </MaxWidthWrapper>
   )

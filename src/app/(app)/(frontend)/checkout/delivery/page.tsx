@@ -46,7 +46,7 @@ export default function DeliveryPage() {
   // Clear stale checkout data if cart is empty (prevents using old order data)
   useEffect(() => {
     if (cartProducts.length === 0 && orderTotal) {
-      console.log('Clearing stale checkout data on delivery page - cart is empty but orderTotal exists');
+      // console.log('Clearing stale checkout data on delivery page - cart is empty but orderTotal exists');
       clearCheckout();
     }
   }, [cartProducts.length, orderTotal, clearCheckout]);
@@ -88,9 +88,7 @@ export default function DeliveryPage() {
       setDeliveryFee(0);
       return;
     }
-    if (statesDeliveryFee && isSuccessDeliveryFee) {
-      console.log(statesDeliveryFee);
-      
+    if (statesDeliveryFee && isSuccessDeliveryFee) {      
       const fee = statesDeliveryFee?.deliveryFee || 0;
       setLocalDeliveryFee(fee);
       setDeliveryFee(fee);
