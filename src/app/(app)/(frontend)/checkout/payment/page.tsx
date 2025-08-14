@@ -119,6 +119,7 @@ export default function PaymentPage() {
         }
       } catch (err) {
         toast.error('Unable to verify payment at the moment. Please try again.')
+        console.error("Validation error: ", err)
         return
       }
     }
