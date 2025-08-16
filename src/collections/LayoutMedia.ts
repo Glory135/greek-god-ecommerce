@@ -1,5 +1,4 @@
 import type { CollectionConfig } from 'payload'
-import { filesizeLimited } from './utils/validateFileSize'
 
 export const LayoutMedia: CollectionConfig = {
   slug: 'layoutMedia',
@@ -15,7 +14,6 @@ export const LayoutMedia: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    filesizeLimited(10),
   ],
   upload: true,
 }
