@@ -50,7 +50,7 @@ const ProductList = ({ customLimit, className, noLoadMore = false }: { customLim
                 id={product.id}
                 name={product.name}
                 price={product.price}
-                imageUrl={product?.cover?.url}
+                imageUrl={product?.largeCover?.url || product?.cover?.url}
                 reviewCount={2}
                 reviewRating={10}
                 collection={product?.collection}

@@ -8,7 +8,13 @@ export const LookBook: CollectionConfig = {
       name: 'image',
       type: 'upload',
       relationTo: "layoutMedia",
-      required: true,
+      required: false,
+    },
+    {
+      name: 'imageLarge',
+      type: 'relationship',
+      relationTo: 'largeMedia',
+      required: false,
     },
     {
       name: "title",

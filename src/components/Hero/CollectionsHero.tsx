@@ -19,12 +19,14 @@ const CollectionsHero = () => {
       <HeroSkeleton />
     )
   }
+
+  const imageUrl = data?.docs?.heroLarge?.url || data?.docs?.hero?.url;
   return (
     <section
       style={{
-        backgroundImage: `linear-gradient(to bottom, #456d4550, rgba(0, 0, 0, 0.571)), url(${data?.docs?.hero?.url || "/images/products-hero.jpg"})`
+        backgroundImage: `linear-gradient(to bottom, #456d4550, rgba(0, 0, 0, 0.571)), url(${imageUrl || "/images/products-hero.jpg"})`
       }}
-      className={`relative w-full bg-center bg-cover bg-no-repeat min-h-[500px] flex items-end py-20 px-5`}>
+      className={`relative w-full bg-top bg-cover bg-no-repeat min-h-[500px] flex items-end py-20 px-5`}>
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300"></div>
 
     <MaxWidthWrapper>

@@ -1,5 +1,5 @@
 import { DEFAULT_LIMIT } from "@/constants";
-import { ProductCollection, Color, LayoutMedia, Media, Size } from "@/payload-types";
+import { ProductCollection, Color, LayoutMedia, Media, Size, LargeMedia } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { z } from "zod";
 
@@ -26,10 +26,11 @@ export const collectionsRouter = createTRPCRouter({
         docs: data.docs.map((doc) => ({
           ...doc,
           hero: doc.hero as LayoutMedia | null,
+          heroLarge: doc.heroLarge as LargeMedia | null,
         }))[0]
       }
     }),
-    
+
   getMany: baseProcedure
     .input(
       z.object({
@@ -50,6 +51,7 @@ export const collectionsRouter = createTRPCRouter({
         docs: data.docs.map((doc) => ({
           ...doc,
           hero: doc.hero as LayoutMedia | null,
+          heroLarge: doc.heroLarge as LargeMedia | null
         }))
       }
     }),
@@ -95,6 +97,8 @@ export const collectionsRouter = createTRPCRouter({
           collection: doc.collection as ProductCollection[],
           images: doc.images as Array<{ image: Media }> | null,
           cover: doc.cover as Media | null,
+          largeImages: doc.largeImages as Array<{ image: LargeMedia }> | null,
+          largeCover: doc.largeCover as LargeMedia | null,
         }))
       }
     }),

@@ -40,7 +40,7 @@ export const Products: CollectionConfig = {
       type: "relationship",
       relationTo: "categories",
       hasMany: true,
-      admin:{
+      admin: {
         hidden: true
       }
     },
@@ -67,7 +67,7 @@ export const Products: CollectionConfig = {
       type: 'array',
       minRows: 1,
       maxRows: 3,
-      required: true,
+      required: false,
       fields: [
         {
           name: 'image',
@@ -81,11 +81,37 @@ export const Products: CollectionConfig = {
       name: 'cover',
       type: 'upload',
       relationTo: 'media',
-      required: true,
+      required: false,
       admin: {
         description: "please select one of the images you have picked in the images field for the cover image"
       }
     },
+
+    // 🔹 New hybrid option for large Cloudinary images
+    {
+      name: "largeImages",
+      type: "array",
+      admin: {
+        description: "Use this if your images are > 4MB (stored in Cloudinary)",
+      },
+      fields: [
+        {
+          name: "image",
+          type: "relationship",
+          relationTo: "largeMedia", // cloudinary collection
+          required: true,
+        }
+      ]
+    },
+    {
+      name: "largeCover",
+      type: "relationship",
+      relationTo: "largeMedia",
+      admin: {
+        description: "Optional Cloudinary cover image (use if >4MB)",
+      }
+    },
+
     // {
     //   name: "return policy",
     //   type: "text",

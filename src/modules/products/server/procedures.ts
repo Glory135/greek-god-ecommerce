@@ -1,6 +1,6 @@
 import { DEFAULT_LIMIT } from "@/constants";
 import { sortValues } from "@/hooks/search-params";
-import { Category, Color, Media, ProductCollection, Size } from "@/payload-types";
+import { Category, Color, LargeMedia, Media, ProductCollection, Size } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Sort, Where } from "payload";
 import { z } from "zod";
@@ -21,8 +21,10 @@ export const productsRouter = createTRPCRouter({
 
       return {
         ...product,
-        images: product.images as Array<{image: Media}> | null,
+        images: product.images as Array<{ image: Media }> | null,
         cover: product.cover as Media | null,
+        largeImages: product.largeImages as Array<{ image: LargeMedia }> | null,
+        largeCover: product.largeCover as LargeMedia | null,
         ["available colors"]: product["available colors"] as Color[],
         ["available sizes"]: product["available sizes"] as Size[],
         collection: product.collection as ProductCollection[],
@@ -134,7 +136,7 @@ export const productsRouter = createTRPCRouter({
       }
 
       // search filter logic
-      if(input.search){
+      if (input.search) {
         where["name"] = {
           like: input.search
         }
@@ -157,8 +159,10 @@ export const productsRouter = createTRPCRouter({
           ...doc,
           ["available colors"]: doc["available colors"] as Color[],
           collection: doc.collection as ProductCollection[],
-          images: doc.images as Array<{image: Media}> | null,
+          images: doc.images as Array<{ image: Media }> | null,
           cover: doc.cover as Media | null,
+          largeImages: doc.largeImages as Array<{ image: LargeMedia }> | null,
+          largeCover: doc.largeCover as LargeMedia | null,
         }))
       }
     }),

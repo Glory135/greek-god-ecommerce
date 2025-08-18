@@ -1,5 +1,5 @@
 import { DEFAULT_LIMIT } from "@/constants";
-import { LayoutMedia } from "@/payload-types";
+import { LargeMedia, LayoutMedia } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { z } from "zod";
 
@@ -24,6 +24,7 @@ export const lookBookRouter = createTRPCRouter({
         docs: data.docs.map((doc) => ({
           ...doc,
           image: doc.image as LayoutMedia | null,
+          imageLarge: doc.imageLarge as LargeMedia | null,
         }))
       }
     }),

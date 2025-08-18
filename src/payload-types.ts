@@ -82,6 +82,7 @@ export interface Config {
     lookBook: LookBook;
     media: Media;
     layoutMedia: LayoutMedia;
+    largeMedia: LargeMedia;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -107,6 +108,7 @@ export interface Config {
     lookBook: LookBookSelect<false> | LookBookSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     layoutMedia: LayoutMediaSelect<false> | LayoutMediaSelect<true>;
+    largeMedia: LargeMediaSelect<false> | LargeMediaSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -306,14 +308,29 @@ export interface Product {
   collection?: (string | ProductCollection)[] | null;
   'available colors'?: (string | Color)[] | null;
   'available sizes'?: (string | Size)[] | null;
-  images: {
-    image: string | Media;
-    id?: string | null;
-  }[];
+  images?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * please select one of the images you have picked in the images field for the cover image
    */
-  cover: string | Media;
+  cover?: (string | null) | Media;
+  /**
+   * Use this if your images are > 4MB (stored in Cloudinary)
+   */
+  largeImages?:
+    | {
+        image: string | LargeMedia;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional Cloudinary cover image (use if >4MB)
+   */
+  largeCover?: (string | null) | LargeMedia;
   'in stock': boolean;
   orderCount?: number | null;
   updatedAt: string;
@@ -343,6 +360,7 @@ export interface Category {
 export interface ProductCollection {
   id: string;
   hero?: (string | null) | LayoutMedia;
+  heroLarge?: (string | null) | LargeMedia;
   title: string;
   slug: string;
   description?: string | null;
@@ -350,7 +368,7 @@ export interface ProductCollection {
   createdAt: string;
 }
 /**
- * Images uploaded should not be above 10MB
+ * Images uploaded should not be above 4MB.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "layoutMedia".
@@ -369,6 +387,20 @@ export interface LayoutMedia {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * Use this for images larger than 4MB (uploads directly to Cloudinary)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "largeMedia".
+ */
+export interface LargeMedia {
+  id: string;
+  url: string;
+  publicId: string;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -393,7 +425,7 @@ export interface Size {
   createdAt: string;
 }
 /**
- * Images uploaded should not be above 5MB
+ * Images uploaded should not be above 4MB.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -462,7 +494,8 @@ export interface Order {
 export interface Hero {
   id: string;
   slug: string;
-  hero: string | LayoutMedia;
+  hero?: (string | null) | LayoutMedia;
+  heroLarge?: (string | null) | LargeMedia;
   title?: string | null;
   description?: string | null;
   updatedAt: string;
@@ -474,7 +507,8 @@ export interface Hero {
  */
 export interface LookBook {
   id: string;
-  image: string | LayoutMedia;
+  image?: (string | null) | LayoutMedia;
+  imageLarge?: (string | null) | LargeMedia;
   title: string;
   updatedAt: string;
   createdAt: string;
@@ -545,6 +579,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'layoutMedia';
         value: string | LayoutMedia;
+      } | null)
+    | ({
+        relationTo: 'largeMedia';
+        value: string | LargeMedia;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -697,6 +735,13 @@ export interface ProductsSelect<T extends boolean = true> {
         id?: T;
       };
   cover?: T;
+  largeImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  largeCover?: T;
   'in stock'?: T;
   orderCount?: T;
   updatedAt?: T;
@@ -745,6 +790,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface ProductCollectionsSelect<T extends boolean = true> {
   hero?: T;
+  heroLarge?: T;
   title?: T;
   slug?: T;
   description?: T;
@@ -778,6 +824,7 @@ export interface SizesSelect<T extends boolean = true> {
 export interface HerosSelect<T extends boolean = true> {
   slug?: T;
   hero?: T;
+  heroLarge?: T;
   title?: T;
   description?: T;
   updatedAt?: T;
@@ -789,6 +836,7 @@ export interface HerosSelect<T extends boolean = true> {
  */
 export interface LookBookSelect<T extends boolean = true> {
   image?: T;
+  imageLarge?: T;
   title?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -828,6 +876,17 @@ export interface LayoutMediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "largeMedia_select".
+ */
+export interface LargeMediaSelect<T extends boolean = true> {
+  url?: T;
+  publicId?: T;
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

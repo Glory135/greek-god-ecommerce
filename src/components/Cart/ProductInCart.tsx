@@ -39,7 +39,7 @@ const ProductInCart = ({ product, lg = false, close }: { product: IProductInCart
         )}>
         <Image
           alt={productData?.name || "product"}
-          src={productData?.cover?.url || "/images/placeholder.png"}
+          src={productData?.largeCover?.url || productData?.cover?.url || "/images/placeholder.png"}
           fill
           className='object-cover'
         />

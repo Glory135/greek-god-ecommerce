@@ -1,5 +1,5 @@
 import { INavItem } from "@/components/Nav/types";
-import { Category, LayoutMedia, ProductCollection } from "@/payload-types";
+import { Category, LargeMedia, LayoutMedia, ProductCollection } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { generateCategoryLink, generateCollectionLink } from "@/utils/commonFunctions";
 import { PAGES_LINKS } from "@/utils/linksData";
@@ -29,7 +29,8 @@ export const layoutRouter = createTRPCRouter({
 
     const formattedCollectionData = collectionsData.docs.map(i => ({
       ...i,
-      hero: i.hero as LayoutMedia | null
+      hero: i.hero as LayoutMedia | null,
+      heroLarge: i.heroLarge as LargeMedia | null
     }))
 
 
@@ -71,19 +72,19 @@ export const layoutRouter = createTRPCRouter({
             id: 8,
             label: featuredCollections[0]?.title,
             href: generateCollectionLink(featuredCollections[0]?.slug || ""),
-            imageSrc: featuredCollections[0]?.hero?.url || "/images/stock1.jpg"
+            imageSrc: featuredCollections[0]?.heroLarge?.url || featuredCollections[0]?.hero?.url || "/images/stock1.jpg"
           },
           {
             id: 9,
             label: featuredCollections[1]?.title,
             href: generateCollectionLink(featuredCollections[1]?.slug || ""),
-            imageSrc: featuredCollections[1]?.hero?.url || "/images/stock2.jpg"
+            imageSrc: featuredCollections[1]?.heroLarge?.url || featuredCollections[1]?.hero?.url || "/images/stock2.jpg"
           },
           {
             id: 10,
             label: featuredCollections[2]?.title,
             href: generateCollectionLink(featuredCollections[2]?.slug || ""),
-            imageSrc: featuredCollections[2]?.hero?.url || "/images/stock3.jpg"
+            imageSrc: featuredCollections[2]?.heroLarge?.url || featuredCollections[2]?.hero?.url || "/images/stock3.jpg"
           },
         ]
       }
@@ -121,13 +122,13 @@ export const layoutRouter = createTRPCRouter({
             id: 3,
             label: featuredCollections[3]?.title,
             href: generateCollectionLink(featuredCollections[3]?.slug || ""),
-            imageSrc: featuredCollections[3]?.hero?.url || "/images/stock4.jpg"
+            imageSrc: featuredCollections[3]?.heroLarge?.url || featuredCollections[3]?.hero?.url || "/images/stock4.jpg"
           },
           {
             id: 4,
             label: featuredCollections[4]?.title,
             href: generateCollectionLink(featuredCollections[4]?.slug || ""),
-            imageSrc: featuredCollections[4]?.hero?.url || "/images/stock5.jpg"
+            imageSrc: featuredCollections[4]?.heroLarge?.url || featuredCollections[4]?.hero?.url || "/images/stock5.jpg"
           },
         ]
       }
@@ -177,6 +178,7 @@ export const layoutRouter = createTRPCRouter({
       const docs = data.docs.map((doc) => ({
         ...doc,
         hero: doc.hero as LayoutMedia | null,
+        heroLarge: doc.heroLarge as LargeMedia | null,
       }))
       const resDoc = docs.length > 0 ? docs[0] : null
 

@@ -34,6 +34,7 @@ import { Orders } from './collections/Orders'
 import { DeliveryAddresses } from './collections/DeliveryAddresses'
 import { LookBook } from './collections/LookBook'
 import { DeliveryFees } from './collections/DeleveryFees'
+import { LargeMedia } from './collections/LargeMedia'
 
 
 cloudinary.config({
@@ -136,6 +137,7 @@ export default buildConfig({
     // media collections
     Media,
     LayoutMedia,
+    LargeMedia,
   ],
   cookiePrefix: `__${OAUTH_NAME}-session`,
   editor: lexicalEditor(),

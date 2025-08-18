@@ -15,6 +15,12 @@ export const ProductCollection: CollectionConfig = {
       required: false,
     },
     {
+      name: 'heroLarge',
+      type: 'relationship',
+      relationTo: 'largeMedia',
+      required: false,
+    },
+    {
       name: "title",
       type: "text",
       required: true

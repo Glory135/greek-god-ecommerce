@@ -21,7 +21,13 @@ export const Heros: CollectionConfig = {
       name: 'hero',
       type: 'upload',
       relationTo: 'layoutMedia',
-      required: true,
+      required: false,
+    },
+    {
+      name: 'heroLarge',
+      type: 'relationship',
+      relationTo: 'largeMedia',
+      required: false,
     },
     {
       name: "title",

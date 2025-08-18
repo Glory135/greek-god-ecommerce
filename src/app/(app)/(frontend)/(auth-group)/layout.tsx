@@ -24,6 +24,8 @@ export default function AuthGroupLayout({ children }: Readonly<{
     redirect("/")
   }
 
+  const imageUrl = data?.docs?.heroLarge?.url || data?.docs?.hero?.url;
+
   return (
     <MaxWidthWrapper className="md:py-10 mb-10 flex flex-col md:flex-row gap-5">
       <div className="flex-1 flex justify-center items-center">
@@ -44,7 +46,7 @@ export default function AuthGroupLayout({ children }: Readonly<{
               <Image
                 fill
                 alt="Authentication background"
-                src={data?.docs?.hero?.url || "/images/auth_img.jpg"}
+                src={imageUrl || "/images/auth_img.jpg"}
                 className="object-center object-cover"
               />
               {/* Animated overlay with title and description */}

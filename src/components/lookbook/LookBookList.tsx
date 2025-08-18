@@ -32,7 +32,8 @@ const LookBookList = () => {
         <p className="text-primary text-base font-medium">No item Found! </p>
       </div>
     )
-  }
+  }  
+
   return (
     <PhotoProvider
       speed={() => 800}
@@ -41,10 +42,11 @@ const LookBookList = () => {
       <div className="w-full grid grid-cols-4 gap-2">
         {
           data?.pages.flatMap((page) => page.docs).map((look, index) => {
+            const imageUrl = look?.imageLarge?.url || look?.image?.url
             return (
-              <PhotoView key={index} src={look?.image?.url || ""}>
+              <PhotoView key={index} src={imageUrl || ""}>
                 <div key={look.id} className="relative aspect-square w-full min-h-[350px]">
-                  <Image fill alt={look.title} src={look?.image?.url || ""} className='object-cover object-top' />
+                  <Image fill alt={look.title} src={imageUrl || ""} className='object-cover object-top' />
                 </div>
               </PhotoView>
             )

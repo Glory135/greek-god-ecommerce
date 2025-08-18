@@ -1,12 +1,13 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const LayoutMedia: CollectionConfig = {
   slug: 'layoutMedia',
   access: {
     read: () => true,
   },
-  admin:{
-    description: "Images uploaded should not be above 10MB"
+  admin: {
+    description: "Images uploaded should not be above 4MB.",
+    useAsTitle: "alt"
   },
   fields: [
     {
@@ -15,5 +16,5 @@ export const LayoutMedia: CollectionConfig = {
       required: true,
     },
   ],
-  upload: true,
-}
+  upload: true, // keep for legacy
+};

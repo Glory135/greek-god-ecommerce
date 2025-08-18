@@ -1,10 +1,10 @@
 "use client"
 
-import { Media } from '@/payload-types'
+import { LargeMedia, Media } from '@/payload-types'
 import Image from 'next/image'
 import React, { useState, useEffect, useRef } from 'react'
 
-const ProductImagesStack = ({ images }: { images: Array<{ image: Media }> | null }) => {
+const ProductImagesStack = ({ images }: { images: Array<{ image: Media | LargeMedia }> | null }) => {
   const validImages = images || [];
   const [focusedIdx, setFocusedIdx] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
